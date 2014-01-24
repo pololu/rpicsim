@@ -54,7 +54,7 @@ The convention for RSpec is that all the specs live in the "spec" directory and 
 
 This sets up a dummy test that runs the simulation for 100 steps and verifies that the program counter (the address of the next instruction to execute) changes each time.  This test would fail if the firmware went into a one-instruction loop in the first 100 instructions.
 
-To someone who is new to Ruby, RSpec, and RPicSim, understanding the code above might be pretty hard.  I recommend reading the RPicSim manual; this tutorial is just meant to help you get started and a long explanation of this code would slow down people who already know what they are doing but just need a quick reminder of how to get started.
+To someone who is new to Ruby, RSpec, and RPicSim, understanding the code above might be pretty hard.  I recommend reading the {file:Manual.md RPicSim manual}; this tutorial is just meant to help you get started and a long explanation of this code would slow down people who already know what they are doing but just need a quick reminder of how to get started.
 
 We have not yet told RPicSim where to find the firmware file.  To do this, make a new file named `spec_helper.rb` in the `spec` directory.  In `spec/spec_helper.rb`, write:
 
