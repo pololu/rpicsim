@@ -5,8 +5,6 @@ RPicSim is written in the [Ruby language](http://ruby-lang.org) and runs on [JRu
 It can be used in any type of JRuby application, and it has bindings that make it especially convenient to use with the [RSpec](http://rspec.info) testing framework.
 RPicSim is free to use and does not require any external hardware.
 
-RPicSim has been tested with MPLAB<sup>®</sup> X v1.85, v1.90, v1.95, and v2.00.  However, it uses a lot of undocumented and internal features of the Microchip<sup>®</sup> Java libraries, so it will probably need to be updated as new versions of MPLAB<sup>®</sup> X are released.
-
 With RPicSim, you can write tests for your PIC<sup>®</sup> firmware in the Ruby language.  Here is an example integration test that simulates input and output on the device's pins:
 
     it "continuously mirrors" do
@@ -47,6 +45,9 @@ RPicSim has features that allow you to:
 For some applications, RPicSim can also analyze the firmware and verify that the call stack will never overflow.
 
 RPicSim is distributed as a Ruby gem named `rpicsim`.
+
+RPicSim has been tested with MPLAB<sup>®</sup> X v1.85, v1.90, v1.95, and v2.00.
+However, it uses a lot of undocumented and internal features of the Microchip<sup>®</sup> Java libraries, so it will probably need to be updated as new versions of MPLAB<sup>®</sup> X are released.
 
 RPicSim is not intended to replace formal specifications, code reviews, and rigorous testing of your firmware on actual hardware.
 RPicSim is just another tool that can make it easier to write and test the firmware.
