@@ -1,7 +1,7 @@
 lib/rpicsim/**/*.rb
+--readme Introduction.md
 -
 docs/Manual.md
-  README.md
   docs/ChangeLog.md
   docs/GettingStarted.md
   docs/SupportedPICs.md

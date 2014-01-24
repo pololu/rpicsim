@@ -4,7 +4,7 @@ RPicSim manual
 This is the table of contents for the RPicSim manual.
 
 * Overview
-    * {file:README.md}
+    * {file:Introduction.md}
     * {file:ChangeLog.md Change log}
     * {file:GettingStarted.md Getting started}
     * {file:SupportedPICs.md Supported PICs}

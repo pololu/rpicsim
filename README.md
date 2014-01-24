@@ -1,15 +1,14 @@
-# RPicSim: Ruby PIC® simulator interface
+# RPicSim: Ruby PIC<sup>®</sup> simulator interface
 
-The RPicSim library provides an interface to the MPLAB® X PIC® simulator that allows you to write simulator-based automated tests of PIC® firmware.
+The RPicSim library provides an interface to the MPLAB<sup>®</sup> X PIC<sup>®</sup> simulator that allows you to write simulator-based automated tests of PIC<sup>®</sup> firmware.
 RPicSim is written in the [Ruby language](http://ruby-lang.org) and runs on [JRuby](http://jruby.org).
 It can be used in any type of JRuby application, and it has bindings that make it especially convenient to use with the [RSpec](http://rspec.info) testing framework.
 RPicSim is free to use and does not require any external hardware.
 
-RPicSim has been tested with MPLAB® X v1.85, v1.90, v1.95, and v2.00.  However, it uses a lot of undocumented and internal features of the Microchip® Java libraries, so it will probably need to be updated as new versions of MPLAB® X are released.
+RPicSim has been tested with MPLAB<sup>®</sup> X v1.85, v1.90, v1.95, and v2.00.  However, it uses a lot of undocumented and internal features of the Microchip<sup>®</sup> Java libraries, so it will probably need to be updated as new versions of MPLAB<sup>®</sup> X are released.
 
-With RPicSim, you can write tests for your PIC® firmware in the Ruby language.  Here is an example integration test that simulates input and output on the device's pins:
+With RPicSim, you can write tests for your PIC<sup>®</sup> firmware in the Ruby language.  Here is an example integration test that simulates input and output on the device's pins:
 
-    !!!ruby
     it "continuously mirrors" do
       main_input.set false
       run_cycles 10
@@ -22,7 +21,6 @@ With RPicSim, you can write tests for your PIC® firmware in the Ruby language. 
 
 Here is an example unit test written with RPicSim that tests a single subroutine in the firmware:
 
-    !!!ruby
     it "can add 70 to 22" do
       var(:x).value = 70
       var(:y).value = 22
@@ -53,7 +51,6 @@ RPicSim is distributed as a Ruby gem named `rpicsim`.
 RPicSim is not intended to replace formal specifications, code reviews, and rigorous testing of your firmware on actual hardware.
 RPicSim is just another tool that can make it easier to write and test the firmware.
 
-The names Microchip®, PIC®, MPLAB®, and MPASM® are registered trademarks of Microchip Technology Incorporated in the U.S.A. and other countries.  RPicSim it not written or supported by Microchip.
+The names Microchip®, PIC®, MPLAB®, and MPASM<sup>®</sup> are registered trademarks of Microchip Technology Incorporated in the U.S.A. and other countries.  RPicSim it not written or supported by Microchip.
 
-To get started with RPicSim, see the {file:GettingStarted.md Getting started page}.
-For in-depth information, read the {file:Manual.md}.
+For complete documentation, see the [RPicSim page on rubydoc.info](http://rubydoc.info/github/DavidEGrayson/doku/master/index).

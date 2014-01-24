@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.requirements << 'MPLAB X'
   s.metadata['allowed_push_host'] = 'pololu.com'
 
-  s.files = Dir['lib/**/*.rb', 'LICENSE.txt', '*.md', 'Gemfile', 'docs/*', '.yardopts']
+  s.files = Dir['lib/**/*.rb', 'README.yard.md', 'LICENSE.txt', '*.md', 'Gemfile', 'docs/*', '.yardopts']
 end

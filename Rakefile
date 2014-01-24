@@ -57,17 +57,23 @@ task "spec" => "firmware"
 desc "Compile the firmware used for the specs."
 task "firmware"
 
-desc "Generate documentation with YARD"
-task "doc" do
-  # You could just run 'bundle exec yard' yourself without Rake, but this task
-  # serves as helpful documentation to contributors who want to know how the
-  # docs are generated.
-  sh "yard"
+desc 'Generate documentation with YARD'
+task 'doc' => 'Introduction.md' do
+  sh 'yard'
 end
 
-desc "Build the gem"
-task "build" do
-  sh "gem build rpicsim.gemspec"
+file 'Introduction.md' => 'README.md' do
+  # NOTE: YARD supports Github-flavored markdown by default but not under JRuby, because
+  # the redcarpet gem has a C extension.
+  puts "Converting README.md (Github-flavored markdown) to README.yard.md (markdown for YARD)"
+  readme = File.open('README.md', 'r:UTF-8') { |f| f.read }
+  readme.gsub! %r{</?sup>}i, ''
+  File.open('Introduction.md', 'w:UTF-8') { |f| f.write readme }
+end
+
+desc 'Build the gem'
+task 'build' => 'Introduction.md' do
+  sh 'gem build rpicsim.gemspec'
 end
 
 def which(cmd)
