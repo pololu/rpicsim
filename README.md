@@ -54,4 +54,4 @@ RPicSim is just another tool that can make it easier to write and test the firmw
 
 The names Microchip®, PIC®, MPLAB®, and MPASM<sup>®</sup> are registered trademarks of Microchip Technology Incorporated in the U.S.A. and other countries.  RPicSim it not written or supported by Microchip.
 
-For complete documentation, see the [RPicSim page on rubydoc.info](http://rubydoc.info/github/pololu/rpicsim/master/index).
+For complete documentation, see the [RPicSim API documentation and manual](http://shicholas.github.io/rpicsim/).
