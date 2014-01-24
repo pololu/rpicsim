@@ -1,0 +1,36 @@
+lib/rpicsim/**/*.rb
+-
+docs/Manual.md
+  README.md
+  docs/ChangeLog.md
+  docs/GettingStarted.md
+  docs/SupportedPICs.md
+  docs/SupportedCompilers.md
+  docs/SupportedMPLABXVersions.md
+  docs/SupportedOperatingSystems.md
+
+  docs/IntroductionToRuby.md
+  docs/IntroductionToRSpec.md
+  
+  docs/DefiningSimulationClass.md
+  docs/Pins.md
+  docs/Labels.md
+  docs/Running.md
+  docs/Variables.md
+  docs/SFRs.md
+  docs/PersistentExpectations.md
+  docs/RamWatcher.md
+  docs/PreventingCallStackOverflow.md
+
+  docs/Stubbing.md
+  docs/MakingTestsRunFaster.md
+  docs/Debugging.md
+ 
+  docs/UnitTesting.md
+  docs/IntegrationTesting.md
+  
+  docs/HowMPLABXIsFound.md
+  docs/RSpecIntegration.md
+  docs/Flaws.md
+  docs/DesignDecisions.md
+  docs/Contributing.md
