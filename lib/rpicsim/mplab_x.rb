@@ -1,0 +1,170 @@
+require 'java'
+require 'pathname'
+
+module RPicSim
+  module MPLABX
+    # Returns a Patname object representing the directory of the MPLAB X we are using.
+    # This can either come from the +RPICSIM_MPLABX+ environment variable or it can
+    # be auto-detected by looking in the standard places that MPLAB X is installed.
+    # @return [Pathname]
+    def self.dir
+      @dir ||= begin
+        dir = ENV['RPICSIM_MPLABX']
+
+        dir ||= [
+          "C:/Program Files (x86)/Microchip/MPLABX/",
+          "C:/Program Files/Microchip/MPLABX/",
+          # TODO: add entries here for MPLAB X folders in Linux and Mac OS X
+        ].detect { |d| File.directory?(d) }
+
+        if !dir
+          raise "Cannot find MPLABX.  Install it in the standard location or " +
+            "set the RPICSIM_MPASM environment variable to its full path."
+        end
+
+        if !File.directory?(dir)
+          raise "MPLABX directory does not exist: #{dir}"
+        end
+
+        Pathname(dir)
+      end
+    end
+
+    # Adds all the needed MPLAB X jar files to the classpath so we can use the
+    # classes.
+    def self.load_dependencies
+      %w{ mplab_ide/mdbcore/modules/*.jar
+          mplab_ide/mplablibs/modules/*.jar
+          mplab_ide/mplablibs/modules/ext/*.jar
+          mplab_ide/platform/lib/org-openide-util*.jar
+          mplab_ide/platform/lib/org-openide-util.jar
+          mplab_ide/mdbcore/modules/ext/org-openide-filesystems.jar
+      }.each do |pattern|
+        Dir.glob(dir + pattern).each do |jar_file|
+          $CLASSPATH << jar_file
+        end
+      end
+
+      # Do a quick test to make sure we can load some MPLAB X classes.
+      # In case MPLAB X was uninstalled and its directory remains, this can provide
+      # a useful error message to the user.
+      begin
+        org.openide.util.Lookup
+        com.microchip.mplab.mdbcore.simulator.Simulator
+      rescue NameError
+        $stderr.puts "Failed to load MPLAB X classes.\n" +
+          "MPLAB X dir: #{dir}\nClass path:\n" + $CLASSPATH.to_a.join("\n") + "\n\n"
+        raise
+      end
+    end
+
+    load_dependencies
+
+
+    # JRuby makes it hard to access packages with capital letters in their names.
+    # This is a workaround to let us access those packages.
+    module CapitalizedPackages
+      include_package "com.microchip.mplab.libs.MPLABDocumentLocator"
+    end
+
+    # The com.microchip.mplab.libs.MPLABDocumentLocator.MPLABDocumentLocator class from MPLAB X.
+    DocumentLocator = CapitalizedPackages::MPLABDocumentLocator
+
+    # Returns a string like "1.95" representing the version of MPLAB X we are using.
+    # NOTE: You should probably NOT be doing this to work around flaws in MPLAB X.
+    # Instead, you should add a new entry in flaws.rb and then use
+    # RPicSim::Flaws[:FLAWNAME] to see if the flaw exists and choose the appropriate workaround.
+    def self.version
+      # This implementation is not pretty; I would prefer to just find the right function
+      # to call.
+      @mplabx_version ||= begin
+        paths = Dir.glob(dir + "Uninstall_MPLAB_X_IDE_v*.dat")
+        if paths.empty?
+          raise "Cannot detect MPLAB X version.  The Uninstall_MPLAB_X_IDE_v*.dat file was not found in #{mplabx_dir}."
+        end
+        match_data = paths.first.match(/v([0-9][0-9\.]*[0-9]+)\./)
+        match_data[1]
+      end
+    end
+
+    # Mutes the standard output, calls the given block, and then unmutes it.
+    def self.mute_stdout
+      begin
+        orig = java.lang.System.out
+        java.lang.System.setOut(java.io.PrintStream.new(NullOutputStream.new))
+        yield
+      ensure
+        java.lang.System.setOut(orig)
+      end
+    end
+
+    # Mutes a particular type of exception printed by NetBeans,
+    # calls the given block, then unmutes it.
+    def self.mute_exceptions
+      log = java.util.logging.Logger.getLogger('org.openide.util.Exceptions')
+      level = log.getLevel
+      begin
+        log.setLevel(java.util.logging.Level::OFF)
+        yield
+      ensure
+        log.setLevel(level)
+      end
+    end
+
+    # Creates a new, blank assembly.
+    # @param device [String] the name of the device, e.g. "PIC10F322".
+    def self.create_assembly(device)
+      assembly_factory = Lookup.default.lookup(Mdbcore.assemblies.AssemblyFactory.java_class)
+      mute_stdout do
+        return assembly_factory.create(device)
+      end
+    end
+
+    # The com.microchip.mplab.mdbcore.assemblies.Assembly class is an important class
+    # from MPLAB X that we use a lot.  It seems to be a collection of objects where you
+    # can look up the object you want by querying for its class.
+    #
+    # RPicSim users should not need to touch this class directly.
+    class Java::ComMicrochipMplabMdbcoreAssemblies::Assembly
+      # Gets a com.microchip.mplab.mdbcore.loader.Loader object which we can use to
+      # load programs into the assembly.
+      def loader
+        getLookup.lookup Mdbcore.loader.Loader.java_class
+      end
+
+      # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
+      def debugger
+        getLookup.lookup Mdbcore.debugger.Debugger.java_class
+      end
+
+      # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
+      def simulator
+        getLookup.lookup Mdbcore.simulator.Simulator.java_class
+      end
+
+      # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
+      # use to disassemble the program binary.
+      def disasm
+        getLookup.lookup Mdbcore.disasm.DisAsm.java_class
+      end
+    end
+
+    # The MCDisAsm class is the disassembly provided by MPLAB X.
+    # We added this part so we could get access to its strategy object, but
+    # we are not currently using that feature.
+    class Java::ComMicrochipMplabMdbcoreDisasm::MCDisAsm
+      field_accessor :strategy
+    end
+
+    # This class helps us suppress the standard output temporarily.
+    class NullOutputStream < Java::JavaIo::OutputStream
+      def write(b)
+      end
+    end
+
+  end
+
+  Lookup = org.openide.util.Lookup
+  Mdbcore = com.microchip.mplab.mdbcore
+end
+

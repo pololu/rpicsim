@@ -1,0 +1,11 @@
+*.err
+*.lst
+*.o
+*.cof
+*.hex
+/*.gem
+
+/coverage
+/doc
+/.yardoc
+Gemfile.lock

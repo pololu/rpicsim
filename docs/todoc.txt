@@ -1,0 +1,25 @@
+Stuff I should document along with the documentation of these project:
+
+Cool tricks that are not part of RPic/PicSim but are very useful to the users:
+  Invoking rspec
+    Run just a few specs
+      rspec spec/learning_mode_spec:145
+    Don't run the specs tagged 'slow'.
+      rspec -t '~slow'
+    Generate documentation
+      rspec --format=documentation spec/led_spec.rb
+
+
+Debugger
+  Prerequisite:  jgem install ruby-debug
+  Insert code:   require 'ruby-debug'; debugger
+  
+  For best results when using the debugger, you need to provide the --debug option to
+  JRuby.  You can do that if you run rspec like this:
+  
+  (Command Prompt)
+    set RUBYOPT=--debug
+    rspec spec/foo_spec.rb:83
+  (Git Bash)
+    RUBYOPT=--debug rspec spec/_spec.rb:83
+
