@@ -52,9 +52,9 @@ However, it uses a lot of undocumented and internal features of the Microchip<su
 RPicSim is not intended to replace formal specifications, code reviews, and rigorous testing of your firmware on actual hardware.
 RPicSim is just another tool that can make it easier to write and test the firmware.
 
-The names Microchip®, PIC®, MPLAB®, and MPASM<sup>®</sup> are registered trademarks of Microchip Technology Incorporated in the U.S.A. and other countries.  RPicSim it not written or supported by Microchip.
+The names Microchip®, PIC®, MPLAB®, and MPASM<sup>®</sup> are registered trademarks of Microchip Technology Incorporated in the U.S.A. and other countries.  RPicSim is not written or supported by Microchip.
 
-For complete documentation, see the [RPicSim API documentation and manual](http://www.davidegrayson.com/hold/rpicsim/_index.html).
+For complete documentation, see the [RPicSim API documentation](http://www.davidegrayson.com/hold/rpicsim/_index.html) and the [RPicSim manual](http://www.davidegrayson.com/hold/rpicsim/file.Manual.html).
 
 The gem is not on RubyGems.org yet, but you can [download it from here](http://www.davidegrayson.com/hold/rpicsim-1.0.0.gem) and install it with:
 
