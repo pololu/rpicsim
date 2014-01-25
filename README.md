@@ -56,6 +56,6 @@ The names Microchip®, PIC®, MPLAB®, and MPASM<sup>®</sup> are registered tra
 
 For complete documentation, see the [RPicSim API documentation and manual](http://www.davidegrayson.com/hold/rpicsim/_index.html).
 
-The gem is not on RubyGems.org yet, but you can [download it from here](http://www.davidegrayson.com/hold/rpicsim-1.0.0.gem) and install it with
+The gem is not on RubyGems.org yet, but you can [download it from here](http://www.davidegrayson.com/hold/rpicsim-1.0.0.gem) and install it with:
 
     gem install rpicsim-1.0.0.gem
