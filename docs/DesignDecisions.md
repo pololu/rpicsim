@@ -32,7 +32,7 @@ It is popular in the Ruby community.
 Why not use SCL?
 ----
 Microchip's [Stimulus Control Language (SCL)](http://www.microchip.com/forums/m111255.aspx) serves a lot of the same purposes as RPicSim.
-It can simulate external stimulus being applied to pins of a PIC and see how it behaves.
+It can simulate an external stimulus being applied to pins of a PIC and see how it behaves.
 MPLAB X has a button in the "Stimulus" pane for attaching an SCL script to a simulation.
 
 I have not used SCL and don't know much about it, but I think the main reasons to not use SCL are:

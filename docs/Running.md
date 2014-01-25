@@ -57,7 +57,8 @@ Once you have set `frequency_mhz`, you can use `run_microseconds` or its more re
     run_microseconds 15   # run for approximately 15 microseconds
     run_µs 15             # same
 
-To use `run_µs`, be sure to configure your text editor to save files using UTF-8 encoding, and put a comment at the very top line of your spec that says `# coding: UTF-8`.  If you don't do this, you might get an "invalid byte sequence in US-ASCII" error.
+To use `run_µs`, be sure to configure your text editor to save files using UTF-8 encoding, and put a comment at the very top line of your file that says `# coding: UTF-8`.
+If you don't do this, you might get an "invalid byte sequence in US-ASCII" error.
 
 Regarding time accuracy:  Certain instructions take two cycles and there is no way to stop the simulation in the middle of an instruction, so both `run_cycles` and `run_microseconds` will sometimes run the simulation one cycle longer than requested.
 These one-cycle errors can accumulate if you call the method many times.

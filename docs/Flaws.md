@@ -35,7 +35,7 @@ Simulation timing is affected by the details how long each instruction takes
 ----
 _Type: Unknown_
 
-As mentioned on the {file:Running.md running} page, RPicSim's only way to advance the simulation is to execute an entire instruction.
+As mentioned on the {file:Running.md Running} page, RPicSim's only way to advance the simulation is to execute an entire instruction.
 Some instructions take two instruction cycles to run and others only take one.
 When you request RPicSim to delay for a certain number of cycles, it might need to delay by one cycle more than was requested since it cannot stop in the middle of a two-cycle instruction.
 As a result, the timing of your tests and the input signals you send to the simulated PIC can sometimes be slightly off and these errors could accumulate in longer tests.
