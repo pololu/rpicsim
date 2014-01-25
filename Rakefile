@@ -65,7 +65,7 @@ end
 file 'Introduction.md' => 'README.md' do
   # NOTE: YARD supports Github-flavored markdown by default but not under JRuby, because
   # the redcarpet gem has a C extension.
-  puts "Converting README.md (Github-flavored markdown) to README.yard.md (markdown for YARD)"
+  puts "Converting README.md (Github-flavored markdown) to README.yard.md (for YARD)"
   readme = File.open('README.md', 'r:UTF-8') { |f| f.read }
   readme.gsub! %r{</?sup>}i, ''
   File.open('Introduction.md', 'w:UTF-8') { |f| f.write readme }
