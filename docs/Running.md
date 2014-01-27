@@ -6,6 +6,7 @@ Any useful PIC simulation needs to run for some number of steps and then stop.  
 * {RPicSim::Pic#step step}
 * {RPicSim::Pic#run_steps run_steps}
 * {RPicSim::Pic#run_cycles run_cycles}
+* {RPicSim::Pic#run_to_cycle_count run_to_cycle_count}
 * {RPicSim::Pic#run_microseconds run_microseconds}
 * {RPicSim::Pic#run_to run_to}
 * {RPicSim::Pic#run_subroutine run_subroutine}
@@ -40,6 +41,11 @@ The {RPicSim::Pic#run_cycles run_cycles} method runs the simulation until a cert
 
     !!!ruby
     run_cycles 20  # runs the simulation for approximately 20 instruction cycles
+
+The {RPicSim::Pic#run_to_cycle_count run_to_cycle_count} method is similar to `run_cycles`, but it takes as an argument the total number of cycles since the simulation was started, and it runs up to that point:
+
+    !!!ruby
+    run_to_cycle_count 1000  # runs the simulation until the total cycle count is 1000
 
 The {RPicSim::Pic#run_microseconds} method runs the simulation for the specified number of microseconds of simulated time.  Before running this method, you need to tell RPicSim how fast the simulated PIC is running by setting the {RPicSim::Pic#frequency_mhz} attribute.  For example:
 
@@ -78,7 +84,7 @@ The second argument to `run_to` is an optional hash of options.
 It is recommended to always specify the `cycle_limit` option, which limits how the long simulation
 can run, in order to avoid an accidental infinite loop in your tests.
 If the limit is exceeded, an exception is raised.
- 
+
 For example, to run to a label named "apple":
 
     !!!ruby
@@ -88,7 +94,7 @@ To run until either the "step2" label is reached or the current subroutine retur
 
     !!!ruby
     run_to [ :step2, :return ], cycle_limit: 200
-   
+
 When `run_to` finishes, it will return the object representing the condition that was met.
 This can be helpful in tests:
 
@@ -100,7 +106,7 @@ To run until an arbitrary condition is met:
 
     !!!ruby
     run_to Proc.new { wreg.value == 2 }, cycle_limit: 300
-    
+
 To run to a particular address:
 
     !!!ruby
@@ -110,7 +116,7 @@ To finish running a subroutine and assert that it takes between 10000 and 11000 
 
     !!!ruby
     run_to :return, cycles: 10000..11000
- 
+
 For the complete, formal documentation of `run_to`, see {RPicSim::Pic#run_to}.
 
 
@@ -124,7 +130,7 @@ For example, this code moves the PIC's program counter to point to the address o
     goto :loopStart
     run_to :loopEnd, cycle_limit: 400
 
-    
+
 Running a subroutine or function
 ----
 
@@ -136,7 +142,7 @@ For example, to test a subroutine that drives the `main_output` pin high:
 
     run_subroutine :drivePinHigh, cycle_limit: 20
     main_output.should be_driving_high
-    
+
 In this example, `main_output` is a pin alias, as described in the {file:Pins.md Pins page}.
 
 Some subroutine values might store input or output values in RAM.  To test those subroutines, you will need to be able to read and write RAM as described in the {file:Variables.md Variables page}.
