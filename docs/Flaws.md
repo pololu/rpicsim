@@ -10,9 +10,9 @@ RPicSim has only been tested with the following versions of MPLAB X:
   * 1.90
   * 1.95
   * 2.00
-  
+
 If you are using a different version of MPLAB X, some of the flaws might not apply to you.
-  
+
 Many of these flaws have only been tested for on a single model of PIC and they may or may not affect other models.
 
 Many of these flaws are also reported on other pages of this {file:Manual.md manual}, but this page is complete list of all flaws that could affect users of RPicSim.
@@ -33,14 +33,14 @@ The _SIMISA_ column probably stands for "Simulator (instruction set and architec
 
 Simulation timing is affected by the details how long each instruction takes
 ----
-_Type: Unknown_
+_Type: MPLAB X missing feature_
 
 As mentioned on the {file:Running.md Running} page, RPicSim's only way to advance the simulation is to execute an entire instruction.
 Some instructions take two instruction cycles to run and others only take one.
 When you request RPicSim to delay for a certain number of cycles, it might need to delay by one cycle more than was requested since it cannot stop in the middle of a two-cycle instruction.
 As a result, the timing of your tests and the input signals you send to the simulated PIC can sometimes be slightly off and these errors could accumulate in longer tests.
 
-For many applications this is OK, but in a future version this issue should be revisited to see if it is possible to advance the simulation by one instruction cycle at a time.
+One workaround that prevents timing errors from accumulating is to only use {RPicSim::Pic#run_to_cycle_count} to run the simulation.
 
 
 MPLAB X must be on the C drive
