@@ -12,12 +12,12 @@ Also, it detects writes from instructions like "`movf x, F`", which is usually n
 That instruction affects the STATUS register and allows you to see if `x` is zero, but it should not affect `x` if it is a normal variable in RAM.
 However, that instruction technically counts as a read from `x` and a write of the same value back to `x`, so the RAM watcher detects the write and will report it.
 
-Please note that the RAM watcher works well in MPLAB X 1.85 but the latest versions of MPLAB X have a flaw that makes the RAM watcher useless.
+Please note that the RAM watcher works well in MPLAB X 1.85 and 1.90 but the latest versions of MPLAB X have a flaw that makes the RAM watcher useless.
 For more information, see {file:Flaws.md}.
 
 The RAM watcher has two important methods:
 
-* The {RPicSim::MemoryWatcher#writes writes} method provides hash representing all the writes that have been recorded.
+* The {RPicSim::MemoryWatcher#writes writes} method provides a hash representing all the writes that have been recorded.
   Each key of the hash is the name of the variable or SFR that was written to, or just the address that was written to if the write was to an unrecognized location in memory.
   The values of the hash are the final value that the item had after the last write.
   If a subroutine under test writes to the same variable twice, the RAM watcher will only report about the last write.
