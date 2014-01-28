@@ -1,7 +1,7 @@
 Persistent expectations
 ====
 
-An RSpec example usually consists of some code to set up the situation being tested, and some code that called an _expectation_ that defines the expected outcome.
+An RSpec example usually consists of some code to set up the situation being tested, and some code called an _expectation_ that defines the expected outcome.
 As discussed in the {file:Pins.md Pins page}, to write an expectation that the main output pin is driving high you could write:
 
     !!!ruby
