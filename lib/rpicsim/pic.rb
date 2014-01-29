@@ -686,6 +686,10 @@ module RPicSim
     # Runs the subroutine at the given location.  This can be useful for doing
     # unit tests of subroutines in your firmware.
     #
+    # The current program counter value will be pushed onto the stack before
+    # running the subroutine so that after the subroutine is done the simulation
+    # can proceed as it was before.
+    #
     # Example usage in RSpec:
     #   run_subroutine :calculateSum, cycle_limit: 20
     #   sum.value.should == 30
@@ -695,9 +699,7 @@ module RPicSim
     #   executing a return instructions.
     # @param opts Any of the options supported by {#run_to}.
     def run_subroutine(location, opts={})
-      # We don't know how to distinguish a return when STKPTR=0 from a "goto 0x0",
-      # so we set the STKPTR to 1.  When it goes to 0, we know the subroutine has returned.
-      stkptr.value = 1
+      stack_push pc.value
       goto location
       run_to :return, opts
     end
@@ -757,6 +759,16 @@ module RPicSim
     # program counter is currently using the symbol table.
     def pc_description
       self.class.program_file.address_description(pc.value)
+    end
+
+    # Pushes the given address onto the PIC's call stack.
+    def stack_push(value)
+      if !@stack_memory.IsValidAddress(stkptr.value)
+        raise "Simulated stack is full (stack pointer = #{stkptr.value})."
+      end
+
+      @stack_memory.WriteWord(stkptr.value, value)
+      stkptr.value += 1
     end
 
     # Gets the contents of the stack as an array of integers.

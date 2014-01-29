@@ -53,7 +53,7 @@ describe RPicSim::Pic do
       result.should == :goo
       pc.value.should == label(:goo).address
     end
-    
+
     describe "cycle_limit option" do
       it "does not raise an exception if the cycle_limit isn't violated" do
         run_to :goo, cycle_limit: 100
@@ -63,7 +63,7 @@ describe RPicSim::Pic do
       it "raises an exception if the cycle_limit is violated" do
         expect { run_to :goo, cycle_limit: 3 }.to raise_error "Failed to reach [:goo] after 4 cycles."
       end
-      
+
       it "does not run at all if the cycle_limit is 0" do
         expect { run_to [:goo], cycle_limit: 0 }.to raise_error "Failed to reach [:goo] after 0 cycles."
         cycle_count.should == 0
@@ -139,6 +139,18 @@ describe RPicSim::Pic do
       pic.frequency_mhz = 2
       pic.should_receive(:run_cycles).with(12)
       run_µs 6
+    end
+  end
+
+  describe "run_subroutine" do
+    it "pushes the current pc value onto the stack" do
+      # This lets you call run_subroutine in the middle of a more complicated simulation
+      # without disrupting the flow of that simulation.
+      pic.stack_push 1
+      pic.stack_push 9
+      goto 13
+      expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error
+      expect(pic.stack_contents).to eq [1, 9, 13]
     end
   end
 

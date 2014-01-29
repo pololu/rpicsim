@@ -4,10 +4,10 @@ describe "Stack methods" do
   before do
     start_sim Firmware::NestedSubroutines
   end
-  
+
   describe "stkptr" do
     it "lets us access the stack pointer" do
-      run_to :ioo, cycle_limit: 100    
+      run_to :ioo, cycle_limit: 100
       stkptr.value.should == 3
     end
   end
@@ -31,8 +31,21 @@ describe "Stack methods" do
 0x0041 = goo
 0x0022 = start+0x2
 END
-     
+
     end
   end
-  
+
+  describe "#stack_push" do
+    it "pushes addresses onto the stack" do
+      pic.stack_push 0x123
+      pic.stack_push 0x22
+      pic.stack_contents.should == [0x123, 0x22]
+    end
+
+    it "raises an error when the stack his been filled" do
+      8.times { pic.stack_push 1 }
+      expect { pic.stack_push 2 }.to raise_error "Simulated stack is full."
+    end
+  end
+
 end
