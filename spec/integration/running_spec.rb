@@ -53,7 +53,7 @@ describe RPicSim::Pic do
       result.should == :goo
       pc.value.should == label(:goo).address
     end
-
+    
     describe "cycle_limit option" do
       it "does not raise an exception if the cycle_limit isn't violated" do
         run_to :goo, cycle_limit: 100
@@ -62,6 +62,11 @@ describe RPicSim::Pic do
 
       it "raises an exception if the cycle_limit is violated" do
         expect { run_to :goo, cycle_limit: 3 }.to raise_error "Failed to reach [:goo] after 4 cycles."
+      end
+      
+      it "does not run at all if the cycle_limit is 0" do
+        expect { run_to [:goo], cycle_limit: 0 }.to raise_error "Failed to reach [:goo] after 0 cycles."
+        cycle_count.should == 0
       end
     end
 
@@ -136,5 +141,6 @@ describe RPicSim::Pic do
       run_µs 6
     end
   end
+
 end
 
