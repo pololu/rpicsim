@@ -75,7 +75,7 @@ module RPicSim
     # @param address [Integer] An address in program memory.
     # @return [String]
     def address_description(address)
-      desc = "0x%04x" % [address]
+      desc = address < 0 ? address.to_s : ("0x%04x" % [address])
       reference_points = labels.values.reject { |label| label.address > address }
       label = reference_points.max_by &:address
       
