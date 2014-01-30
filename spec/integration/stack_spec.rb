@@ -44,7 +44,7 @@ END
 
     it "raises an error when the stack his been filled" do
       8.times { pic.stack_push 1 }
-      expect { pic.stack_push 2 }.to raise_error "Simulated stack is full."
+      expect { pic.stack_push 2 }.to raise_error "Simulated stack is full (stack pointer = 8)."
     end
   end
 
