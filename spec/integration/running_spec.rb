@@ -144,13 +144,20 @@ describe RPicSim::Pic do
 
   describe "run_subroutine" do
     it "pushes the current pc value onto the stack" do
-      # This lets you call run_subroutine in the middle of a more complicated simulation
-      # without disrupting the flow of that simulation.
       pic.stack_push 1
       pic.stack_push 9
       goto 13
       expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error
       expect(pic.stack_contents).to eq [1, 9, 13]
+    end
+    
+    it "doesn't change the state of the stack and PC if it completes successfully" do
+      pic.stack_push 1
+      pic.stack_push 9
+      goto 13
+      run_subroutine :foo, cycle_limit: 100
+      expect(pic.stack_contents).to eq [1, 9]
+      expect(pc.value).to eq 13
     end
   end
 
