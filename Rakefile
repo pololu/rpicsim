@@ -186,6 +186,6 @@ end
 task 'firmware' => 'spec/firmware/BoringLoop.cof'
 
 # Copy the COF file out of the dist directory so we can test that flaw in MPLAB X
-file 'spec/firmware/BoringLoop.cof' do
+file 'spec/firmware/BoringLoop.cof' => 'spec/firmware/dist/BoringLoop.cof' do
   FileUtils.cp 'spec/firmware/dist/BoringLoop.cof', 'spec/firmware/BoringLoop.cof', verbose: true
 end
