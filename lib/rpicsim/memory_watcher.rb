@@ -16,10 +16,10 @@ module RPicSim
     attr_accessor :var_names_ignored_on_first_step
     
     # Creates a new instance.
-    # @param pic [Pic]
+    # @param sim [Sim]
     # @param memory The memory to watch
     # @param vars [Array(Variable)]
-    def initialize(pic, memory, vars)
+    def initialize(sim, memory, vars)
       # Populate the @vars_by_address instance hash
       @vars_by_address = {}
       vars.each do |var|
@@ -32,12 +32,12 @@ module RPicSim
         end
       end
     
-      @pic = pic
+      @sim = sim
       @memory = memory
       @memory.Attach(self, nil)      
       @vars_written = Set.new
-      @var_names_ignored = default_var_names_ignored(pic.device)
-      @var_names_ignored_on_first_step = default_var_names_ignored_on_first_step(pic.device)
+      @var_names_ignored = default_var_names_ignored(sim.device)
+      @var_names_ignored_on_first_step = default_var_names_ignored_on_first_step(sim.device)
     end
 
     # Generate a nice report of what variables have been written to since the
@@ -86,7 +86,7 @@ module RPicSim
       vars = addresses.map { |a| @vars_by_address[a] || a }
 
       remove_vars(vars, @var_names_ignored)
-      remove_vars(vars, @var_names_ignored_on_first_step) if @pic.cycle_count <= 1
+      remove_vars(vars, @var_names_ignored_on_first_step) if @sim.cycle_count <= 1
       
       # The line below works because @vars_written is a Set, not a Hash.
       @vars_written.merge vars

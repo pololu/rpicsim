@@ -168,10 +168,9 @@ module RPicSim
 
     end
 
-    # These are class methods that can call on subclasses of Pic to get information about
-    # the firmware.
+    # These are class methods that you can call on subclasses of {Sim}.
     module ClassMethods
-      # A string like "PIC10F322" specifying the PIC model number.
+      # A string like "PIC10F322" specifying the PIC device number.
       attr_reader :device
 
       # The path to a COF file for the PIC firmware, which was originally passed
@@ -245,7 +244,7 @@ module RPicSim
     end
 
     # This module is used in RPicSim's {file:RSpecIntegration.md RSpec integration}
-    # in order to let you call basic methods on the {RPicSim::Pic} object without having
+    # in order to let you call basic methods on the {RPicSim::Sim} object without having
     # to prefix them with anything.
     module BasicShortcuts
       # This is the complete list of the basic shortcuts.
@@ -313,7 +312,7 @@ module RPicSim
     # @return [Register]
     attr_reader :stkptr
 
-    # Returns a string like "PIC10F322" specifying the PIC model number.
+    # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
     def device; self.class.device; end
 
@@ -455,10 +454,10 @@ module RPicSim
     end
 
     def initialize_sfrs_and_nmmrs
-      pic = @assembly.GetDevice  # com.microchip.mplab.crownkingx.xPIC
+      device = @assembly.GetDevice  # com.microchip.mplab.crownkingx.xPIC
       @sfrs = {}
       memory = @data_store.getSFRMemory
-      pic.getAddrOntoSFR.each do |addr, node|
+      device.getAddrOntoSFR.each do |addr, node|
         register = com.microchip.crownking.edc.Register.new(node)
         if register.width != 8
           raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
@@ -472,7 +471,7 @@ module RPicSim
       end
 
       @nmmrs = {}
-      pic.getIDOntoCoreNMMR.each do |id, node|
+      device.getIDOntoCoreNMMR.each do |id, node|
         register = com.microchip.crownking.edc.Register.new(node)
         if register.width != 8
           raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
@@ -764,7 +763,7 @@ module RPicSim
       self.class.program_file.address_description(pc.value)
     end
 
-    # Pushes the given address onto the PIC's call stack.
+    # Pushes the given address onto the simulated call stack.
     def stack_push(value)
       if !@stack_memory.IsValidAddress(stkptr.value)
         raise "Simulated stack is full (stack pointer = #{stkptr.value})."
@@ -789,7 +788,7 @@ module RPicSim
     def stack_trace
       # The stack stores return addresses, not call addresses.
       # We get the call addresses by calling pred (subtract 1).
-      # TODO: make this work for devices like PIC18 where we have to subtract 2
+      # TODO: make this work for PIC18 devices where we probably have to subtract 2
       addresses = stack_contents.collect(&:pred) + [pc.value]
       entries = addresses.collect do |address|
         StackTraceEntry.new address, self.class.program_file.address_description(address)

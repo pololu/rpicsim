@@ -1,6 +1,6 @@
 module RPicSim
   # Instances of this class represent a particular instruction at a particular
-  # address in a PIC program.  This class takes low-level information about a
+  # address in program memory.  This class takes low-level information about a
   # disassembled instruction and produces high-level information about what that
   # instruction is and how it behaves.
   #
@@ -94,8 +94,8 @@ module RPicSim
       [ advance(1) ]
     end
     
-    # Makes a transition representing the default behavior: the PIC will increment
-    # the program counter and execute the next instruction in memory.
+    # Makes a transition representing the default behavior: the microcontroller
+    # will increment the program counter and execute the next instruction in memory.
     def advance(num)
       transition(address + num * increment)
     end

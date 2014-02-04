@@ -8,9 +8,9 @@ module RPicSim
     module Helpers
       include RPicSim::RSpec::PersistentExpectations
       
-      # This attribute allows you to type `pic` in your specs instead of `@pic` to
-      # get access to the {RPicSim::Pic} instance which represents the simulation.
-      # You must call {#start_sim} before using `pic`.
+      # This attribute allows you to type `sim` in your specs instead of `@sim` to
+      # get access to the {RPicSim::Sim} instance which represents the simulation.
+      # You must call {#start_sim} before using `sim`.
       attr_reader :sim
 
       # @deprecated Use {#sim} instead.

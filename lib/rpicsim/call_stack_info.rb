@@ -2,9 +2,10 @@ require_relative 'search'
 require 'set'
 
 module RPicSim
-  # This class helps analyze PIC programs to see whether it is possible for them
+  # This class helps analyze programs to see whether it is possible for them
   # to overflow the call stack, which is limited to a small number of levels on
-  # most PICs.  It traverses the {Instruction} graph provided by a {ProgramFile}
+  # many PIC microcontrollers.
+  # It traverses the {Instruction} graph provided by a {ProgramFile}
   # from a given root node and for each reachable instruction determines the
   # maximum possible call stack depth when that instruction starts executing,
   # relative to how deep the call stack depth was when the root instruction
