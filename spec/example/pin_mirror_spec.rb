@@ -7,7 +7,7 @@ require_relative '../spec_helper'
 describe "PinMirror" do
   before do
     start_sim Firmware::PinMirror
-    pic.frequency_mhz = 1
+    sim.frequency_mhz = 1
   end
 
   context "when RA0 input is high" do

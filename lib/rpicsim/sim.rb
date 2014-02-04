@@ -248,9 +248,12 @@ module RPicSim
     # in order to let you call basic methods on the {RPicSim::Pic} object without having
     # to prefix them with anything.
     module BasicShortcuts
-      # This is the complete list of the basic PIC shortcuts.
+      # This is the complete list of the basic shortcuts.
       # You can call any of these methods by simply writing its name along with any arguments
       # in an RSpec example.
+      #
+      # For example, these shortcuts allow you to just write `cycle_count`
+      # instead of `sim.cycle_count`.
       ForwardedMethods = [
         :cycle_count,
         :every_step,
@@ -278,7 +281,7 @@ module RPicSim
       ]
 
       extend Forwardable
-      def_delegators :@pic, *ForwardedMethods
+      def_delegators :@sim, *ForwardedMethods
 
       # It is nice for this to be separate so the ASCII-only name is printed in stack traces.
       alias :run_µs :run_microseconds

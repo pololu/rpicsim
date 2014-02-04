@@ -8,7 +8,7 @@ describe "cooldown" do
     every_step do
       if pc.value == label(:bigDelay).address
         @big_delay_count += 1
-        pic.return
+        sim.return
       end
     end
   end

@@ -24,23 +24,31 @@ describe "rspec helpers" do
   end
 
   describe "monkey patch for BaseTextFormatter" do
-    it "shows the pic info if available" do
+    it "shows the sim info if available" do
       sio = StringIO.new
       btf = RSpec::Core::Formatters::BaseTextFormatter.new(sio)
       stack_trace = double("stack_trace")
       stack_trace.stub(:output) { |io, padding| io.puts padding + "StackTrace" }
-      info = { pic_stack_trace: stack_trace, pic_cycle_count: 111 }
+      info = { sim_stack_trace: stack_trace, sim_cycle_count: 111 }
       example = double("example", metadata: info)
-      btf.should_receive(:dump_backtrace_without_pic_diagnostics) # avoid running the real thing
+      btf.should_receive(:dump_backtrace_without_sim_diagnostics) # avoid running the real thing
       btf.dump_backtrace(example)
       
       sio.string.should == <<-END
      
-     Simulated PIC cycle count: 111
+     Simulation cycle count: 111
      
-     Simulated PIC stack trace:
+     Simulation stack trace:
      StackTrace
       END
+    end
+  end
+  
+  describe "pic" do
+    it "returns sim" do
+      # for backwards compatibility
+      @sim = Object.new
+      expect(pic).to be sim
     end
   end
   

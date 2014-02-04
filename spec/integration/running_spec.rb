@@ -19,7 +19,7 @@ describe RPicSim::Sim do
 
     it "is different than running a specified number of cycles (some steps take multiple cycles)" do
       run_steps 3
-      pic.cycle_count.should == 6
+      cycle_count.should == 6
     end
   end
 
@@ -27,20 +27,20 @@ describe RPicSim::Sim do
     it "can run to an address" do
       run_to 0x80
       pc.value.should == 0x80
-      pic.cycle_count.should == 10
+      cycle_count.should == 10
     end
 
     it "can run to a label" do
       run_to :ioo
       pc.value.should == 0x80
-      pic.cycle_count.should == 10
+      cycle_count.should == 10
     end
 
     it "can run until a return happens" do
       stkptr.value = 1
       goto :isr
       run_to :return, cycle_limit: 100
-      pic.cycle_count.should == 8
+      cycle_count.should == 8
     end
 
     it "can run until an arbitrary proc is fulfilled" do
@@ -123,40 +123,40 @@ describe RPicSim::Sim do
 
   describe "run_microseconds" do
     it "just calls run_cycles with a scaled value" do
-      pic.frequency_mhz = 2
-      pic.should_receive(:run_cycles).with(8)
+      sim.frequency_mhz = 2
+      sim.should_receive(:run_cycles).with(8)
       run_microseconds 4
     end
 
     it "raises an error if you haven't set frequency_mhz yet" do
-      pic.frequency_mhz = nil
+      sim.frequency_mhz = nil
       expect { run_microseconds 4 }.to raise_error "frequency_mhz needs to be set before calling run_microseconds."
     end
   end
 
   describe "run_µs" do
     it "calls run_microseconds or is an alias" do
-      pic.frequency_mhz = 2
-      pic.should_receive(:run_cycles).with(12)
+      sim.frequency_mhz = 2
+      sim.should_receive(:run_cycles).with(12)
       run_µs 6
     end
   end
 
   describe "run_subroutine" do
     it "pushes the current pc value onto the stack" do
-      pic.stack_push 1
-      pic.stack_push 9
+      sim.stack_push 1
+      sim.stack_push 9
       goto 13
       expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error
-      expect(pic.stack_contents).to eq [1, 9, 13]
+      expect(sim.stack_contents).to eq [1, 9, 13]
     end
     
     it "doesn't change the state of the stack and PC if it completes successfully" do
-      pic.stack_push 1
-      pic.stack_push 9
+      sim.stack_push 1
+      sim.stack_push 9
       goto 13
       run_subroutine :foo, cycle_limit: 100
-      expect(pic.stack_contents).to eq [1, 9]
+      expect(sim.stack_contents).to eq [1, 9]
       expect(pc.value).to eq 13
     end
   end
