@@ -14,26 +14,26 @@ require_relative 'program_file'
 require_relative 'stack_trace'
 
 module RPicSim
-  # This class represents a simulated PIC microcontroller.
-  # This class keeps track of the state of the PIC and provides methods for
+  # This class represents a PIC microcontroller simulation.
+  # This class keeps track of the state of the simulation and provides methods for
   # running the simulation, reading the state, and changing the state.
   # This the main class of RPicSim.
-  class Pic
+  class Sim
 
-    # These methods should be called while defining a subclass of {Pic}.
+    # These methods should be called while defining a subclass of {Sim}.
     module ClassDefinitionMethods
 
-      # Specifies what model of PIC the firmware is using.  In theory we could extract this
-      # from the COF file instead of requiring it to be specified in subclasses of {Pic}, but
+      # Specifies what exact device the firmware runs on.  In theory we could extract this
+      # from the COF file instead of requiring it to be specified in subclasses of {Sim}, but
       # MPLAB X classes do not seem to make that easy.
-      # @param device [String] The model of PIC, for example "PIC10F322".
+      # @param device [String] The device name, for example "PIC10F322".
       def device_is(device)
         @device = device
         @assembly = create_assembly
         @flash_word_max_value = @assembly.GetDevice.getMemTraits.getCodeWordTraits.getInitValue
       end
 
-      # Specifies the filename of the firmware file.  The file can be a HEX or COF file, but
+      # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
       # COF is recommended so that you can access label addresses and other debugging information.
       # You must call {#device_is} before calling this.
       def filename_is(filename)
@@ -42,7 +42,7 @@ module RPicSim
         initialize_symbols
       end
 
-      # Define a pin shortcut.
+      # Define a pin alias.
       #
       # @param our_name [Symbol] Specifies what you would like to
       #   call the pin.
@@ -847,6 +847,9 @@ module RPicSim
     end
   end
 
+  # @deprecated Use Sim instead of Pic.  Pic is here for backwards compatibility.
+  Pic = Sim
+  
 end
 
 # We want as much awareness as possible; if it becomes a problem we can change this.

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe RPicSim::Pic do
+describe RPicSim::Sim do
   before do
     start_sim Firmware::NestedSubroutines
   end
