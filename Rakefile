@@ -68,10 +68,11 @@ file 'Introduction.md' => 'README.md' do
   puts "Converting README.md (Github-flavored markdown) to Introduction.md (for YARD)"
   readme = File.open('README.md', 'r:UTF-8') { |f| f.read }
   readme.gsub! %r{</?sup>}i, ''
-  readme.gsub! /^```(\w+)\n(.*?)\n```\n/m do |matched_str|
+  readme.gsub! %r{^```(\w+)\n(.*?)\n```\n}m do |matched_str|
     language, code = $1, $2
     ("!!!#{language}\n" + code).gsub(/^/, '    ') + "\n"
   end
+  readme.gsub! %r{<github>(.+?)</github>}m, ''
   File.open('Introduction.md', 'w:UTF-8') { |f| f.write readme }
 end
 
