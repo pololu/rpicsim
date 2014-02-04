@@ -7,24 +7,28 @@ RPicSim is free to use and does not require any external hardware.
 
 With RPicSim, you can write tests for your PIC firmware in the Ruby language.  Here is an example integration test that simulates input and output on the device's pins:
 
-    it "continuously mirrors" do
-      main_input.set false
-      run_cycles 10
-      expect(main_output).to be_driving_low
+```ruby
+it "continuously mirrors" do
+  main_input.set false
+  run_cycles 10
+  expect(main_output).to be_driving_low
 
-      main_input.set true
-      run_cycles 10
-      expect(main_output).to be_driving_high
-    end
+  main_input.set true
+  run_cycles 10
+  expect(main_output).to be_driving_high
+end
+```
 
 Here is an example unit test written with RPicSim that tests a single subroutine in the firmware:
 
-    it "adds 70 to 22" do
-      addend1.value = 70
-      addend2.value = 22
-      run_subroutine :addition, cycle_limit: 100
-      expect(sum.value).to eq 92
-    end
+```ruby
+it "adds 70 to 22" do
+  addend1.value = 70
+  addend2.value = 22
+  run_subroutine :addition, cycle_limit: 100
+  expect(sum.value).to eq 92
+end
+```
 
 Simulator-based testing has many advantages over testing in hardware:
 
