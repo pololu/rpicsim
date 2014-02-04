@@ -25,7 +25,7 @@ Symbols
 Whenever you see a colon followed by a word in Ruby, such as `:all`, that is called a {http://www.ruby-doc.org/core/Symbol.html Symbol}.
 Symbols are a part of the Ruby language.
 They are like strings, but the main difference is that they are not mutable; they cannot be changed after they have been made.
-RPicSim almost always uses symbols instead of strings to represent names of things
+RPicSim almost always uses symbols instead of strings to represent names of things.
 
 
 Method calls
