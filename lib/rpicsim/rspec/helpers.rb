@@ -28,12 +28,13 @@ module RPicSim
       end
 
       def add_shortcuts
-        case ::RSpec.configuration.pic_shortcuts
+        configuration_value = ::RSpec.configuration.pic_shortcuts || ::RSpec.configuration.sim_shortcuts
+        case configuration_value
         when :all   then extend ::RPicSim::Sim::BasicShortcuts, sim.shortcuts
         when :basic then extend ::RPicSim::Sim::BasicShortcuts
         when :none
         else
-          raise "Invalid pic_shortcuts configuration value: #{::RSpec.configuration.pic_shortcuts.inspect}"
+          raise "Invalid sim_shortcuts configuration value: #{configuration_value.inspect}"
         end
       end
 
