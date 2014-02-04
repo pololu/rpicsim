@@ -6,7 +6,7 @@ This is the table of contents for the RPicSim manual.
 * Overview
     * {file:Introduction.md}
     * {file:ChangeLog.md Change log}
-    * {file:GettingStarted.md Getting started}
+    * {file:QuickStartGuide.md Quick-start guide}
     * {file:SupportedPICs.md Supported PICs}
     * {file:SupportedCompilers.md Supported compilers}
     * {file:SupportedMPLABXVersions.md Supported MPLAB X versions}

@@ -9,7 +9,7 @@ The main documentation for RSpec can be found from the project's website at [rsp
 File structure
 ----
 
-The recommended way to set up your RSpec tests is to put them inside a directory named `spec`, as discussed in {file:GettingStarted.md Getting Started}.  When you run the `rspec` command, RSpec will look for all the files in `spec` and its subdirectories that have a name ending in `_spec.rb`.
+The recommended way to set up your RSpec tests is to put them inside a directory named `spec`, as discussed in the {file:QuickStartGuide.md Quick-start guide}.  When you run the `rspec` command, RSpec will look for all the files in `spec` and its subdirectories that have a name ending in `_spec.rb`.
 
 
 Example groups and examples
@@ -31,7 +31,7 @@ You can have nested example groups:
       end
     end
 
-The outer-most example must be a `describe`, not a `context`.
+The outer-most example group must be a `describe`, not a `context`.
 
 An _example_ is the basic unit of an RSpec spec.  Examples are defined using the `it` or `specify` commands inside an example group:
 
