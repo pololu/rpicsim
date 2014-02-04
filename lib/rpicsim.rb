@@ -1,5 +1,5 @@
 require_relative 'rpicsim/version'
-require_relative 'rpicsim/pic'
+require_relative 'rpicsim/sim'
 require_relative 'rpicsim/call_stack_info'
 
 # TODO: add a feature for Flash size reports
