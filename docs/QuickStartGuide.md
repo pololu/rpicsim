@@ -5,7 +5,7 @@ This guide should help you get started with RPicSim.
 It is assumed that you are familiar with some PIC firmware development environment and are able to compile your firmware to a COF or HEX file.
 By the end of this guide, you will have a suite of automated simulator-based tests for the firmware.
 
-Installing Prerequisites
+Installing prerequisites
 ----
 
 First, on a computer running Windows, install RPicSim and the software it requires:
@@ -14,7 +14,7 @@ First, on a computer running Windows, install RPicSim and the software it requir
 2. Install the latest version of [JRuby](http://jruby.org/).
 3. Run the command `jgem install rpicsim rspec`.  This will install the latest versions of RPicSim and [RSpec](http://rspec.info/) from [RubyGems.org](http://rubygems.org/).
 
-Set up your directories
+Setting up your directories
 ----
 
 You should set up your PIC development environment so that it creates a COF or HEX file inside a directory named "dist".
@@ -73,7 +73,7 @@ Edit the `device_is` and `filename_is` lines to match your actual device and the
 
 Eventually you should rename the `MySim` class to something more specific.  I like to name the simulation class by concatenating the project name with `Sim`.
 
-To run the spec, go to your shell and run the command `rspec` from the directory that contains `spec`.  In the example directory structure above, you would need to be inside the `firmware` directory when you run `rspec`.  If all goes well, the output from `rspec` should look like:
+To run the spec, go to your shell and run the command `rspec` from the directory that contains `spec`.  In the example directory structure above, you would need to be inside the `project_dir` directory when you run `rspec`.  If all goes well, the output from `rspec` should look like:
 
     .
 
