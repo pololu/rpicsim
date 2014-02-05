@@ -13,7 +13,7 @@ RPicSim has only been tested with the following versions of MPLAB X:
 
 If you are using a different version of MPLAB X, some of the flaws might not apply to you.
 
-Many of these flaws have only been tested for on a single model of PIC and they may or may not affect other models.
+Many of these flaws have only been tested for on a single model of PIC microcontroller and they may or may not affect other models.
 
 Many of these flaws are also reported on other pages of this {file:Manual.md manual}, but this page is complete list of all flaws that could affect users of RPicSim.
 
@@ -22,25 +22,25 @@ Internal flaws that have been successfully worked around are not listed here, bu
 There are almost certainly many flaws that have not been found yet.
 
 
-MPLAB X simulator does not support all PICs equally
+MPLAB X simulator does not support all PIC devices equally
 ----
 _Type: MPLAB X missing feature_
 
-Be sure to check the Device Support table to see if your PIC is properly supported by the MPLAB X simulator.
+Be sure to check the Device Support table to see if your device is properly supported by the MPLAB X simulator.
 The table can be found in your MPLAB X installation folder under "`docs/Device Support.htm`".
 The _SIMISA_ column probably stands for "Simulator (instruction set and architecture)" while the _SIMP_ column probably stands for "Simulator (peripherals)".
 
 
-Simulation timing is affected by the details how long each instruction takes
+Simulation timing is affected by the details of how long each instruction takes
 ----
 _Type: MPLAB X missing feature_
 
 As mentioned on the {file:Running.md Running} page, RPicSim's only way to advance the simulation is to execute an entire instruction.
 Some instructions take two instruction cycles to run and others only take one.
 When you request RPicSim to delay for a certain number of cycles, it might need to delay by one cycle more than was requested since it cannot stop in the middle of a two-cycle instruction.
-As a result, the timing of your tests and the input signals you send to the simulated PIC can sometimes be slightly off and these errors could accumulate in longer tests.
+As a result, the timing of your tests and the input signals you send to the simulated device can sometimes be slightly off and these errors could accumulate in longer tests.
 
-One workaround that prevents timing errors from accumulating is to only use {RPicSim::Pic#run_to_cycle_count} to run the simulation.
+One workaround that prevents timing errors from accumulating is to only use {RPicSim::Sim#run_to_cycle_count} to run the simulation.
 
 
 MPLAB X must be on the C drive
@@ -78,7 +78,7 @@ _Type: RPicSim missing feature_
 RPicSim does not support reading or writing from EEPROM from Ruby.
 
 
-Dissasembly is limited to midrange and baseline PICs
+Dissasembly is limited to midrange and baseline PIC microcontrollers
 ----
 _Type: RPicSim missing feature_
 
@@ -86,19 +86,19 @@ The disassembled instruction graph created by {RPicSim::ProgramFile} currently o
 This is a side feature of RPicSim, and not required for simulation.
 
 
-Stack trace will show slightly wrong values for PIC18
+Stack trace will show slightly wrong values for PIC18 microcontrollers
 ----
 _Type: RPicSim bug_
 
-For the PIC18, {RPicSim::Pic#stack_trace} will probably show values that are too high by one because it does not account for the fact that PIC18 instructions take two bytes.
+For the PIC18, {RPicSim::Sim#stack_trace} will probably show values that are too high by one because it does not account for the fact that PIC18 instructions take two bytes.
 
 
 Cannot detect PIC model from COF file
 ----
 _Type: RPicSim missing feature_
 
-The MPLAB X code might allow RPicSim to detect the type of PIC used from the COF file so that the user does not have to specify it when creating a {RPicSim::ProgramFile} or a subclass of {RPicSim::Pic}.
-Currently RPicSim requires the user to always specify the PIC model.
+The MPLAB X code might allow RPicSim to detect the PIC device name from the COF file so that the user does not have to specify it when creating a {RPicSim::ProgramFile} or a subclass of {RPicSim::Sim}.
+Currently RPicSim requires the user to always specify the PIC device name.
 
 
 Not tested on Linux and Mac OS X
@@ -146,7 +146,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-Setting a pin's LATx bit before its clearing its TRISx bit is the proper way to turn on an output pin without causing glitches.
+Updating a pin's LATx bit before its clearing its TRISx bit is the proper way to turn on an output pin without causing glitches.
 However, if you set the two bits in that order then {RPicSim::Pin#driving_low?} always seems to return true even if the pin is actually driving high.
 
 This flaw is tested in `spec/integration/pin_spec.rb`.
@@ -177,7 +177,7 @@ RAM watcher reports a write to PORTA instead of to LATA
 ----
 _Type: MPLAB X bug_
 
-_MPLAB X verisons affected: all tested versions_
+_MPLAB X versions affected: all tested versions_
 
 The {file:RamWatcher.md RAM watcher}, when testing code that writes to LATA, might actually report it as a write to PORTA instead of LATA.
 This flaw has been observed on a PIC10F322 but it probably affects other PORTx and LATx registers.
@@ -191,7 +191,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-The simulated ADC for midrange PICs has various flaws in different versions of MPLAB X that make it give incorrect readings.  These flaws might affect other PIC architectures as well.
+The simulated ADC for midrange PIC microcontrollers has various flaws in different versions of MPLAB X that make it give incorrect readings.  These flaws might affect other PIC architectures as well.
 
 * **Bad modulus:** In MPLAB X 1.90 and later, simply setting a pin to high with `pin.set(true)` will result in an ADC reading of 0.
   The workaround is to use `pin.set(4.9)`.
