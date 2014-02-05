@@ -29,9 +29,9 @@ For example, to test the 16-bit addition routine from the {file:Variables.md Var
     it "adds x to y and stores the result in z" do
       x.value = 70
       y.value = 22
-      step; pic.ram_watcher.clear
+      step; sim.ram_watcher.clear
       run_subroutine :addition, cycle_limit: 100
-      expect(pic.ram_watcher.writes).to eq({z: 92})
+      expect(sim.ram_watcher.writes).to eq({z: 92})
     end
 
 The third line in the example above, which clears the RAM watcher's records after stepping once, is necessary because the RAM watcher actually detects the writes that occurred to RAM in the lines above, even though those writes came from Ruby code.
