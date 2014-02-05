@@ -4,7 +4,7 @@ lib/rpicsim/**/*.rb
 docs/Manual.md
   docs/ChangeLog.md
   docs/QuickStartGuide.md
-  docs/SupportedPICs.md
+  docs/SupportedDevices.md
   docs/SupportedCompilers.md
   docs/SupportedMPLABXVersions.md
   docs/SupportedOperatingSystems.md
