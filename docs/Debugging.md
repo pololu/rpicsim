@@ -18,14 +18,14 @@ Suppose you are writing an RSpec-based integration test that fails with the foll
          # ./lib/rpicsim/rspec/persistent_expectations.rb:29:in `check_expectations'
          # ./lib/rpicsim/rspec/persistent_expectations.rb:27:in `check_expectations'
          # ./lib/rpicsim/rspec/helpers.rb:25:in `start_sim'
-         # ./lib/rpicsim/pic.rb:574:in `step'
-         # ./lib/rpicsim/pic.rb:716:in `run_to_cycle_count'
-         # ./lib/rpicsim/pic.rb:708:in `run_cycles'
+         # ./lib/rpicsim/sim.rb:574:in `step'
+         # ./lib/rpicsim/sim.rb:716:in `run_to_cycle_count'
+         # ./lib/rpicsim/sim.rb:708:in `run_cycles'
          # ./spec/foo_widget_spec.rb:10:in `(root)'
 
-         Simulated PIC cycle count: 78963
+         Simulation cycle count: 78963
 
-         Simulated PIC stack trace:
+         Simulation stack trace:
          0x01A0 = startMotor
          0x0044 = motorService+0x14
          0x0B12 = mainLoop+0x2
