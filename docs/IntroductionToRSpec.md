@@ -1,7 +1,7 @@
 Introduction to RSpec
 ====
 
-[RSpec](http://rspec.info/) is a testing tool for the Ruby programming language that allows you to write automated tests.
+[RSpec](http://rspec.info/) is a testing tool for the Ruby programming language that allows you to write an automated test suite.
 RSpec provides great ways to combine code from similar tests, provides good error messages, and encourages you to specify exactly what you are testing.
 
 The main documentation for RSpec can be found from the project's website at [rspec.info](http://rspec.info/), but I think it is not very easy to follow.  This page goes over the most important things you should know about RSpec.
@@ -9,7 +9,7 @@ The main documentation for RSpec can be found from the project's website at [rsp
 File structure
 ----
 
-The recommended way to set up your RSpec tests is to put them inside a directory named `spec`, as discussed in the {file:QuickStartGuide.md Quick-start guide}.  When you run the `rspec` command, RSpec will look for all the files in `spec` and its subdirectories that have a name ending in `_spec.rb`.
+The recommended way to set up RSpec is to put your test suite in a directory named `spec`, as discussed in the {file:QuickStartGuide.md Quick-start guide}.  When you run the `rspec` command, RSpec will look for all the files in `spec` and its subdirectories that have a name ending in `_spec.rb`.
 
 
 Example groups and examples
@@ -33,7 +33,7 @@ You can have nested example groups:
 
 The outer-most example group must be a `describe`, not a `context`.
 
-An _example_ is the basic unit of an RSpec spec.  Examples are defined using the `it` or `specify` commands inside an example group:
+An _example_ is the basic unit of an RSpec test suite.  Examples are defined using the `it` or `specify` commands inside an example group:
 
     !!!ruby
     describe "my device" do
@@ -48,18 +48,18 @@ Expectations
 ----
 
 In general, an RSpec example consists of some code to set up the situation being tested, and some code that called an _expectation_ that defines the expected outcome.
-
-RSpec has two special syntaxes for writing expectations: the "expect" syntax and the "should" syntax.  The "expect" syntax is the favored, so this manual will only use "expect".  The basic structure of an expectation is:
+If an expectation fails, an exception is raised, the example stops executing, and a failure message is displayed.
+Expectations look like this:
 
     !!!ruby
-    expect(actual).to matcher(expected)
-    expect(actual).to_not matcher(expected)
+    expect(something).to have_some_property
+    expect(something).to_not have_some_property
 
-* `expect` is a method defined by RSpec which you can use inside your tests.
-* `actual` is a pseudo-name for the object being tested, which is usually the output of the system under test or part of the system under test.  This is passed as the first argument to `matcher`.
+* `expect` is a method defined by RSpec which you can use inside an example.
+* `something` is the object being tested, which is usually the output of the system under test or part of the system under test.
 * `to` and `to_not` are special methods defined by RSpec.
-* `matcher` is a pseudo-name for a method that can produce a matcher object.  The matcher object decides whether the expectation was met or not.  In the example below, `matcher` is `eq`, which is one of the [built-in matchers that RSpec provides](https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers).  Most RSpec examples only need to use the `eq` matcher.
-* `expected` is a pseudo-name for an argument you would pass to `matcher`.  Often it represents an expected value, state, or property being tested.
+* `have_some_property` is a method call that returns a _Matcher_ object.  The Matcher object decides whether the expectation was met or not.  In the example below, this method call is `eq(6)`, which uses one of the [built-in matcher types that RSpec provides](https://www.relishapp.com/rspec/rspec-expectations/docs/built-in-matchers).  Many RSpec examples only use `eq` matchers.
+* Sometimes, as with `eq(6)`, you will pass arguments into the methods that create matchers.  Often these arguments represent expected values, states, or properties being tested.
 
 Here is a concrete, runnable example:
 
@@ -71,9 +71,9 @@ Here is a concrete, runnable example:
       end
     end
 
-The number 6 is passed as the first argument to `eq` to make an equality matcher that tests whether objects are equal to 6.  The code about will add 1 to 5 and then expect it to equal 6.
-
-If the expectation fails, an exception is raised and the example stops executing.
+First, the code adds 1 to 5 and then expect it to equal 6.
+Then the number 6 is passed as the first argument to `eq`, making an equality matcher that tests whether the result is equal to 6.
+Note that parentheses are not required when calling a method in Ruby: you can write `eq(6)` or `eq 6`.
 
 A common practice in RSpec is to have just one expectation per example.
 This helps you organize your examples and makes it clear to the reader what each example is supposed to be testing.
@@ -81,33 +81,24 @@ However, it is not always practical because it makes the specs slower; there wil
 
 For more information, see the [RSpec Expectations documentation](https://www.relishapp.com/rspec/rspec-expectations/docs).
 
-Before and after hooks
+Before hooks
 ----
 
-Inside an example group, RSpec lets you define before and after hooks.  A before hook can either run once before all the examples in the group or run before each example.  For example:
+Inside an example group, RSpec lets you define various kinds of _hooks_.  The only one we need for RPicSim is the _before hook_.  A before hook runs before each example in the example group.  For example:
 
     !!!ruby
     describe "my device" do
-      before(:all) do
-        # Code here runs one time only, before all of the
-        # examples in this group.
-      end
-
       before do
         # Code here runs before each example in this group.
         # This is equivalent to before(:each).
       end
 
-      # examples go here
-
-      after do
-        # Code here runs after each example.
-        # This is equivalent to after(:each).
+      specify do
+        # Code for example 1
       end
 
-      after(:all) do
-        # Code here runs after all examples in the group
-        # are done.
+      specify do
+        # Code for example 2
       end
     end
 
@@ -138,7 +129,8 @@ For example:
 Instance variables
 ----
 
-In Ruby, a variable whose name starts with `@` behaves specially and is called an _instance variable_.  Instance variables defined in one part of an example (e.g. a before hook) can be accessed in later parts.
+In Ruby, a variable whose name starts with `@` behaves specially and is called an _instance variable_.
+Instance variables defined in a before hook can be accessed in examples within the example group.
 
 For example:
 
