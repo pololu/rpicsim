@@ -1,0 +1,10 @@
+<div id="footer">
+  <% if @part_of_manual %>
+    This is part of the <a href="file.Manual.html">RPicSim manual</a>.
+  <% end %>
+  <br/><br/>
+
+  Generated on <%= Time.now.strftime("%c") %> by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>).
+</div>

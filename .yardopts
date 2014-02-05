@@ -1,5 +1,6 @@
 lib/rpicsim/**/*.rb
 --readme Introduction.md
+--load docs/plugin/plugin.rb
 -
 docs/Manual.md
   docs/ChangeLog.md
