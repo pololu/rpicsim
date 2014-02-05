@@ -13,24 +13,24 @@ For a C program, RPicSim labels usually correspond to functions.
 Getting a Label object
 ---
 
-You will generally not need to work directly with {RPicSim::Label} objects; usually the only thing a test will need to do with a label is to specify its name as an argument to {RPicSim::Pic#goto}, {RPicSim::Pic#run_to}, or {RPicSim::Pic#run_subroutine}.
+You will generally not need to work directly with {RPicSim::Label} objects; usually the only thing a test will need to do with a label is to specify its name as an argument to {RPicSim::Sim#goto}, {RPicSim::Sim#run_to}, or {RPicSim::Pic#run_subroutine}.
 
 If you do want to get a Label object, then you can call {RPicSim::Pic#label} and pass it the name of the label as the first argument:
 
     !!!ruby
-    pic.label(:loopStart)  # => returns a Label object
+    sim.label(:loopStart)  # => returns a Label object
 
-In MPASM, all labels are exported publicly by default, so they will all be available to RPicSim.
+In firmware compiled by MPASM, all labels are exported publicly by default, so they will all be available to RPicSim.
 
 C compilers will generally put an underscore at the beginning of any labels they generate.  For example, to get the address of a C function named `foo`, you might have to access a label named `_foo` using code like this:
 
     !!!ruby
-    pic.label(:_foo)
+    sim.label(:_foo)
 
 If RPicSim cannot find the label you want to use, you might troubleshoot it by printing out a list of all the known labels:
 
     !!!ruby
-    p pic.class.program_file.labels.keys
+    p sim.class.program_file.labels.keys
 
 
 Using a Label object
