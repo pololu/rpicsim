@@ -11,25 +11,25 @@ However, RPicSim cannot deduce the data type of a variable, so any variables use
 Defining a RAM variable
 ----
 
-RAM variables that you want to access from Ruby must be defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Pic::ClassDefinitionMethods#def_var def_var}.  For example:
+RAM variables that you want to access from Ruby must be defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}.  For example:
 
     !!!ruby
-    class MySim < RPicSim::Pic
+    class MySim < RPicSim::Sim
       #...
 
       def_var :counter, :u8
 
     end
 
-The first argument to `def_var` specifies what to call the variable in Ruby code.  Using the example above, you could access the variable object by passing `:counter` as the argument to {RPicSim::Pic#var}:
+The first argument to `def_var` specifies what to call the variable in Ruby code.  Using the example above, you could access the variable object by passing `:counter` as the argument to {RPicSim::Sim#var}:
 
     !!!ruby
-    pic.var(:counter)
+    sim.var(:counter)
 
 Each variable also has a "shortcut" method by the same name.  This means that you can access the variable like this:
 
     !!!ruby
-    pic.counter
+    sim.counter
 
 The shortcuts are also available in RSpec thanks to RPicsim's {file:RSpecIntegration.md RSpec integration}, so you can simply write `counter` in any of your RSpec examples:
 
@@ -38,7 +38,7 @@ The shortcuts are also available in RSpec thanks to RPicsim's {file:RSpecIntegra
       expect(counter.value).to eq 44
     end
 
-The second argument to `def_var` specifies the data type of the variable.  This is required.  For the full list of allowed types, see {RPicSim::Pic::ClassDefinitionMethods#def_var}.
+The second argument to `def_var` specifies the data type of the variable.  This is required.  For the full list of allowed types, see {RPicSim::Sim::ClassDefinitionMethods#def_var}.
 
 In the example above, RPicSim will look in your firmware's COF file for a RAM symbol named "counter" and it will use that as the address for the variable, so you do not need to specify the address yourself.
 
@@ -53,7 +53,7 @@ More generally, the `symbol` option allows you to call a variable one thing in y
 RPicSim will raise an exception if it cannot find the specified symbol in the symbol table.  To troubleshoot this, you might print the list of variables that RPicSim found:
 
     !!!ruby
-    p pic.class.program_file.var_addresses.keys
+    p sim.class.program_file.var_addresses.keys
 
 You can use the `address` option to specify an arbitrary address instead of using the symbol table.  For example:
 
@@ -66,9 +66,9 @@ Defining Flash variables
 
 Flash (program space) variables work the same way as RAM variables except:
 
-* They are defined with {RPicSim::Pic::ClassDefinitionMethods#def_flash_var def_flash_var}.
+* They are defined with {RPicSim::Sim::ClassDefinitionMethods#def_flash_var def_flash_var}.
 * The set of allowed data types for the second argument of `def_flash_var` is different, and you can see the documentation by clicking the link above.
-* Flash variables cannot be accessed with {RPicSim::Pic#var}, but can be accessed with {RPicSim::Pic#flash_var}
+* Flash variables cannot be accessed with {RPicSim::Sim#var}, but can be accessed with {RPicSim::Sim#flash_var}
 
 
 Using a variable
@@ -113,7 +113,7 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     !!!ruby
     require 'rpicsim/spec_helper'
 
-    class Addition < RPicSim::Pic
+    class Addition < RPicSim::Sim
       device_is "PIC10F322"
       filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
       def_var :x, :u16
