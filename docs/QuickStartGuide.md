@@ -18,7 +18,7 @@ Setting up your directories
 ----
 
 You should set up your PIC development environment so that it creates a COF or HEX file inside a directory named "dist".
-The file does not need to be at the top level of "dist"; it can be in any subdirectory found inside "dist".
+The file does not need to be at the top level of "dist"; it can be in any subdirectory inside "dist".
 This requirement is due to a limitation in the MPLAB X code.
 
 Next, make a directory called "spec" for the tests you are going to write.  You can put that directory anywhere, but my preferred directory structure looks like this:
@@ -64,7 +64,7 @@ We have not yet told RPicSim where to find the firmware file.  To do this, make 
     !!!ruby
     require 'rpicsim/spec_helper'
     
-    class MySim < RPicSim::Pic
+    class MySim < RPicSim::Sim
       device_is "PIC10F322"
       filename_is File.dirname(__FILE__) + "/../firmware/dist/default/production/firmware_dir.production.cof"
     end
