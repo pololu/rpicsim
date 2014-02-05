@@ -1,4 +1,4 @@
-Previnting call stack overflow
+Preventing call stack overflow
 ====
 
 PIC microcontrollers feature a stack implemented in hardware that keeps track of return addresses for subroutine calls.
@@ -6,12 +6,14 @@ Every time a `CALL` instruction is executed, the return address is pushed onto t
 Every time a `RETURN` or similar instruction is executed, the return address is popped off of the stack.
 The PIC datasheets tend to refer to this as the "stack", but in RPicSim it is known as the _call stack_ in order to make it clear that this is the stack that relates to the `CALL` instruction and it is different from any kind of stack a C compiler might place in RAM for local variables.
 
-The call stack has a limited depth that depends on the type of PIC you are using.
+The call stack has a limited depth that depends on the device you are using.
 If your program has too many levels of nested subroutines then the call stack could overflow.
-Depending on the model of PIC you have, a call stack overflow could cause a reset or incorrect program execution.
+Depending on the device, a call stack overflow could cause a reset or incorrect program execution.
 Therefore, it is important to avoid a call stack overflow.
 
-RPicSim can trace all the possible paths of execution for a PIC program in order to calculate what the maximum possible call stack depth is.  You can easily add this to your RSpec tests.  Here is an example:
+RPicSim can trace all the possible paths of execution for a PIC program in order to calculate what the maximum possible call stack depth is.
+You can easily add this to your RSpec tests.
+Here is an example:
 
     !!!ruby
     describe "call stack" do
@@ -71,7 +73,7 @@ The {RPicSim::CallStackInfo} class traverses all possible paths through that gra
 Limitations
 ----
 
-The code for disassembling in {RPicSim::ProgramFile} currently only works with midrange and baseline PICs.  However, it should be easy to expand it to other PICs.
+The code for disassembling in {RPicSim::ProgramFile} currently only works with the midrange and baseline PIC instruction sets.  However, it should be easy to expand it to the other instruction sets.
 
 The algorithm is pessimistic:
 
