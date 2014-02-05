@@ -14,11 +14,11 @@ To stub a method in the most basic way, you can do something like this:
     !!!ruby
     every_step do
       if pc.value == label(:foo).address
-        pic.return
+        sim.return
       end
     end
 
-The example above just alters our simulation so that whenever the `foo` subroutine is called, instead of running as normal it will return immediately using {RPicSim::Pic#return}.
+The example above just alters our simulation so that whenever the `foo` subroutine is called, instead of running as normal it will return immediately using {RPicSim::Sim#return}.
 
 The example above can be expanded in many ways:
 You might read and write from {file:Variables.md variables} and {file:SFRs.md SFRs}.
@@ -35,7 +35,7 @@ If you want to know how many times the stubbed routine is called, you could do t
     every_step do
       if pc.value == label(:foo).address
         @foo_count += 1
-        pic.return
+        sim.return
       end
     end
 
@@ -53,7 +53,7 @@ To capture information about the stubbed routine's parameters or anything else a
     every_step do
       if pc.value == label(:foo).address
         @foo_calls << { a: foo_param_a.value, b: foo_param_b.value }
-        pic.return
+        sim.return
       end
     end
 
@@ -109,7 +109,7 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     !!!ruby
     require 'rpicsim/spec_helper'
 
-    class LongDelay < RPicSim::Pic
+    class LongDelay < RPicSim::Sim
       device_is "PIC10F322"
       filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
       def_var :hot, :u8
@@ -130,7 +130,7 @@ In `spec/cooldown_spec.rb`, we stub the `bigDelay` routine and test `cooldown` t
         every_step do
           if pc.value == label(:bigDelay).address
             @big_delay_count += 1
-            pic.return
+            sim.return
           end
         end
       end
