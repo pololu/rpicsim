@@ -35,7 +35,7 @@ Persistent expectations, when combined with RSpec's `satisfy` matcher, are very 
     !!!ruby
     expecting counter => satisfy { |c| c.value <= 120 }
 
-Persistent expectations are implemented in a straightforward way: the expectations are stored in a hash that is an instance variable of the RSpec example, and the expectations are checked after every step via a hook that is registered with {RPicSim::Pic#every_step} when the simulation is started.
+Persistent expectations are implemented in a straightforward way: the expectations are stored in a hash that is an instance variable of the RSpec example, and the expectations are checked after every step via a hook that is registered with {RPicSim::Sim#every_step} when the simulation is started.
 
 Example
 ----
