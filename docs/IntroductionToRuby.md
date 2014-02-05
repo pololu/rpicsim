@@ -32,10 +32,10 @@ Method calls
 ----
 
 Ruby does not require parentheses around method arguments.
-The following code retrieves the `pic` object and calls its `run_cycles` method with an argument of 250:
+The following code retrieves the `sim` object and calls its `run_cycles` method with an argument of 250:
 
     !!!ruby
-    pic.run_cycles 250
+    sim.run_cycles 250
 
 
 Hashes
@@ -68,7 +68,7 @@ Values can be read or written after the hash is created:
 Ruby has a special syntax for passing a hash as the last argument of a method call; you do not need to write the brackets:
 
     !!!ruby
-    pic.run_to :loopDone, cycle_limit: 44
+    sim.run_to :loopDone, cycle_limit: 44
 
     
 Blocks
