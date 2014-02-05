@@ -71,7 +71,7 @@ Here is a concrete, runnable example:
       end
     end
 
-First, the code adds 1 to 5 and then expect it to equal 6.
+First, the code adds 1 to 5 and then expects it to equal 6.
 Then the number 6 is passed as the first argument to `eq`, making an equality matcher that tests whether the result is equal to 6.
 Note that parentheses are not required when calling a method in Ruby: you can write `eq(6)` or `eq 6`.
 
