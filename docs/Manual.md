@@ -34,6 +34,6 @@ This is the table of contents for the RPicSim manual.
 * More about RPicSim
     * {file:HowMPLABXIsFound.md How MPLAB X is Found}
     * {file:RSpecIntegration.md RSpec integration}
-    * {file:Flaws.md}
+    * {file:KnownIssues.md Known issues}
     * {file:DesignDecisions.md Design decisions}
     * {file:Contributing.md}
