@@ -16,7 +16,9 @@ module RPicSim
       # @deprecated Use {#sim} instead.
       alias :pic :sim
 
-      # Starts a new simulation with the specified class.
+      # Starts a new simulation with the specified class, makes it
+      # accessible via the attribute {#sim}, and adds convenience
+      # methods using {#add_shortcuts}.
       # @param klass [Class] This should be a subclass of {RPicSim::Sim} or at least act like it.
       # @param args A list of arguments to pass on to the the `new` method of the class.
       #  This should usually be empty unless you have modified your class to take arguments in its

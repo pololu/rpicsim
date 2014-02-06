@@ -2,7 +2,7 @@ Pins
 ====
 
 The only way a PIC microcontroller can have an effect on the world is through its pins, so pins are an important part of a PIC simulation.
-RPicSim exposes the modelling of pins that the MPLAB X simulator provides.
+RPicSim exposes the modeling of pins that the MPLAB X simulator provides.
 Each {RPicSim::Sim} simulation object contains a collection of {RPicSim::Pin} objects, one for each external pin of the device.
 Using a Pin object, you can detect whether the pin is an input or an output.
 If it is an output, you can detect whether the output is driving high or driving low.
@@ -30,7 +30,8 @@ Pin aliases
 
 To make your tests readable and protect against future schematic changes, you should try to refer to pins by an application-specific name like "main output" instead of a datasheet name like RA1.  RPicSim provides a feature to help you do this called a _pin alias_.
 
-When you are {file:DefiningSimulationClass.md defining your simulation class}, just add calls to {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin}.  For example:
+Within your {file:DefiningSimulationClass.md simulation class definition}, call {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin} to define your pins.
+For example:
 
     !!!ruby
     class MySim < RRicSim::Sim
@@ -57,7 +58,7 @@ The shortcuts are also available in RSpec thanks to RPicsim's {file:RSpecIntegra
       expect(main_output).to be_driving_high
     end
     
-Since the shortcuts are available in many places, you should be careful to avoid namespace collisions when choosing pin aliases.
+Note that since the shortcuts are available in many places, your pin names might conflict with names defined in other places.
 
 
 Pin methods
