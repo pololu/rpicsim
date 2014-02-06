@@ -3,8 +3,12 @@
 RSpec.configure do |config|
   config.after(:each) do
     if @sim && example.exception
-      example.metadata[:sim_cycle_count] = @sim.cycle_count
-      example.metadata[:sim_stack_trace] = @sim.stack_trace
+      if @sim.respond_to? :cycle_count
+        example.metadata[:sim_cycle_count] = @sim.cycle_count
+      end
+      if @sim.respond_to? :stack_trace
+        example.metadata[:sim_stack_trace] = @sim.stack_trace
+      end
     end
   end
 end

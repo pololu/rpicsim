@@ -4,6 +4,21 @@ require 'spec_helper'
 # includes RSpec.  It might be better to do this Cucumber, but then these
 # tests probably would not give us any credit in the coverage report.
 
+class SimStub
+  module Shortcuts
+    def stub_shortcut
+    end
+  end
+
+  def shortcuts
+    Shortcuts
+  end
+
+  def every_step
+  end
+end
+
+
 describe "rspec helpers" do
   describe "monkey patch for BePredicate matchers" do
 
@@ -43,7 +58,7 @@ describe "rspec helpers" do
       END
     end
   end
-  
+
   describe "pic" do
     it "returns sim" do
       # for backwards compatibility
@@ -52,4 +67,19 @@ describe "rspec helpers" do
     end
   end
   
+  describe "shortcuts" do
+    2.times do |n|
+      specify "are only available after calling start_sim" do
+        # This makes sure that the effect of the 'extend' we use to add
+        # shortcuts really does go away at the end of the example.
+        # We add this test 2 times in order to make sure that one example
+        # does not pollute the next.
+        expect(self).to_not respond_to :run_to
+        expect(self).to_not respond_to :stub_shortcut
+        start_sim SimStub
+        expect(self).to respond_to :run_to
+        expect(self).to respond_to :stub_shortcut
+      end
+    end
+  end
 end
