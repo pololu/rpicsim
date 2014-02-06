@@ -15,12 +15,11 @@ Required properties
 
 There are two things you must do inside a simulation class.
 
-First, you need to call {RPicSim::Sim::ClassDefinitionMethods#device_is device_is} in order to specify the PIC device your firmware runs on.  Unfortunately, RPicSim cannot just detect this information from your COF file.  The argument to `device_is` should be a simple string containing the official name of the PIC device, like "PIC10F322".
+First, call {RPicSim::Sim::ClassDefinitionMethods#device_is device_is} in order to specify the PIC device your firmware runs on.  Unfortunately, RPicSim cannot just detect this information from your COF file.  The argument to `device_is` should be a simple string containing the official name of the PIC device, like "PIC10F322".
 
-Secondly, you must call {RPicSim::Sim::ClassDefinitionMethods#filename_is filename_is} to specify the path to your COF or HEX file.  This must be done after calling `device_is`.
-The recommended way to specify the path is to start with `File.dirname(__FILE__)`, which is the name of the directory that the current Ruby file is in, and add a string to that.
-By doing it this way, you are making the fairly safe assumption that the relative path between the Ruby file and the firmware being tested will stay the same, but you are making no assumptions about the current working directory of the Ruby process or the absolute location of the firmware.
-
+Second, call {RPicSim::Sim::ClassDefinitionMethods#filename_is filename_is} to specify the path to your COF or HEX file.  This must be done after calling `device_is`.
+In the example, we start with `File.dirname(__FILE__)`, which is the name of the directory that the current Ruby file is in, and add a string to that.
+This allows us to move our tests and firmware files around on the disk without changing the `filename_is` line.
 
 Pins
 ----
@@ -63,11 +62,16 @@ If you have an instance of the simulation class, you can call such a method in t
 Using the simulation class
 ----
 
-To start a new simulation, simply make a new instance of the simulation class.  For example:
+To start a new simulation, you can simply make a new instance of the simulation class.  For example:
 
     sim = MySim.new
 
-However, if you are using RSpec and RPicSim's {file:RSpecIntegration.md RSpec Integration}, then you should not create a new instance yourself.  The recommended way to start the simulation is to make a before hook that calls {RPicSim::RSpec::Helpers#start_sim start_sim}.  The `start_sim` method will start the simulation for you and you can access the simulation in your RSpec examples by typing `sim`.  For example:
+However, if you are using RSpec and RPicSim's {file:RSpecIntegration.md RSpec Integration}, then you should not create a new instance yourself.
+Instead, make a before hook that calls {RPicSim::RSpec::Helpers#start_sim start_sim}.
+This will start the simulation for you and use it to make some other methods and features available in your examples.
+After running {RPicSim::RSpec::Helpers#start_sim start_sim}, you will be able to access your simulation object using the method `sim`.
+
+For example:
 
     describe "my firmware" do
       before do

@@ -808,9 +808,9 @@ module RPicSim
     #     The condition will be true if the current subroutine has returned.
     #     This is implemented by looking to see whether the stack pointer has
     #     decreased one level below the level it was at when this method was called.
-    #   - The name of a program label, as a symbol or string.
-    #   - A {Label} object.  The condition will be true if the {#pc} value is
-    #     equal to the label address.
+    #   - The name of a program label, as a symbol or string, or a
+    #     {Label} object.  The condition will be true if the {#pc}
+    #     value is equal to the label address.
     #   - An integer representing an address.  The condition will be true if the
     #     {#pc} value is equal to the address.
     #   - A Proc.  The Proc will be returned unchanged.
