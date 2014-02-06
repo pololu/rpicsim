@@ -66,10 +66,12 @@ Pin methods
 Once you have a Pin object, you can call any of the methods listed in {RPicSim::Pin} on it.  These methods allow you to ask about the state of the Pin and to set the simulated input value of an input pin.
 
 
-Flaws
+Issues
 ----
 
-The modelling of Pins provided by the MPLAB X simulator is fairly new and there are still some bugs in it.  For example, you might need to clear the ANSELx bit of a pin in your firmware before trying to set its output value, or else the simulator will mistakenly think your pin is driving low.  For more information about the known flaws, see {file:Flaws.md}.
+The modelling of Pins provided by the MPLAB X simulator is fairly new and there are still some bugs in it.
+For example, you might need to clear the ANSELx bit of a pin in your firmware before trying to set its output value, or else the simulator will mistakenly think your pin is driving low.
+For more information, see the {file:KnownIssues.md Known issues page}.
 
 
 PinMirror example

@@ -1,8 +1,8 @@
-Flaws
+Known issues
 ====
 
-This page documents all the known flaws of RPicSim that could affect its users.
-Some flaws are caused by the MPLAB X simulator and would need to be addressed by Microchip.
+This page documents all the known issues RPicSim has that could affect its users.
+Some issues are caused by the MPLAB X simulator and would need to be addressed by Microchip.
 
 RPicSim has only been tested with the following versions of MPLAB X:
 
@@ -11,15 +11,15 @@ RPicSim has only been tested with the following versions of MPLAB X:
   * 1.95
   * 2.00
 
-If you are using a different version of MPLAB X, some of the flaws might not apply to you.
+If you are using a different version of MPLAB X, some of the issues might not apply to you.
 
-Many of these flaws have only been tested for on a single model of PIC microcontroller and they may or may not affect other models.
+Many of these issues have only been reproduced on a single model of PIC microcontroller and they may or may not affect other models.
 
-Many of these flaws are also reported on other pages of this {file:Manual.md manual}, but this page is complete list of all flaws that could affect users of RPicSim.
+Many of these issues are also reported on other pages of this {file:Manual.md manual}, but this page is a complete list of all issues that could affect users of RPicSim.
 
-Internal flaws that have been successfully worked around are not listed here, but might be found in the RPicSim specs by searching for the word "flaw".
+Internal issues that have been successfully worked around are not listed here, but might be found in the RPicSim specs by searching for the word "flaw".
 
-There are almost certainly many flaws that have not been found yet.
+There are almost certainly many issues that have not been found yet.
 
 
 MPLAB X simulator does not support all PIC devices equally
@@ -51,7 +51,7 @@ _MPLAB X versions affected: all tested versions_
 
 In Windows, a bug in MPLAB X prevents RPicSim from using an MPLAB X installed on any drive other than the C drive.
 
-This flaw is tested in `spec/mplab_x/path_retrieval_spec.rb`.
+This issue is tested in `spec/mplab_x/path_retrieval_spec.rb`.
 
 
 Firmware under test must be inside a folder named "dist"
@@ -60,7 +60,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-This flaw is tested in `spec/mplab_x/program_file_spec.rb`.
+This issue is tested in `spec/mplab_x/program_file_spec.rb`.
 
 
 Limited number of variable types supported
@@ -115,7 +115,7 @@ _Type: MPLAB X bug_
 _MPLAB X version affected: all tested versions_
 
 The workaround is to simply set any variables defined in user ID space to the correct values from Ruby before running the simulation.
-This flaw is tested in `spec/integration/flash_variable_spec.rb`.
+This issue is tested in `spec/integration/flash_variable_spec.rb`.
 
 
 Simulated firmware cannot write to the first user ID location
@@ -124,7 +124,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: 1.85, 1.90_
 
-This flaw is tested in `spec/integration/flash_variable_spec.rb`.
+This issue is tested in `spec/integration/flash_variable_spec.rb`.
 It has been {http://www.microchip.com/forums/m743214.aspx reported to Microchip} and was fixed in later versions.
 
 
@@ -137,7 +137,7 @@ _MPLAB X versions affected: all tested versions_
 The ANSELx bit for a real PIC pin only disables the digital input circuitry and should not affect the pin's use as a digital output.
 However, if the ANSELx bit is set to 1, then {RPicSim::Pin#driving_low?} always seems to return true even if the pin is actually driving high.
 
-This flaw is tested in `spec/integration/pin_spec.rb`.
+This issue is tested in `spec/integration/pin_spec.rb`.
 
 
 Pins report the wrong output state if LATx is set before TRISx
@@ -149,7 +149,7 @@ _MPLAB X versions affected: all tested versions_
 Updating a pin's LATx bit before its clearing its TRISx bit is the proper way to turn on an output pin without causing glitches.
 However, if you set the two bits in that order then {RPicSim::Pin#driving_low?} always seems to return true even if the pin is actually driving high.
 
-This flaw is tested in `spec/integration/pin_spec.rb`.
+This issue is tested in `spec/integration/pin_spec.rb`.
 
 
 Pins report the wrong output state if TRISx is cleared again
@@ -158,9 +158,9 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-Even if you set up the pin properly (working around all the flaws above) and get {RPicSim::Pin#driving_high?} to return true, a `bcf` instruction on the pin's TRISx bit (or probably any write to the TRISx register) will cause the pin to start reporting the wrong output state.
+Even if you set up the pin properly (working around all the issues above) and get {RPicSim::Pin#driving_high?} to return true, a `bcf` instruction on the pin's TRISx bit (or probably any write to the TRISx register) will cause the pin to start reporting the wrong output state.
 
-This flaw is tested in `spec/integration/pin_spec.rb`.
+This issue is tested in `spec/integration/pin_spec.rb`.
 
 
 RAM watcher is useless because all of RAM seems to change on every step
@@ -169,7 +169,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: 1.95, 2.00_
 
-This flaw is tested in `spec/mplab_x/memory_attach_spec.rb`.
+This issue is tested in `spec/mplab_x/memory_attach_spec.rb`.
 If you want to use the {file:RamWatcher.md RAM watcher}, you should use MPLAB X version 1.85 or 1.90.
 
 
@@ -180,9 +180,10 @@ _Type: MPLAB X bug_
 _MPLAB X versions affected: all tested versions_
 
 The {file:RamWatcher.md RAM watcher}, when testing code that writes to LATA, might actually report it as a write to PORTA instead of LATA.
-This flaw has been observed on a PIC10F322 but it probably affects other PORTx and LATx registers.
+This issue has been observed on a PIC10F322 but it probably affects other PORTx and LATx registers.
 
-This flaw is tested in `spec/integration/ram_watcher_spec.rb`.  This flaw could not be tested on MPLAB X versions affected by the "RAM watcher is useless" flaw above.
+This issue is tested in `spec/integration/ram_watcher_spec.rb`.
+This issue could not be tested on MPLAB X versions affected by the "RAM watcher is useless" issue above.
 
 
 Midrange ADC gives incorrect readings
@@ -191,12 +192,13 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-The simulated ADC for midrange PIC microcontrollers has various flaws in different versions of MPLAB X that make it give incorrect readings.  These flaws might affect other PIC architectures as well.
+The simulated ADC for midrange PIC microcontrollers has various issues in different versions of MPLAB X that make it give incorrect readings.
+These issues might affect other PIC architectures as well.
 
 * **Bad modulus:** In MPLAB X 1.90 and later, simply setting a pin to high with `pin.set(true)` will result in an ADC reading of 0.
   The workaround is to use `pin.set(4.9)`.
   The ADC acts like it is using a modulus operator incorrectly as a way of limiting the ADC result to be between 0 and 255.
 * **No intermediate values:** In MPLAB X 1.85, setting a pin to any voltage other than 0 V will result in an ADC reading of 255.
 
-These flaws are tested in `spec/integration/adc_midrange_spec.rb`.  The bad modulus flaw was {http://www.microchip.com/forums/m760886.aspx reported to Microchip} in November 2013.
+These issues are tested in `spec/integration/adc_midrange_spec.rb`.  The bad modulus issue was {http://www.microchip.com/forums/m760886.aspx reported to Microchip} in November 2013.
 
