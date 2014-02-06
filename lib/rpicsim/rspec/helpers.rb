@@ -8,9 +8,9 @@ module RPicSim
     module Helpers
       include RPicSim::RSpec::PersistentExpectations
       
-      # This attribute allows you to type `sim` in your specs instead of `@sim` to
+      # This attribute allows you to type +sim+ in your specs instead of +@sim+ to
       # get access to the {RPicSim::Sim} instance which represents the simulation.
-      # You must call {#start_sim} before using `sim`.
+      # You must call {#start_sim} before using +sim+.
       attr_reader :sim
 
       # @deprecated Use {#sim} instead.
@@ -18,7 +18,7 @@ module RPicSim
 
       # Starts a new simulation with the specified class.
       # @param klass [Class] This should be a subclass of {RPicSim::Sim} or at least act like it.
-      # @param args A list of arguments to pass on to the the `new` method of the class.
+      # @param args A list of arguments to pass on to the the +new+ method of the class.
       #  This should usually be empty unless you have modified your class to take arguments in its
       #  constructor.
       def start_sim(klass, *args)
