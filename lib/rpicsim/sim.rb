@@ -251,8 +251,8 @@ module RPicSim
       # You can call any of these methods by simply writing its name along with any arguments
       # in an RSpec example.
       #
-      # For example, these shortcuts allow you to just write `cycle_count`
-      # instead of `sim.cycle_count`.
+      # For example, these shortcuts allow you to just write +cycle_count+
+      # instead of +sim.cycle_count+.
       ForwardedMethods = [
         :cycle_count,
         :every_step,
