@@ -834,9 +834,6 @@ module RPicSim
     end
   end
 
-  # @deprecated Use Sim instead of Pic.  Pic is here for backwards compatibility.
-  Pic = Sim
-  
 end
 
 # We want as much awareness as possible; if it becomes a problem we can change this.

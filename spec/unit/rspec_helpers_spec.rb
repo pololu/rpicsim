@@ -59,14 +59,6 @@ describe "rspec helpers" do
     end
   end
 
-  describe "pic" do
-    it "returns sim" do
-      # for backwards compatibility
-      @sim = Object.new
-      expect(pic).to be sim
-    end
-  end
-  
   describe "shortcuts" do
     2.times do |n|
       specify "are only available after calling start_sim" do

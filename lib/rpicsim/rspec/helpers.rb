@@ -19,9 +19,6 @@ module RPicSim
       # You must call {#start_sim} before using +sim+.
       attr_reader :sim
 
-      # @deprecated Use {#sim} instead.
-      alias :pic :sim
-
       # Starts a new simulation with the specified class, makes it
       # accessible via the attribute {#sim}, and adds convenience
       # methods using {#add_shortcuts}.
@@ -36,7 +33,7 @@ module RPicSim
       end
 
       def add_shortcuts
-        configuration_value = ::RSpec.configuration.pic_shortcuts || ::RSpec.configuration.sim_shortcuts
+        configuration_value = ::RSpec.configuration.sim_shortcuts
         case configuration_value
         when :all   then extend ::RPicSim::Sim::BasicShortcuts, sim.shortcuts
         when :basic then extend ::RPicSim::Sim::BasicShortcuts
