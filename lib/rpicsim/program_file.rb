@@ -69,7 +69,20 @@ module RPicSim
         hash
       end
     end
-  
+
+    # Returns a {Label} object if a program label by that name is found.
+    # The name is specified in the code that defined the label.  If you are using a C compiler,
+    # you will probably need to prefix the name with an underscore.
+    # @return [Label]
+    def label(name)
+      name = name.to_sym
+      label = labels[name]
+      if !label
+        raise ArgumentError, message_for_label_not_found(name)
+      end
+      return label
+    end
+
     # Generates a friendly human-readable string description of the given address in
     # program memory.
     # @param address [Integer] An address in program memory.
@@ -85,7 +98,7 @@ module RPicSim
         desc << "+%#x" % [offset] if offset != 0
       end
       
-      desc
+      return desc
     end
     
     # Gets an {Instruction} object representing the PIC instruction at the given
@@ -97,6 +110,19 @@ module RPicSim
     end
     
     private
+    def message_for_label_not_found(name)
+      message = "Cannot find label named '#{name}'."
+
+      maybe_intended_labels = labels.keys.select do |label_sym|
+        name.to_s.start_with?(label_sym.to_s)
+      end
+      if !maybe_intended_labels.empty?
+        message << "  MPASM truncates labels.  You might have meant: " +
+                   maybe_intended_labels.join(", ") + "."
+      end
+      message
+    end
+
     def make_instruction(address)
       mc_instruction = disasm.Disassemble(address, nil, nil)
 
@@ -142,7 +168,7 @@ module RPicSim
         raise "Unrecognized opcode #{opcode} (operands #{operands.inspect})."
       end
       
-      instr = Instruction.new(address, self, mc_instruction.opcode,
+      Instruction.new(address, self, mc_instruction.opcode,
         mc_instruction.operands.to_hash, increment, mc_instruction.instruction,
         properties)
     end

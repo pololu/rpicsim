@@ -541,22 +541,7 @@ module RPicSim
     # you will probably need to prefix the name with an underscore.
     # @return [Label]
     def label(name)
-      label = self.class.labels[name.to_sym]
-      if label
-        return label
-      else
-        message = "Cannot find label named '#{name}'."
-
-        maybe_intended_labels = self.class.labels.keys.select do |label_sym|
-          name.to_s.start_with?(label_sym.to_s)
-        end
-        if !maybe_intended_labels.empty?
-          message << "  MPASM truncates labels.  You might have meant: " +
-                     maybe_intended_labels.join(", ") + "."
-        end
-
-        raise ArgumentError, message
-      end
+      self.class.program_file.label(name)
     end
 
     # Returns the number of instruction cycles simulated in this simulation.
