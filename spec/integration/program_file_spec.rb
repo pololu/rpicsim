@@ -1,4 +1,4 @@
-require '../spec_helper'
+require_relative '../spec_helper'
 
 describe RPicSim::ProgramFile do
   subject(:program_file) do
