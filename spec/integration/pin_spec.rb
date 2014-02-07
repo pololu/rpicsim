@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe "Pic#pin" do
   it "lets you read the state of pins" do

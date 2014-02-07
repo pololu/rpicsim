@@ -5,4 +5,6 @@ group :development do
   gem "rake"
   gem "simplecov"
   gem "deg-yard"  # my little fork of the yard gem that fixes some bugs with the legacy parse
+  gem "guard"
+  gem "guard-rspec"
 end

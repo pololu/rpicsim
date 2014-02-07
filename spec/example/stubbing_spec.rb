@@ -1,3 +1,5 @@
+require_relative '../spec_helper'
+
 describe "cooldown" do
   before do
     start_sim Firmware::LongDelay

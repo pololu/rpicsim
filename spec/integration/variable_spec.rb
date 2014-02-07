@@ -1,3 +1,5 @@
+require_relative '../spec_helper'
+
 describe "Variables" do
   before do
     start_sim Firmware::Variables

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 # NOTE: These specs are kind of annoying because the system under test here
 # includes RSpec.  It might be better to do this Cucumber, but then these

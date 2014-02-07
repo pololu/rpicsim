@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe RPicSim::StackTrace do
   it "can take entries and output them in reverse order with padding" do

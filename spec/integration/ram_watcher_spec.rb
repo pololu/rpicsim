@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 # This is an integration test for Pic#ram_watcher,
 # so it tests the Pic class, MemoryWatcher class, and MPLAB X.
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe 'ProgramFile from MPLAB X' do
   it 'cannot load a file that is not inside a "dist" directory', flaw: true do

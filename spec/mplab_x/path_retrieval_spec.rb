@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe "PathRetrieval" do
   it "chops off the drive letter so it can only find things on the C drive", flaw: true do

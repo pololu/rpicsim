@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe "rcs03a program structure" do
   subject(:call_stack_info) do

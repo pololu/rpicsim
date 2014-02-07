@@ -1,3 +1,5 @@
+require_relative '../spec_helper'
+
 describe RPicSim::Pin do
   let(:pin_physical) { double("pin_physical") }
   subject(:pin) { described_class.new(pin_physical) }

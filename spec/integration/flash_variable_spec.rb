@@ -1,5 +1,4 @@
-require 'spec_helper'
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe "Flash variables" do
   before do

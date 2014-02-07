@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 
 # This helps us generate the nice error message for RSpecIntegration.md.
 # Just comment out the "if false" at the very bottom
