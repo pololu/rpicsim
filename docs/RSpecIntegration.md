@@ -11,7 +11,7 @@ Turning on RSpec integration
 To enable the RSpec integration, simply put this line in your `spec_helper.rb`:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
 
 The features that this gives you are documented below.
 
@@ -19,7 +19,7 @@ The features that this gives you are documented below.
 Helper methods
 ----
 
-Requiring "rpicsim/spec_helper" causes the {RPicSim::RSpec::Helpers} module to get included (i.e. mixed in) to all of your RSpec examples.
+Requiring "rpicsim/rspec" causes the {RPicSim::RSpec::Helpers} module to get included (i.e. mixed in) to all of your RSpec examples.
 
 This module provides the {RPicSim::RSpec::Helpers#start_sim start_sim} method and the methods described on the {file:PersistentExpectations.md persistent expectations page}.
 You can call `start_sim` in an example or a before hook to start a new simulation.

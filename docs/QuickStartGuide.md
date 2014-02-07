@@ -62,7 +62,7 @@ More information can be found by reading further in this manual; this page is ju
 We have not yet told RPicSim where to find the firmware file.  To do this, make a new file named `spec_helper.rb` in the `spec` directory.  In `spec/spec_helper.rb`, write:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
     
     class MySim < RPicSim::Sim
       device_is "PIC10F322"

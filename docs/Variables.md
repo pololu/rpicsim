@@ -111,7 +111,7 @@ Here is a minimal MPASM assembly program for the PIC10F322 that does not actuall
 In `spec/spec_helper.rb`, we make a simulation class that points to the compiled COF file and defines the variables:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
 
     class Addition < RPicSim::Sim
       device_is "PIC10F322"

@@ -107,7 +107,7 @@ Instead, we should stub the `bigDelay` method and make the stub count how many t
 In `spec/spec_helper.rb`, we make a simulation class that points to the compiled COF file.  There is nothing special here:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
 
     class LongDelay < RPicSim::Sim
       device_is "PIC10F322"
@@ -118,7 +118,7 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
 In `spec/cooldown_spec.rb`, we stub the `bigDelay` routine and test `cooldown` to make sure it calls `bigDelay` the right number of times:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
 
     describe "cooldown" do
       before do

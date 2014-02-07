@@ -4,7 +4,7 @@ if ENV["COVERAGE"] == 'Y'
 end
 
 $LOAD_PATH << 'lib'
-require 'rpicsim/spec_helper.rb'
+require 'rpicsim/rspec'
 require_relative 'firmware'
 
 require 'stringio'

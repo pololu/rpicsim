@@ -99,7 +99,7 @@ Here is a minimal MPASM assembly program for the PIC10F322 that continuously rea
 In `spec/spec_helper.rb`, we make a simulation class that points to the compiled COF file and defines some pin aliases:
 
     !!!ruby
-    require 'rpicsim/spec_helper'
+    require 'rpicsim/rspec'
     
     class PinMirror < RPicSim::Pic
       device_is "PIC10F322"

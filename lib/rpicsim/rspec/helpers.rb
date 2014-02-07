@@ -2,9 +2,15 @@ require_relative 'persistent_expectations'
 
 module RPicSim
   module RSpec
-    # This is the main module of +spec_helper.rb+.
-    # It provides the {#start_sim} method and includes {PersistentExpectations}.
-    # See {file:RSpecIntegration.md}.
+    # This module gets included into your RSpec examples if you use the
+    # following line in your spec_helper.rb:
+    #
+    #     require 'rpicsim/rspec'
+    #
+    # It provides the {#start_sim} method and includes all the methods from
+    # {PersistentExpectations}.
+    # See {file:RSpecIntegration.md} for more information about RPicSim's
+    # integration with RSpec.
     module Helpers
       include RPicSim::RSpec::PersistentExpectations
       
