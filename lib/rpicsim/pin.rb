@@ -8,9 +8,9 @@ module RPicSim
     
     # Initializes a new Pin object to wrap the given PinPhysical.
     # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]
-    def initialize(pin_physical)
-      raise ArgumentError, "pin_physical is nil" if pin_physical.nil?
-      @pin_physical = pin_physical
+    def initialize(mplab_pin)
+      raise ArgumentError, "mplab_pin is nil" if mplab_pin.nil?
+      @mplab_pin = mplab_pin
     end
 
     # Sets the external stimulus input voltage applied to the pin.
@@ -18,9 +18,9 @@ module RPicSim
     # Numeric values (e.g. Float or Integer) correspond to analog voltages.
     def set(state)
       case state
-      when false   then @pin_physical.externalSet PinState::LOW
-      when true    then @pin_physical.externalSet PinState::HIGH
-      when Numeric then @pin_physical.externalSetAnalogValue state
+      when false   then @mplab_pin.set_low
+      when true    then @mplab_pin.set_high
+      when Numeric then @mplab_pin.set_analog(state)
       else raise ArgumentError, "Invalid pin state: #{state.inspect}."
       end
     end

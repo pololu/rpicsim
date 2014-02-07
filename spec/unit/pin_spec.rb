@@ -2,7 +2,8 @@ require_relative '../spec_helper'
 
 describe RPicSim::Pin do
   let(:pin_physical) { double("pin_physical") }
-  subject(:pin) { described_class.new(pin_physical) }
+  let(:mplab_pin) { RPicSim::MplabPin.new(pin_physical) }
+  subject(:pin) { described_class.new(mplab_pin) }
 
   describe "#set" do
     it "when given false calls externalSet(PinState::LOW)" do
