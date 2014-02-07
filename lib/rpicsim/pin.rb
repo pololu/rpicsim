@@ -47,13 +47,8 @@ module RPicSim
       output? && @pin_physical.get == PinState::LOW
     end
 
-    # Returns true if the given name is one of the names of the pin.
-    # @param name [String] A name from datasheet, like "RA4" or "TX".
-    def is_named?(name)
-      @pin_physical.isNamed(name)
-    end
-
-    # Returns an array of all the pin's names.
+    # Returns an array of all the pin's names from the datasheet, like
+    # "RA4" or "TX".
     def names
       @pin_physical.collect(&:name)
     end

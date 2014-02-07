@@ -21,5 +21,21 @@ module RPicSim
     def set_analog(value)
       @pin_physical.externalSetAnalogValue value
     end
+
+    # Returns true if the pin is currently configured to be an output.
+    def output?
+      io_state = @pin_physical.getIOState
+      assert_valid_io_state io_state
+      io_state == IoState::OUTPUT
+    end
+
+    # Returns true if the pin is currently configured to be an input.
+    def input?
+      !output?
+    end
+
+    def assert_valid_io_state(io_state)
+      raise "invalid IO State: #{io_state}" if io_state != IoState::OUTPUT && io_state != IoState::INPUT
+    end
   end
 end
