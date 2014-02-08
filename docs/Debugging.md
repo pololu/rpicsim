@@ -54,7 +54,7 @@ For example, we might insert this code into the appropriate point in the RSpec e
     run_to_cycle_count 78950
     100.times do
       step
-      puts pc_description + "  wreg=" + wreg.value.to_s)
+      puts pc_description + "  wreg=" + wreg.value.to_s
     end
 
 This code runs until the cycle count of the simulation is 78950, and then it starts printing debugging information for the next 100 steps.
