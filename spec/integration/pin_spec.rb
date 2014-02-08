@@ -63,8 +63,6 @@ describe "Pic#pin" do
   
   it "knows its names" do
     start_sim Firmware::DrivePinHigh
-    pin(:RA0).should be_is_named "RA0"
-    pin(:RA0).should be_is_named "AN0"
     pin(:RA0).names.sort.should == %w{RA0 PWM1 CLC1IN1 CWG1A AN0 ICSPDAT}.sort
   end
   

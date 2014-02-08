@@ -1,8 +1,5 @@
 module RPicSim
   class MplabPin
-    PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
-    IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT
-
     # Initializes a new Pin object to wrap the given PinPhysical.
     # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]
     def initialize(pin_physical)
@@ -22,20 +19,46 @@ module RPicSim
       @pin_physical.externalSetAnalogValue value
     end
 
-    # Returns true if the pin is currently configured to be an output.
+    # Returns true if the pin is currently configured to be an output,
+    # or false if it is configured as an input.  Raises an exception
+    # if MPLAB X claims the state is neither, which we think is
+    # impossible.
     def output?
-      io_state = @pin_physical.getIOState
-      assert_valid_io_state io_state
-      io_state == IoState::OUTPUT
+      case @pin_physical.getIOState
+      when IoState::OUTPUT
+        true
+      when IoState::INPUT
+        false
+      else
+        raise "invalid IO State: #{io_state}"
+      end
     end
 
-    # Returns true if the pin is currently configured to be an input.
-    def input?
-      !output?
+    # Returns true if the pin is currently in a "high" state, or false
+    # if it is in a "low" state.  Raises an exception if MPLAB X
+    # claims the state is neither, which we think is impossible.
+    def high?
+      case @pin_physical.get
+      when PinState::HIGH
+        true
+      when PinState::LOW
+        false
+      else
+        raise "invalid Pin State: #{pin_state}"
+      end
     end
 
-    def assert_valid_io_state(io_state)
-      raise "invalid IO State: #{io_state}" if io_state != IoState::OUTPUT && io_state != IoState::INPUT
+    def names
+      @pin_physical.collect(&:name)
     end
+
+    def name
+      @pin_physical.pinName
+    end    
+
+    private
+
+    PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
+    IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT
   end
 end

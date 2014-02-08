@@ -3,9 +3,6 @@ module RPicSim
   # It provides methods for reading the pin's output value and setting
   # its input value.
   class Pin
-    PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
-    IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT
-    
     # Initializes a new Pin object to wrap the given PinPhysical.
     # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]
     def initialize(mplab_pin)
@@ -27,34 +24,34 @@ module RPicSim
 
     # Returns true if the pin is currently configured to be an output.
     def output?
-      @pin_physical.getIOState == IoState::OUTPUT
+      @mplab_pin.output?
     end
     
     # Returns true if the pin is currently configured to be an input.
     def input?
-      @pin_physical.getIOState == IoState::INPUT
+      !@mplab_pin.output?
     end
     
     # Returns true if the pin is currently configured to be an output and
     # it is driving high.
     def driving_high?
-      output? && @pin_physical.get == PinState::HIGH
+      output? && @mplab_pin.high?
     end
 
     # Returns true if the pin is currently configured to be an output and
     # it is driving low.
     def driving_low?
-      output? && @pin_physical.get == PinState::LOW
+      output? && !@mplab_pin.high?
     end
 
     # Returns an array of all the pin's names from the datasheet, like
     # "RA4" or "TX".
     def names
-      @pin_physical.collect(&:name)
+      @mplab_pin.names
     end
     
     def to_s
-      @pin_physical.pinName
+      @mplab_pin.name
     end    
 
     def inspect

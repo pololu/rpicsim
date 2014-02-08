@@ -6,6 +6,8 @@ describe RPicSim::MplabPin do
 
   before do
     allow(pin_physical).to receive(:getIOState).and_return { io_state }
+    allow(pin_physical).to receive(:get).and_return { pin_state }
+    allow(pin_physical).to receive(:pinName).and_return { pin_name }
   end
 
   describe "#set_low" do
@@ -34,21 +36,19 @@ describe RPicSim::MplabPin do
     end
   end
 
-  {
-    RPicSim::Mdbcore.simulator.Pin::IOState::OUTPUT => true,
-    RPicSim::Mdbcore.simulator.Pin::IOState::INPUT => false
-  }.each do |io_state, value|
+  context "when getIOState returns OUTPUT" do
+    let(:io_state) { RPicSim::Mdbcore.simulator.Pin::IOState::OUTPUT }
 
-    context "when getIOState returns #{io_state}" do
-      let(:io_state) { io_state }
+    specify "#output? returns true" do
+      expect(mplab_pin.output?).to eq true
+    end
+  end
 
-      specify "#output? returns #{value}" do
-        expect(mplab_pin.output?).to eq value
-      end
+  context "when getIOState returns INPUT" do
+    let(:io_state) { RPicSim::Mdbcore.simulator.Pin::IOState::INPUT }
 
-      specify "#input? returns #{!value}" do
-        expect(mplab_pin.input?).to eq !value
-      end
+    specify "#output? returns false" do
+      expect(mplab_pin.output?).to eq false
     end
   end
 
@@ -58,9 +58,49 @@ describe RPicSim::MplabPin do
     specify "#output? raises" do
       expect {mplab_pin.output?}.to raise_exception
     end
+  end
 
-    specify "#input? raises" do
-      expect {mplab_pin.input?}.to raise_exception
+  context "when driving high" do
+    let(:pin_state) { RPicSim::Mdbcore.simulator.Pin::PinState::HIGH }
+
+    specify "#high? returns true" do
+      expect(mplab_pin.high?).to eq true
+    end
+  end
+
+  context "when driving low" do
+    let(:pin_state) { RPicSim::Mdbcore.simulator.Pin::PinState::LOW }
+
+    specify "#high? returns false" do
+      expect(mplab_pin.high?).to eq false
+    end
+  end
+
+  context "when PinState is some other value" do
+    let(:pin_state) { "bar" }
+
+    specify "#high? returns false" do
+      expect {mplab_pin.high?}.to raise_exception
+    end
+  end
+
+  context "when pin_physical is an enumerable of items responding to #name" do
+    let(:signal1) { double("Object", name: "signal1") }
+    let(:signal2) { double("Object", name: "signal2") }
+    let(:pin_physical) { [signal1, signal2] }
+
+    specify "#names returns all the names" do
+      expect(mplab_pin.names).to eq ["signal1", "signal2"]
+    end
+
+    # TODO - test for mutability of these strings
+  end
+
+  context 'when pinName returns "foo"' do
+    let(:pin_name) { 'foo' }
+
+    specify '#name returns "foo"' do
+      expect(mplab_pin.name).to eq 'foo'
     end
   end
 end
