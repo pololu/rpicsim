@@ -56,5 +56,6 @@ module RPicSim
 
     PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
     IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT
+    private_constant :PinState, :IoState
   end
 end

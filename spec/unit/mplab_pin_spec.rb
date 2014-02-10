@@ -12,14 +12,14 @@ describe RPicSim::MplabPin do
 
   describe "#set_low" do
     it "calls externalSet(PinState::LOW)" do
-      pin_physical.should_receive(:externalSet).with(described_class::PinState::LOW)
+      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::LOW)
       mplab_pin.set_low
     end
   end
 
   describe "#set_high" do
     it "calls externalSet(PinState::HIGH)" do
-      pin_physical.should_receive(:externalSet).with(described_class::PinState::HIGH)
+      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::HIGH)
       mplab_pin.set_high
     end
   end
