@@ -35,9 +35,38 @@ module RPicSim::Mplab
       @processor ||= Processor.new data_store.getProcessor
     end
     
+    def check_peripherals
+      check_peripherals_in_data_store
+      check_peripheral_set
+      check_missing_peripherals
+    end
+
     private
+
     def data_store
       @simulator.getDataStore
     end
+    
+    def check_peripherals_in_data_store
+      if data_store.getNumPeriphs == 0
+        raise "MPLAB X failed to load any peripheral descriptions into the data store."
+      end
+    end
+
+    def check_peripheral_set
+      peripherals = data_store.getProcessor.getPeripheralSet
+      if peripherals.getNumPeripherals == 0
+        raise "MPLAB X failed to load any peripherals into the PeripheralSet."
+      end
+    end
+
+    def check_missing_peripherals
+      # We have never seen missing peripherals but it seems like a good thing to check.
+      peripherals = data_store.getProcessor.getPeripheralSet
+      if peripherals.getMissingPeripherals.to_a.size > 0
+        raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
+      end
+    end
+    
   end
 end

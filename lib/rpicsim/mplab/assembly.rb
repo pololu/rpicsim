@@ -36,6 +36,8 @@ module RPicSim::Mplab
       load_file(filename)
       debugger.Program(Mdbcore.debugger.Debugger::PROGRAM_OPERATION::AUTO_SELECT)
 
+      check
+      
       nil
     end
 
@@ -50,7 +52,7 @@ module RPicSim::Mplab
     # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
     # TODO: make private or return a wrapper object
     def simulator
-      Simulator.new lookup Mdbcore.simulator.Simulator.java_class
+      @simulator ||= Simulator.new lookup Mdbcore.simulator.Simulator.java_class
     end
 
     # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
@@ -77,5 +79,30 @@ module RPicSim::Mplab
     def lookup(klass)
       @assembly.getLookup.lookup klass
     end
+    
+    def check
+      warn_about_5C
+      warn_about_path_retrieval
+      @simulator.check_peripherals
+    end
+
+    def warn_about_5C
+      # Detect a problem that once caused peripherals to load incorrectly.
+      # More info: http://stackoverflow.com/q/15794170/28128
+      f = DocumentLocator.java_class.resource("MPLABDocumentLocator.class").getFile()
+      if f.include?("%5C")
+        $stderr.puts "warning: A %5C character was detected in the MPLABDocumentLoator.class file location.  This might cause errors in the Microchip code."
+      end
+    end
+
+    def warn_about_path_retrieval
+      # See spec/mplab_x/path_retrieval_spec.rb for more info.
+      retrieval = com.microchip.mplab.open.util.pathretrieval.PathRetrieval
+      path = retrieval.getPath(DocumentLocator.java_class)
+      if !java.io.File.new(path).exists()
+        $stderr.puts "warning: MPLAB X will be looking for files at a bad path: #{path}"
+      end
+    end
+
   end
 end

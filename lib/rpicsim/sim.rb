@@ -312,7 +312,6 @@ module RPicSim
       @step_callbacks = []
 
       @data_store = @simulator.send(:data_store) # tmphax, TODO: remove
-      check_peripherals
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
@@ -322,53 +321,6 @@ module RPicSim
     end
 
     private
-
-    def check_peripherals
-      warn_about_5C
-      warn_about_path_retrieval
-      check_peripherals_in_data_store
-      check_peripheral_set
-      check_missing_peripherals
-    end
-
-    def warn_about_5C
-      # Detect a problem that once caused peripherals to load incorrectly.
-      # More info: http://stackoverflow.com/q/15794170/28128
-      f = MPLABX::DocumentLocator.java_class.resource("MPLABDocumentLocator.class").getFile()
-      if f.include?("%5C")
-        $stderr.puts "warning: A %5C character was detected in the MPLABDocumentLoator.class file location.  This might cause errors in the Microchip code."
-      end
-    end
-
-    def warn_about_path_retrieval
-      # See spec/mplab_x/path_retrieval_spec.rb for more info.
-      retrieval = com.microchip.mplab.open.util.pathretrieval.PathRetrieval
-      path = retrieval.getPath(MPLABX::DocumentLocator.java_class)
-      if !java.io.File.new(path).exists()
-        $stderr.puts "warning: MPLAB X will be looking for files at a bad path: #{path}"
-      end
-    end
-
-    def check_peripherals_in_data_store
-      if @data_store.getNumPeriphs == 0
-        raise "MPLAB X failed to load any peripheral descriptions into the data store."
-      end
-    end
-
-    def check_peripheral_set
-      peripherals = @data_store.getProcessor.getPeripheralSet
-      if peripherals.getNumPeripherals == 0
-        raise "MPLAB X failed to load any peripherals into the PeripheralSet."
-      end
-    end
-
-    def check_missing_peripherals
-      # We have never seen missing peripherals but it seems like a good thing to check.
-      peripherals = @data_store.getProcessor.getPeripheralSet
-      if peripherals.getMissingPeripherals.to_a.size > 0
-        raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
-      end
-    end
 
     def initialize_pins
       pin_descs = (0...@data_store.getNumPins).collect { |i| @data_store.getPinDesc(i) }
