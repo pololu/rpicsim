@@ -313,7 +313,6 @@ module RPicSim
 
       @step_callbacks = []
 
-      @data_store = @simulator.send(:data_store) # tmphax, TODO: remove
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
