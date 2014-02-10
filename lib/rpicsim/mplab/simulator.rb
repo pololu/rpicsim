@@ -35,6 +35,24 @@ module RPicSim::Mplab
       @processor ||= Processor.new data_store.getProcessor
     end
     
+    def pins
+      pin_descs = (0...data_store.getNumPins).collect { |i| data_store.getPinDesc(i) }
+
+      pin_set = data_store.getProcessor.getPinSet
+
+      # The PinSet class has strangely-implemented lazy loading.
+      # We call getPin(String name) to force it to load pin data from
+      # the SimulatorDataStore.
+      pin_descs.each do |pin_desc|
+        name = pin_desc.getSignal(0).name  # e.g. "RA0"
+        pin_set.getPin name                # Trigger the lazy loading.
+      end
+
+      pins = (0...pin_set.getNumPins).collect do |i|
+        MplabPin.new pin_set.getPin(i)
+      end
+    end
+    
     def check_peripherals
       check_peripherals_in_data_store
       check_peripheral_set

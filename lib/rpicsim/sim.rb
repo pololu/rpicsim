@@ -323,22 +323,8 @@ module RPicSim
     private
 
     def initialize_pins
-      pin_descs = (0...@data_store.getNumPins).collect { |i| @data_store.getPinDesc(i) }
-
-      pin_set = @data_store.getProcessor.getPinSet
-
-      # The PinSet class has strangely-implemented lazy loading.
-      # We call getPin(String name) to force it to load pin data from
-      # the SimulatorDataStore.
-      pin_descs.each do |pin_desc|
-        name = pin_desc.getSignal(0).name  # e.g. "RA0"
-        pin_set.getPin name                # Trigger the lazy loading.
-      end
-
-      pins = (0...pin_set.getNumPins).collect do |i|
-        Pin.new Mplab::MplabPin.new pin_set.getPin(i)
-      end
-
+      pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
+      
       pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
       pins.reject! { |p| p.to_s == "VSS" } or raise "Failed to filter out VSS pin."
 
