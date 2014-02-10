@@ -300,6 +300,7 @@ module RPicSim
       @assembly = Mplab::Assembly.new(device)
       @assembly.start_simulator_and_debugger(filename)
       @simulator = @assembly.simulator
+      @processor = @simulator.processor
 
       # Set up our stores and helper objects.
       @fr_memory = Memory.new @simulator.fr_memory
@@ -369,10 +370,7 @@ module RPicSim
         if sfr.width != 8
           raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
         end
-        reg = @data_store.getProcessor.getSFRSet.getSFR(sfr.name)
-        raise "Cannot find register named '#{sfr.name}'." if !reg
-
-        @sfrs[sfr.name.to_sym] = Register.new(Mplab::MplabRegister.new(reg), @sfr_memory)
+        @sfrs[sfr.name.to_sym] = Register.new @processor.get_sfr(sfr.name), @sfr_memory
       end
       
       @nmmrs = {}
@@ -380,10 +378,7 @@ module RPicSim
         if nmmr.width != 8
           raise "We only support 8-bit registers at this time.  #{nmmr.name} is #{nmmr.width}-bit."
         end
-
-        reg = @data_store.getProcessor.getNMMRSet.getNMMR(nmmr.name)
-        raise "Cannot find NMMR named '#{nmmr.name}'." if !reg
-        @nmmrs[nmmr.name.to_sym] = Register.new(Mplab::MplabRegister.new(reg))
+        @nmmrs[nmmr.name.to_sym] = Register.new @processor.get_nmmr(nmmr.name)
       end
 
       @wreg = sfr_or_nmmr(:WREG)

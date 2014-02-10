@@ -14,5 +14,17 @@ module RPicSim::Mplab
     def set_pc(value)
       @processor.setPC(value)
     end
+    
+    def get_sfr(name)
+      reg = @processor.getSFRSet.getSFR(name)
+      raise "Cannot find SFR named '#{name}'." if !reg
+      MplabRegister.new(reg)
+    end
+    
+    def get_nmmr(name)
+      reg = @processor.getNMMRSet.getNMMR(name)
+      raise "Cannot find NMMR named '#{name}'." if !reg
+      MplabRegister.new(reg)
+    end
   end
 end
