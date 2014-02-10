@@ -5,6 +5,7 @@ require 'forwardable'
 require_relative 'mplab_x'
 require_relative 'flaws'
 require_relative 'pin'
+require_relative 'mplab_pin'
 require_relative 'register'
 require_relative 'variable'
 require_relative 'program_counter'
@@ -413,7 +414,7 @@ module RPicSim
       end
 
       pins = (0...pin_set.getNumPins).collect do |i|
-        Pin.new pin_set.getPin(i)
+        Pin.new MplabPin.new pin_set.getPin(i)
       end
 
       pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
