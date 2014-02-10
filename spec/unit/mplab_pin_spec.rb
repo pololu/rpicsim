@@ -103,3 +103,16 @@ describe RPicSim::MplabPin do
     end
   end
 end
+
+describe "assumptions about MPLAB X used to build MplabPin" do
+  let(:pin) { com.microchip.mplab.mdbcore.simulator.Pin }
+  
+  specify "the two PinStates are HIGH and LOW" do
+    pin::PinState.constants.sort.should == [:HIGH, :LOW]
+  end
+  
+  specify "the two IOStates are INPUT and OUTPUT" do
+    pin::IOState.constants.sort.should == [:INPUT, :OUTPUT]
+  end
+end
+
