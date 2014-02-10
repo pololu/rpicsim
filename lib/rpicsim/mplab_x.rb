@@ -168,3 +168,5 @@ module RPicSim
   Mdbcore = com.microchip.mplab.mdbcore
 end
 
+require_relative 'mplab/mplab_pin'
+
