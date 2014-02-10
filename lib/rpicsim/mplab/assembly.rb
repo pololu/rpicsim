@@ -1,4 +1,5 @@
 require_relative 'device_info'
+require_relative 'simulator'
 
 module RPicSim::Mplab
   class Assembly
@@ -15,10 +16,6 @@ module RPicSim::Mplab
     def simulator
       # TODO: wrap in Simulator.new
       @assembly.getLookup.lookup Mdbcore.simulator.Simulator.java_class
-    end
-    
-    def load_file(filename)
-      loader.Load(filename)
     end
     
     # Connect the assembly to a simulator and debugger.
@@ -41,15 +38,19 @@ module RPicSim::Mplab
 
       nil
     end
-    
+
+    def load_file(filename)
+      loader.Load(filename)
+    end
+
     def debugger_step
       debugger.StepInstr
     end
-    
+
     # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
     # TODO: make private or return a wrapper object
     def simulator
-      lookup Mdbcore.simulator.Simulator.java_class
+      Simulator.new lookup Mdbcore.simulator.Simulator.java_class
     end
 
     # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can

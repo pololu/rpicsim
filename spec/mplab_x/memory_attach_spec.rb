@@ -29,7 +29,7 @@ end
 describe "Memory.attach on the RAM memory" do
   before do
     start_sim firmware_class
-    @obs = MemoryObserver.new(sim.instance_variable_get(:@fr_memory))
+    @obs = MemoryObserver.new(sim.instance_variable_get(:@fr_memory).instance_variable_get(:@memory))
   end
 
   let(:events) { @obs.events }

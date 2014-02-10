@@ -301,16 +301,16 @@ module RPicSim
       @simulator = @assembly.simulator
 
       # Set up our stores and helper objects.
-      @data_store = @simulator.getDataStore
-      @fr_memory = @data_store.getFileMemory
-      @program_memory = @data_store.getProgMemory
-      @stack_memory = @data_store.getStackMemory
-      @test_memory = @data_store.getTestMemory
+      @fr_memory = @simulator.fr_memory
+      @program_memory = @simulator.program_memory
+      @stack_memory = @simulator.stack_memory
+      @test_memory = @simulator.test_memory
 
-      @pc = ProgramCounter.new(@data_store.getProcessor)
+      @pc = ProgramCounter.new(@simulator.processor)
 
       @step_callbacks = []
 
+      @data_store = @simulator.send(:data_store) # tmphax, TODO: remove
       check_peripherals
       initialize_pins
       initialize_sfrs_and_nmmrs
@@ -412,7 +412,7 @@ module RPicSim
       @flash_vars = {}
       memories = [@program_memory, @test_memory]
       self.class.flash_vars.each do |name, unbound_var|
-        possible_memories = memories.select { |m| m.IsValidAddress(unbound_var.address) }
+        possible_memories = memories.select { |m| m.is_valid_address?(unbound_var.address) }
         if possible_memories.empty?
           raise "Flash variable has an invalid address: #{unbound_var.inspect}"
         elsif possible_memories.size > 1
@@ -511,7 +511,7 @@ module RPicSim
     # Returns the number of instruction cycles simulated in this simulation.
     # @return [Integer]
     def cycle_count
-      @simulator.GetStopwatchValue
+      @simulator.stopwatch_value
     end
 
     # Registers a new callback to be run after every simulation step.
@@ -703,7 +703,7 @@ module RPicSim
 
       # Simulate popping the stack.
       stkptr.value -= 1
-      pc.value = @stack_memory.ReadWord(stkptr.value)
+      pc.value = @stack_memory.read_word(stkptr.value)
     end
 
     # Generates a friendly human-readable string description of where the
@@ -714,11 +714,11 @@ module RPicSim
 
     # Pushes the given address onto the simulated call stack.
     def stack_push(value)
-      if !@stack_memory.IsValidAddress(stkptr.value)
+      if !@stack_memory.is_valid_address?(stkptr.value)
         raise "Simulated stack is full (stack pointer = #{stkptr.value})."
       end
 
-      @stack_memory.WriteWord(stkptr.value, value)
+      @stack_memory.write_word(stkptr.value, value)
       stkptr.value += 1
     end
 
@@ -726,7 +726,7 @@ module RPicSim
     # @return [Array(Integer)] An array of integers.
     def stack_contents
       (0...stkptr.value).collect do |n|
-        @stack_memory.ReadWord(n)
+        @stack_memory.read_word(n)
       end
     end
 
