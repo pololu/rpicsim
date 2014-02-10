@@ -24,13 +24,12 @@ module RPicSim
     # if MPLAB X claims the state is neither, which we think is
     # impossible.
     def output?
-      case @pin_physical.getIOState
-      when IoState::OUTPUT
-        true
-      when IoState::INPUT
-        false
+      io_state = @pin_physical.getIOState
+      case io_state
+      when IoState::OUTPUT then true
+      when IoState::INPUT  then false
       else
-        raise "invalid IO State: #{io_state}"
+        raise "Invalid IO state: #{io_state}"
       end
     end
 
@@ -38,13 +37,12 @@ module RPicSim
     # if it is in a "low" state.  Raises an exception if MPLAB X
     # claims the state is neither, which we think is impossible.
     def high?
-      case @pin_physical.get
-      when PinState::HIGH
-        true
-      when PinState::LOW
-        false
+      pin_state = @pin_physical.get
+      case pin_state
+      when PinState::HIGH then true
+      when PinState::LOW  then false
       else
-        raise "invalid Pin State: #{pin_state}"
+        raise "Invalid pin state: #{pin_state}"
       end
     end
 
@@ -55,8 +53,6 @@ module RPicSim
     def name
       @pin_physical.pinName
     end    
-
-    private
 
     PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
     IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT
