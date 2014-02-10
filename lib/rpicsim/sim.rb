@@ -5,6 +5,7 @@ require 'forwardable'
 require_relative 'mplab'
 require_relative 'flaws'
 require_relative 'pin'
+require_relative 'memory'
 require_relative 'register'
 require_relative 'variable'
 require_relative 'program_counter'
@@ -301,10 +302,10 @@ module RPicSim
       @simulator = @assembly.simulator
 
       # Set up our stores and helper objects.
-      @fr_memory = @simulator.fr_memory
-      @program_memory = @simulator.program_memory
-      @stack_memory = @simulator.stack_memory
-      @test_memory = @simulator.test_memory
+      @fr_memory = Memory.new @simulator.fr_memory
+      @program_memory = Memory.new @simulator.program_memory
+      @stack_memory = Memory.new @simulator.stack_memory
+      @test_memory = Memory.new @simulator.test_memory
 
       @pc = ProgramCounter.new(@simulator.processor)
 
@@ -317,7 +318,7 @@ module RPicSim
       initialize_vars
       initialize_flash_vars
 
-      @ram_watcher = MemoryWatcher.new(self, @fr_memory, @vars.values + @sfrs.values)
+      @ram_watcher = MemoryWatcher.new(self, @simulator.fr_memory, @vars.values + @sfrs.values)
     end
 
     private

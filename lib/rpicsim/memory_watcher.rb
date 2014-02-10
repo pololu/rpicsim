@@ -20,7 +20,7 @@ module RPicSim
     # @param memory [Mplab::MplabMemory] The memory to watch
     # @param vars [Array(Variable)]
     def initialize(sim, memory, vars)
-      memory = memory.instance_variable_get(:@memory)  # TODO: remove
+      memory = memory.instance_variable_get(:@memory)  # TODO: fix tmphax
     
       # Populate the @vars_by_address instance hash
       @vars_by_address = {}

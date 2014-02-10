@@ -34,7 +34,7 @@ module RPicSim
     end
 
     # Creates a new Variable that is bound to the specified memory.
-    # @param memory [MPlab::MPlabMemory]
+    # @param memory [RPicSim::Memory]
     def bind(memory)
       bound_var = dup
       bound_var.memory = memory
