@@ -2,7 +2,7 @@
 
 require 'forwardable'
 
-require_relative 'mplab_x'
+require_relative 'mplab'
 require_relative 'flaws'
 require_relative 'pin'
 require_relative 'register'

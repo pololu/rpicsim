@@ -1,4 +1,4 @@
-require_relative 'mplab_x'
+require_relative 'mplab'
 require_relative 'label'
 require_relative 'instruction'
 
