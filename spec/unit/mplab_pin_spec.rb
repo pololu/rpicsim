@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe RPicSim::MplabPin do
+describe RPicSim::Mplab::MplabPin do
   let(:pin_physical) { double("pin_physical") }
   subject(:mplab_pin) { described_class.new(pin_physical) }
 

@@ -1,4 +1,4 @@
-module RPicSim
+module RPicSim::Mplab
   class MplabPin
     # Initializes a new Pin object to wrap the given PinPhysical.
     # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]

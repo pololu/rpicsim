@@ -2,7 +2,7 @@ require 'java'
 require 'pathname'
 
 module RPicSim
-  module MPLABX
+  module Mplab
     # Returns a Patname object representing the directory of the MPLAB X we are using.
     # This can either come from the +RPICSIM_MPLABX+ environment variable or it can
     # be auto-detected by looking in the standard places that MPLAB X is installed.
@@ -161,11 +161,14 @@ module RPicSim
       def write(b)
       end
     end
-
+    
+    Lookup = org.openide.util.Lookup
+    Mdbcore = com.microchip.mplab.mdbcore
   end
 
-  Lookup = org.openide.util.Lookup
-  Mdbcore = com.microchip.mplab.mdbcore
+  Mdbcore = Mplab::Mdbcore # TODO: remove
+  Lookup = Mplab::Lookup   # TODO: remove
+  MPLABX = Mplab           # TODO: remove
 end
 
 require_relative 'mplab/mplab_pin'

@@ -3,8 +3,8 @@ module RPicSim
   # It provides methods for reading the pin's output value and setting
   # its input value.
   class Pin
-    # Initializes a new Pin object to wrap the given PinPhysical.
-    # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]
+    # Initializes a new Pin object to wrap the given MplabPin.
+    # @param mplab_pin [Mplab::MplabPin]
     def initialize(mplab_pin)
       raise ArgumentError, "mplab_pin is nil" if mplab_pin.nil?
       @mplab_pin = mplab_pin

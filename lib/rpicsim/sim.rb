@@ -413,7 +413,7 @@ module RPicSim
       end
 
       pins = (0...pin_set.getNumPins).collect do |i|
-        Pin.new MplabPin.new pin_set.getPin(i)
+        Pin.new Mplab::MplabPin.new pin_set.getPin(i)
       end
 
       pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
