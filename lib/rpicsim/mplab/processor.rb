@@ -1,3 +1,5 @@
+require_relative 'mplab_register'
+
 module RPicSim::Mplab
   class Processor
     # @param processor [com.microchip.mplab.mdbcore.simulator.Processor]

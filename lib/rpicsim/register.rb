@@ -2,24 +2,24 @@ module RPicSim
   class Register
     attr_reader :name
   
-    # @param register An object that implements com.microchip.mplab.mdbcore.simulator.Register
+    # @param register [Mplab::MplabRegister]
     # @param memory An optional parameter that enables memory_value.
-    def initialize(register, memory = nil)
-      @register = register
-      @name = register.getName.to_sym
+    def initialize(mplab_register, memory = nil)
+      @mplab_register = mplab_register
+      @name = mplab_register.name.to_sym
       @memory = memory
     end
 
     # Sets the value of the register.
     # @param val [Integer]
     def value=(val)
-      @register.write val
+      @mplab_register.write val
     end
     
     # Reads the value of the register.
     # @return [Integer]
     def value
-      @register.read
+      @mplab_register.read
     end
     
     # For some registers, like STATUS, you cannot read and write the full
@@ -39,7 +39,7 @@ module RPicSim
     # Gets the address of the register.
     # @return [Integer]
     def address
-      @register.getAddress
+      @mplab_register.address
     end
     
     # Gets the range of addresses occupied.

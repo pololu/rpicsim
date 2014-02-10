@@ -138,4 +138,3 @@ com.microchip.mplab.logger.MPLABLogger.mplog.setLevel(java.util.logging.Level::A
 
 require_relative 'mplab/mplab_pin'
 require_relative 'mplab/assembly'
-

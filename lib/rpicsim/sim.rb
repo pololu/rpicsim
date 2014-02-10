@@ -372,7 +372,7 @@ module RPicSim
         reg = @data_store.getProcessor.getSFRSet.getSFR(sfr.name)
         raise "Cannot find register named '#{sfr.name}'." if !reg
 
-        @sfrs[sfr.name.to_sym] = Register.new(reg, @sfr_memory)
+        @sfrs[sfr.name.to_sym] = Register.new(Mplab::MplabRegister.new(reg), @sfr_memory)
       end
       
       @nmmrs = {}
