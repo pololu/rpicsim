@@ -133,6 +133,9 @@ module RPicSim
   MPLABX = Mplab           # TODO: remove
 end
 
+# We want as much awareness as possible; if it becomes a problem we can change this.
+com.microchip.mplab.logger.MPLABLogger.mplog.setLevel(java.util.logging.Level::ALL)
+
 require_relative 'mplab/mplab_pin'
 require_relative 'mplab/assembly'
 
