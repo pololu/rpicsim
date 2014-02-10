@@ -29,8 +29,8 @@ module RPicSim
       # @param device [String] The device name, for example "PIC10F322".
       def device_is(device)
         @device = device
-        @assembly = create_assembly
-        @flash_word_max_value = @assembly.GetDevice.getMemTraits.getCodeWordTraits.getInitValue
+        @assembly = Mplab::Assembly.new(device)
+        @flash_word_max_value = @assembly.device_info.flash_word_max_value
       end
 
       # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
@@ -209,32 +209,6 @@ module RPicSim
 
       end
 
-      public
-
-      # Create an Assembly for simulating this firmware and suppress the
-      # junk that Microchip prints to STDOUT.
-      def create_assembly
-        assembly = MPLABX.create_assembly(@device)
-
-        debugger = assembly.debugger
-
-        # In MPLAB X v1.70, this line had to be before the call to SetTool, or else when we run
-        # debugger.Connect we will get two lines of: [Fatal Error] :1:1: Premature end of file.
-        assembly.simulator
-
-        # Connect the assembly to a simulator.
-        sim_meta = Mdbcore.platformtool.PlatformToolMetaManager.getTool("Simulator")
-        assembly.SetTool(sim_meta.configuration_object_id, sim_meta.class_name, sim_meta.flavor, "")
-        if !sim_meta.getToolSupportForDevice(device).all? &:isSupported
-          raise "Microchip's simulator does not fully support " + device + "."
-        end
-        assembly.SetHeader("")  # The Microchip documentation doesn't say what this is.
-        debugger.Connect(Mdbcore.debugger.Debugger::CONNECTION_TYPE::DEBUGGER)
-        assembly
-      end
-
-      private
-
       def initialize_symbols
         @program_file = ProgramFile.new(@filename, @device)
         @var_address = program_file.var_addresses
@@ -322,7 +296,8 @@ module RPicSim
 
     # Makes a new simulation using the settings specified when the class was defined.
     def initialize
-      @assembly = self.class.create_assembly
+      @assembly = Mplab::Assembly.new(device)
+      @assembly.start_simulator_and_debugger
       @debugger = @assembly.debugger
       @simulator = @assembly.simulator
 
@@ -454,23 +429,20 @@ module RPicSim
     end
 
     def initialize_sfrs_and_nmmrs
-      device = @assembly.GetDevice  # com.microchip.mplab.crownkingx.xPIC
       @sfrs = {}
       memory = @data_store.getSFRMemory
-      device.getAddrOntoSFR.each do |addr, node|
-        register = com.microchip.crownking.edc.Register.new(node)
-        if register.width != 8
+      @assembly.device_info.sfrs.each do |sfr|
+        if sfr.width != 8
           raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
         end
+        reg = @data_store.getProcessor.getSFRSet.getSFR(sfr.name)
+        raise "Cannot find register named '#{sfr.name}'." if !reg
 
-        name = register.name
-        reg = @data_store.getProcessor.getSFRSet.getSFR(name)
-        raise "Cannot find register named '#{name}'." if !reg
-
-        @sfrs[name.to_sym] = Register.new(reg, memory)
+        @sfrs[sfr.name.to_sym] = Register.new(reg, memory)
       end
-
+      
       @nmmrs = {}
+      device = @assembly.device_info.instance_variable_get(:@xpic)  # tmphax, TODO: remove
       device.getIDOntoCoreNMMR.each do |id, node|
         register = com.microchip.crownking.edc.Register.new(node)
         if register.width != 8

@@ -111,44 +111,6 @@ module RPicSim
       end
     end
 
-    # Creates a new, blank assembly.
-    # @param device [String] the name of the device, e.g. "PIC10F322".
-    def self.create_assembly(device)
-      assembly_factory = Lookup.default.lookup(Mdbcore.assemblies.AssemblyFactory.java_class)
-      mute_stdout do
-        return assembly_factory.create(device)
-      end
-    end
-
-    # The com.microchip.mplab.mdbcore.assemblies.Assembly class is an important class
-    # from MPLAB X that we use a lot.  It seems to be a collection of objects where you
-    # can look up the object you want by querying for its class.
-    #
-    # RPicSim users should not need to touch this class directly.
-    class Java::ComMicrochipMplabMdbcoreAssemblies::Assembly
-      # Gets a com.microchip.mplab.mdbcore.loader.Loader object which we can use to
-      # load programs into the assembly.
-      def loader
-        getLookup.lookup Mdbcore.loader.Loader.java_class
-      end
-
-      # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
-      def debugger
-        getLookup.lookup Mdbcore.debugger.Debugger.java_class
-      end
-
-      # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
-      def simulator
-        getLookup.lookup Mdbcore.simulator.Simulator.java_class
-      end
-
-      # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
-      # use to disassemble the program binary.
-      def disasm
-        getLookup.lookup Mdbcore.disasm.DisAsm.java_class
-      end
-    end
-
     # The MCDisAsm class is the disassembly provided by MPLAB X.
     # We added this part so we could get access to its strategy object, but
     # we are not currently using that feature.
@@ -172,4 +134,7 @@ module RPicSim
 end
 
 require_relative 'mplab/mplab_pin'
+require_relative 'mplab/assembly'
+require_relative 'mplab/device_info'
+require_relative 'mplab/sfr_info'
 
