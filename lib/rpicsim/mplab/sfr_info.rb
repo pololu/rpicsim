@@ -2,7 +2,7 @@ module RPicSim::Mplab
   class SfrInfo
     attr_reader :address
   
-    # TODO: try to get rid of the address parameter
+    # @param address The address of the register.
     # @param register [com.microchip.crownking.edc.Register]
     def initialize(address, register)
       @address = address
