@@ -3,7 +3,7 @@ require 'pathname'
 
 module RPicSim
   module Mplab
-    # Returns a Patname object representing the directory of the MPLAB X we are using.
+    # Returns a Pathname object representing the directory of the MPLAB X we are using.
     # This can either come from the +RPICSIM_MPLABX+ environment variable or it can
     # be auto-detected by looking in the standard places that MPLAB X is installed.
     # @return [Pathname]
