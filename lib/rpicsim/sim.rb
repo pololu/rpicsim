@@ -383,7 +383,7 @@ module RPicSim
 
         reg = @data_store.getProcessor.getNMMRSet.getNMMR(nmmr.name)
         raise "Cannot find NMMR named '#{nmmr.name}'." if !reg
-        @nmmrs[nmmr.name.to_sym] = Register.new(reg)
+        @nmmrs[nmmr.name.to_sym] = Register.new(Mplab::MplabRegister.new(reg))
       end
 
       @wreg = sfr_or_nmmr(:WREG)
