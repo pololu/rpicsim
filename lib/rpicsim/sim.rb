@@ -303,6 +303,7 @@ module RPicSim
 
       # Set up our stores and helper objects.
       @fr_memory = Memory.new @simulator.fr_memory
+      @sfr_memory = Memory.new @simulator.sfr_memory
       @program_memory = Memory.new @simulator.program_memory
       @stack_memory = Memory.new @simulator.stack_memory
       @test_memory = Memory.new @simulator.test_memory
@@ -364,7 +365,6 @@ module RPicSim
 
     def initialize_sfrs_and_nmmrs
       @sfrs = {}
-      memory = @data_store.getSFRMemory
       @assembly.device_info.sfrs.each do |sfr|
         if sfr.width != 8
           raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
@@ -372,7 +372,7 @@ module RPicSim
         reg = @data_store.getProcessor.getSFRSet.getSFR(sfr.name)
         raise "Cannot find register named '#{sfr.name}'." if !reg
 
-        @sfrs[sfr.name.to_sym] = Register.new(reg, memory)
+        @sfrs[sfr.name.to_sym] = Register.new(reg, @sfr_memory)
       end
       
       @nmmrs = {}

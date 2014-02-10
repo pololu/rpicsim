@@ -28,12 +28,12 @@ module RPicSim
     # This setter gets around that by writing directly to the memory object
     # that backs the register.
     def memory_value=(value)
-      @memory.WriteWord(address, value)
+      @memory.write_word(address, value)
     end
     
     # Reads the value directly from the memory object backing the register.
     def memory_value
-      @memory.ReadWord(address)    
+      @memory.read_word(address)    
     end
 
     # Gets the address of the register.

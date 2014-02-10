@@ -19,6 +19,10 @@ module RPicSim::Mplab
       @fr_memory ||= MplabMemory.new data_store.getFileMemory
     end
     
+    def sfr_memory
+      @sfr_memory ||= MplabMemory.new data_store.getSFRMemory
+    end
+    
     def program_memory
       @program_memory ||= MplabMemory.new data_store.getProgMemory
     end
