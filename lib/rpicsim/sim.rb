@@ -442,17 +442,14 @@ module RPicSim
       end
       
       @nmmrs = {}
-      device = @assembly.device_info.instance_variable_get(:@xpic)  # tmphax, TODO: remove
-      device.getIDOntoCoreNMMR.each do |id, node|
-        register = com.microchip.crownking.edc.Register.new(node)
-        if register.width != 8
-          raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
+      @assembly.device_info.nmmrs.each do |nmmr|
+        if nmmr.width != 8
+          raise "We only support 8-bit registers at this time.  #{nmmr.name} is #{nmmr.width}-bit."
         end
 
-        name = register.name
-        reg = @data_store.getProcessor.getNMMRSet.getNMMR(name)
-        raise "Cannot find NMMR named '#{name}'." if !reg
-        @nmmrs[name.to_sym] = Register.new(reg)
+        reg = @data_store.getProcessor.getNMMRSet.getNMMR(nmmr.name)
+        raise "Cannot find NMMR named '#{nmmr.name}'." if !reg
+        @nmmrs[nmmr.name.to_sym] = Register.new(reg)
       end
 
       @wreg = sfr_or_nmmr(:WREG)

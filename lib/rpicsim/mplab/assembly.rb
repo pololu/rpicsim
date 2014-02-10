@@ -1,3 +1,5 @@
+require_relative 'device_info'
+
 module RPicSim::Mplab
   class Assembly
     attr_reader :device

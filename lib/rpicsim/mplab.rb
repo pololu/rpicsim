@@ -135,6 +135,4 @@ end
 
 require_relative 'mplab/mplab_pin'
 require_relative 'mplab/assembly'
-require_relative 'mplab/device_info'
-require_relative 'mplab/sfr_info'
 
