@@ -17,6 +17,10 @@ module RPicSim::Mplab
       @assembly.getLookup.lookup Mdbcore.simulator.Simulator.java_class
     end
     
+    def load_file(filename)
+      loader.Load(filename)
+    end
+    
     # Connect the assembly to a simulator and debugger.
     def start_simulator_and_debugger
       # In MPLAB X v1.70, this line had to be before the call to SetTool, or else when we run
@@ -33,11 +37,6 @@ module RPicSim::Mplab
       nil
     end
     
-    # TODO: make private or return a wrapper object
-    def loader
-      lookup Mdbcore.loader.Loader.java_class
-    end
-
     # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
     # TODO: make private or return a wrapper object
     def debugger
@@ -62,6 +61,11 @@ module RPicSim::Mplab
     end
     
     private 
+    
+    def loader
+      lookup Mdbcore.loader.Loader.java_class
+    end
+
     def lookup(klass)
       @assembly.getLookup.lookup klass
     end

@@ -302,7 +302,7 @@ module RPicSim
       @simulator = @assembly.simulator
 
       # Load our firmware into the simulator.
-      @assembly.loader.Load(filename)
+      @assembly.load_file(filename)
       @debugger.Program(Mdbcore.debugger.Debugger::PROGRAM_OPERATION::AUTO_SELECT)
 
       # Set up our stores and helper objects.
