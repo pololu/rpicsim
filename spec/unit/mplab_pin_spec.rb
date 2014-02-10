@@ -27,7 +27,6 @@ describe RPicSim::MplabPin do
   describe "#set_analog" do
     [2.3, 2].each do |value|
       context "given #{value}" do
-        let(:value) { value }
         it "calls externalSetAnalogValue with that value" do
           pin_physical.should_receive(:externalSetAnalogValue).with(value)
           mplab_pin.set_analog(value)
