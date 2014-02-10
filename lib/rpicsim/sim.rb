@@ -297,13 +297,8 @@ module RPicSim
     # Makes a new simulation using the settings specified when the class was defined.
     def initialize
       @assembly = Mplab::Assembly.new(device)
-      @assembly.start_simulator_and_debugger
-      @debugger = @assembly.debugger
+      @assembly.start_simulator_and_debugger(filename)
       @simulator = @assembly.simulator
-
-      # Load our firmware into the simulator.
-      @assembly.load_file(filename)
-      @debugger.Program(Mdbcore.debugger.Debugger::PROGRAM_OPERATION::AUTO_SELECT)
 
       # Set up our stores and helper objects.
       @data_store = @simulator.getDataStore
@@ -528,7 +523,7 @@ module RPicSim
     # Executes one more instruction.
     # @return nil
     def step
-      @debugger.StepInstr
+      @assembly.debugger_step
       @step_callbacks.each(&:call)
       nil  # To make using the ruby debugger more pleasant.
     end

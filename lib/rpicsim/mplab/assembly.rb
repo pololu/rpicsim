@@ -22,7 +22,7 @@ module RPicSim::Mplab
     end
     
     # Connect the assembly to a simulator and debugger.
-    def start_simulator_and_debugger
+    def start_simulator_and_debugger(filename)
       # In MPLAB X v1.70, this line had to be before the call to SetTool, or else when we run
       # debugger.Connect we will get two lines of: [Fatal Error] :1:1: Premature end of file.
       simulator
@@ -34,15 +34,18 @@ module RPicSim::Mplab
       end
       @assembly.SetHeader("")  # The Microchip documentation doesn't say what this is.
       debugger.Connect(Mdbcore.debugger.Debugger::CONNECTION_TYPE::DEBUGGER)
+      
+      # Load our firmware into the simulator.
+      load_file(filename)
+      debugger.Program(Mdbcore.debugger.Debugger::PROGRAM_OPERATION::AUTO_SELECT)
+
       nil
     end
     
-    # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
-    # TODO: make private or return a wrapper object
-    def debugger
-      lookup Mdbcore.debugger.Debugger.java_class
+    def debugger_step
+      debugger.StepInstr
     end
-
+    
     # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
     # TODO: make private or return a wrapper object
     def simulator
@@ -60,7 +63,11 @@ module RPicSim::Mplab
       @device_info ||= DeviceInfo.new(@assembly.GetDevice)
     end
     
-    private 
+    private
+    # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
+    def debugger
+      lookup Mdbcore.debugger.Debugger.java_class
+    end
     
     def loader
       lookup Mdbcore.loader.Loader.java_class
