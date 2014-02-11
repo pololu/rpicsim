@@ -14,13 +14,19 @@ module RPicSim::Mplab
     end
     
     def operands
-      # Convert from Map<String, Integer> to a Ruby hash.
-      @operands ||= @instruction.operands.to_hash
+      @operands ||= operands_hash(@instruction.operands)
     end
     
     # This seems to be the number of bytes that the instruction takes.
     def inc
       @instruction.inc
+    end
+    
+    private
+    def operands_hash(map)
+      # Convert from Map<String, Integer> to a Ruby hash.
+      # TODO: use symbols for keys instead of strings
+      map.to_hash
     end
   end
 end
