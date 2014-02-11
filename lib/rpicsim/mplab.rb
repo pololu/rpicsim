@@ -128,8 +128,6 @@ module RPicSim
     Mdbcore = com.microchip.mplab.mdbcore
   end
 
-  Mdbcore = Mplab::Mdbcore # TODO: remove
-  Lookup = Mplab::Lookup   # TODO: remove
 end
 
 # We want as much awareness as possible; if it becomes a problem we can change this.

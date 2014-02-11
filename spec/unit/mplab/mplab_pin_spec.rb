@@ -3,7 +3,9 @@ require_relative '../../spec_helper'
 describe RPicSim::Mplab::MplabPin do
   let(:pin_physical) { double("pin_physical") }
   subject(:mplab_pin) { described_class.new(pin_physical) }
-
+  let(:pin_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::PinState }
+  let(:io_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::IOState }
+  
   before do
     allow(pin_physical).to receive(:getIOState).and_return { io_state }
     allow(pin_physical).to receive(:get).and_return { pin_state }
@@ -12,14 +14,14 @@ describe RPicSim::Mplab::MplabPin do
 
   describe "#set_low" do
     it "calls externalSet(PinState::LOW)" do
-      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::LOW)
+      pin_physical.should_receive(:externalSet).with(pin_state_enum::LOW)
       mplab_pin.set_low
     end
   end
 
   describe "#set_high" do
     it "calls externalSet(PinState::HIGH)" do
-      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::HIGH)
+      pin_physical.should_receive(:externalSet).with(pin_state_enum::HIGH)
       mplab_pin.set_high
     end
   end
@@ -36,7 +38,7 @@ describe RPicSim::Mplab::MplabPin do
   end
 
   context "when getIOState returns OUTPUT" do
-    let(:io_state) { RPicSim::Mdbcore.simulator.Pin::IOState::OUTPUT }
+    let(:io_state) { io_state_enum::OUTPUT }
 
     specify "#output? returns true" do
       expect(mplab_pin.output?).to eq true
@@ -44,7 +46,7 @@ describe RPicSim::Mplab::MplabPin do
   end
 
   context "when getIOState returns INPUT" do
-    let(:io_state) { RPicSim::Mdbcore.simulator.Pin::IOState::INPUT }
+    let(:io_state) { io_state_enum::INPUT }
 
     specify "#output? returns false" do
       expect(mplab_pin.output?).to eq false
@@ -60,7 +62,7 @@ describe RPicSim::Mplab::MplabPin do
   end
 
   context "when driving high" do
-    let(:pin_state) { RPicSim::Mdbcore.simulator.Pin::PinState::HIGH }
+    let(:pin_state) { pin_state_enum::HIGH }
 
     specify "#high? returns true" do
       expect(mplab_pin.high?).to eq true
@@ -68,7 +70,7 @@ describe RPicSim::Mplab::MplabPin do
   end
 
   context "when driving low" do
-    let(:pin_state) { RPicSim::Mdbcore.simulator.Pin::PinState::LOW }
+    let(:pin_state) { pin_state_enum::LOW }
 
     specify "#high? returns false" do
       expect(mplab_pin.high?).to eq false

@@ -4,15 +4,16 @@ describe RPicSim::Pin do
   let(:pin_physical) { double("pin_physical") }
   let(:mplab_pin) { RPicSim::Mplab::MplabPin.new(pin_physical) }
   subject(:pin) { described_class.new(mplab_pin) }
-
+  let(:pin_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::PinState }
+  
   describe "#set" do
     it "when given false calls externalSet(PinState::LOW)" do
-      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::LOW)
+      pin_physical.should_receive(:externalSet).with(pin_state_enum::LOW)
       pin.set(false)
     end
 
     it "when given true calls externalSet(PinState::HIGH)" do
-      pin_physical.should_receive(:externalSet).with(RPicSim::Mdbcore.simulator.Pin::PinState::HIGH)
+      pin_physical.should_receive(:externalSet).with(pin_state_enum::HIGH)
       pin.set(true)
     end
     
