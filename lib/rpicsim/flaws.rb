@@ -40,7 +40,7 @@ module RPicSim
   
     @flaw_hash = {}
     def self.[](name)
-      @flaw_hash[name].effect MPLABX.version
+      @flaw_hash[name].effect Mplab.version
     end
   
     def self.add(name)

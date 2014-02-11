@@ -10,7 +10,7 @@ describe 'ProgramFile from MPLAB X' do
     msg = "\"The debug file does not appear to be located in the expected location (/ProjectDir/dist/ConfigName/Debug/???.cof). Has it been moved?\""
 
     expect do
-      RPicSim::MPLABX.mute_exceptions do
+      RPicSim::Mplab.mute_exceptions do
         program_file.Load
       end
     end.to raise_error exc, msg

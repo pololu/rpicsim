@@ -4,7 +4,7 @@ describe "PathRetrieval" do
   it "chops off the drive letter so it can only find things on the C drive", flaw: true do
     # This means that MPLAB X must always be on the C drive.
     retrieval = com.microchip.mplab.open.util.pathretrieval.PathRetrieval 
-    path = retrieval.getPath(RPicSim::MPLABX::DocumentLocator.java_class)
+    path = retrieval.getPath(RPicSim::Mplab::DocumentLocator.java_class)
     
     path.should start_with "/"   # bad
 

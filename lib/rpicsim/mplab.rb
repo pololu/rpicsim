@@ -130,7 +130,6 @@ module RPicSim
 
   Mdbcore = Mplab::Mdbcore # TODO: remove
   Lookup = Mplab::Lookup   # TODO: remove
-  MPLABX = Mplab           # TODO: remove
 end
 
 # We want as much awareness as possible; if it becomes a problem we can change this.
