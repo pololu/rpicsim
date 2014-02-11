@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require_relative '../../spec_helper'
 
 describe RPicSim::Mplab::MplabPin do
   let(:pin_physical) { double("pin_physical") }
