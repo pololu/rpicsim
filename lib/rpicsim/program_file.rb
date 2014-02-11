@@ -13,20 +13,7 @@ module RPicSim
     def initialize(filename, device)
       @filename = filename
       @device = device
-    
-      raise "File does not exist: #{filename}" if !File.exist?(filename)  # Avoid a Java exception.
-    
-      if !File.realdirpath(filename).split("/").include?("dist")
-        raise "The file must be inside a directory named dist or else the MCLoader " +
-              "class will throw an exception saying that it cannot find the COF file."
-        # David was unable to locate the Microchip code that controls this behavior,
-        # but determined the error above through experimentation.
-      end
-
-      factory = Lookup.getDefault.lookup(Mdbcore.program.spi.IProgramFileProviderFactory.java_class)      
-      @mc_program_file = factory.getProvider(filename, device)
-      @mc_program_file.Load
-      
+      @mplab_program_file = Mplab::MplabProgramFile.new(filename, device)
       @instructions = []
     end
     
@@ -47,14 +34,7 @@ module RPicSim
     # Returns a hash associating RAM variable names (as symbols) to their addresses.
     # @return (Hash)
     def var_addresses
-      @var_addresses ||= begin
-        hash = {}
-        # I'm not sure what the arguments to ISymbolTable.getSymbols are supposed to be, but (0,0) works.
-        @mc_program_file.getSymbolTable.getSymbols(0, 0).select { |s| s.m_lType == 0 }.each do |s|
-          hash[s.m_Symbol.to_sym] = s.address
-        end
-        hash
-      end
+      @var_addresses ||= @mplab_program_file.symbols_in_ram
     end
     
     # Returns a hash associating program memory label names (as symbols) to their addresses.
@@ -62,9 +42,8 @@ module RPicSim
     def labels
       @labels ||= begin
         hash = {}
-        @mc_program_file.getSymbolTable.getSymbols(0, 0).select { |s| s.m_lType != 0 }.each do |s|
-          name = s.m_Symbol.to_sym
-          hash[name] = Label.new(name, s.address)
+        @mplab_program_file.symbols_in_code_space.each do |name, address|
+          hash[name] = Label.new(name, address)
         end
         hash
       end
