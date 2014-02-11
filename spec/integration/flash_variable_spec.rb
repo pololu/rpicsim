@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe "Flash variables" do
+describe "Flash variables (midrange)" do
   before do
     start_sim Firmware::FlashVariables
   end
@@ -79,4 +79,41 @@ describe "Flash variables" do
     end
   end
 
+end
+
+describe 'Flash variables (PIC18)' do
+  before do
+    start_sim Firmware::Test18F25K50
+  end
+
+  context "in normal space (not user id space)" do
+    subject { flashVar1 }
+    
+    it 'has the right address (bytes, not words)' do
+      expect(subject.address).to eq 0x0020
+    end
+    
+    it 'can be read by Ruby' do
+      expect(subject.value).to eq 0x5544
+    end
+    
+    it 'can be read by the firmware' do
+      run_subroutine :readFlashVar1, cycle_limit: 100
+      expect(resultVar.value).to eq 0x5544
+    end
+    
+    it 'can be written by Ruby' do
+      subject.value = 0xCCDD
+      expect(subject.value).to eq 0xCCDD
+    end
+    
+    it 'can be read by firmware after being written by Ruby' do
+      subject.value = 0x0A0E
+      run_subroutine :readFlashVar1, cycle_limit: 100
+      expect(resultVar.value).to eq 0x0A0E
+    end
+    
+    # TODO: test that flash writes on the PIC18F25K50 can be simulated
+  end
+  
 end

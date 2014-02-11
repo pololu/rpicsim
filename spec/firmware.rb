@@ -72,6 +72,7 @@ module Firmware
     filename_is Dir + 'Test18F25K50.cof'
     def_var :var1, :u8
     def_var :var2, :u16
+    def_var :resultVar, :u16
     def_flash_var :flashVar1, :word
     def_flash_var :flashVar2, :word
   end

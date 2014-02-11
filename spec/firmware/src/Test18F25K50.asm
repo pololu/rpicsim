@@ -3,7 +3,8 @@
   udata
 var1 res 1
 var2 res 2
-  
+resultVar res 2
+
 rst code 0
   goto start
   
@@ -14,16 +15,26 @@ isr
 
 flashVars code 0x20
 flashVar1
-  dw 0x1234
+  dw 0x5544
 flashVar2
-  db 0x12
-  db 0x34
+  db 0x11, 0x22
   
 main code 0x40
 start
   bra $
 
 emptyRoutine:
+  return
+
+readFlashVar1:
+  movlw     low(flashVar1)
+  movwf     TBLPTRL
+  movlw     high(flashVar1)
+  movwf     TBLPTRH
+  tblrd*+
+  movff     TABLAT, resultVar
+  tblrd*
+  movff     TABLAT, resultVar + 1
   return
 
   
