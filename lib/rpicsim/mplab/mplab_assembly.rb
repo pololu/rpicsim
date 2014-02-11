@@ -1,5 +1,6 @@
 require_relative 'mplab_device_info'
 require_relative 'mplab_simulator'
+require_relative 'mplab_disassembler'
 
 module RPicSim::Mplab
   class MplabAssembly
@@ -53,8 +54,8 @@ module RPicSim::Mplab
     # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
     # use to disassemble the program binary.
     # TODO: make private or return a wrapper object
-    def disasm
-      lookup Mdbcore.disasm.DisAsm.java_class
+    def disassembler
+      @disassembler ||= MplabDisassembler.new lookup Mdbcore.disasm.DisAsm.java_class
     end
     
     def device_info

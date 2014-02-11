@@ -26,10 +26,6 @@ module RPicSim
       end
     end
     
-    def disasm
-      @disasm ||= assembly.disasm
-    end
-    
     public
     # Returns a hash associating RAM variable names (as symbols) to their addresses.
     # @return (Hash)
@@ -103,12 +99,14 @@ module RPicSim
     end
 
     def make_instruction(address)
-      mc_instruction = disasm.Disassemble(address, nil, nil)
+      mplab_instruction = assembly.disassembler.disassemble(address)
 
-      increment = mc_instruction.inc / 2   # I am not sure if this is right in all cases
+      # Convert the increment from units of bytes to units of words.
+      # I am not sure if my assumptions here or the code below is right in all cases.
+      increment = mplab_instruction.inc / 2
 
       # TODO: add support for all other 8-bit PIC architectures
-      properties = Array case mc_instruction.opcode
+      properties = Array case mplab_instruction.opcode
       when 'ADDWF'
       when 'ANDWF'
       when 'CLRF'
@@ -147,8 +145,8 @@ module RPicSim
         raise "Unrecognized opcode #{opcode} (operands #{operands.inspect})."
       end
       
-      Instruction.new(address, self, mc_instruction.opcode,
-        mc_instruction.operands.to_hash, increment, mc_instruction.instruction,
+      Instruction.new(address, self, mplab_instruction.opcode,
+        mplab_instruction.operands, increment, mplab_instruction.instruction_string,
         properties)
     end
   end
