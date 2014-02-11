@@ -12,14 +12,20 @@ describe RPicSim::ProgramFile do
     specify { subject.address_description(-1).should == "-1" }
   end
 
-  it "acts as a disassembler" do
-    instruction = program_file.instruction(0)
-    instruction.should be_a RPicSim::Instruction
-    instruction.address.should == 0
-    instruction.opcode.should == "CLRF"
-    instruction.operands.should == {"f" => 0x20}
-    instruction.to_s.should == 'Instruction(0x0000 = setupNormalFlash, CLRF 0x20)'
-    instruction.inspect.should == '#<RPicSim::Instruction:0x0000 = setupNormalFlash, CLRF 0x20>'
+  context 'as a disassembler' do
+    subject(:instruction) { program_file.instruction(0) }
+    
+    specify { instruction.should be_a RPicSim::Instruction }
+
+    specify { instruction.address.should == 0 }
+
+    specify { instruction.opcode.should == 'CLRF' }
+    
+    specify { instruction.operands.should == {'f' => 0x20} }
+    
+    specify { instruction.to_s.should == 'Instruction(0x0000 = setupNormalFlash, CLRF 0x20)' }
+    
+    specify { instruction.inspect.should == '#<RPicSim::Instruction:0x0000 = setupNormalFlash, CLRF 0x20>' }
   end
 
   it "crashes when you try to create it directly", flaw: true do
