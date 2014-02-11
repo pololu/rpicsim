@@ -33,7 +33,7 @@ module RPicSim
     private
     def assembly
       @assembly ||= begin
-        assembly = Mplab::Assembly.new(device)
+        assembly = Mplab::MplabAssembly.new(device)
         assembly.load_file(filename)
         assembly
       end

@@ -30,7 +30,7 @@ module RPicSim
       # @param device [String] The device name, for example "PIC10F322".
       def device_is(device)
         @device = device
-        @assembly = Mplab::Assembly.new(device)
+        @assembly = Mplab::MplabAssembly.new(device)
         @flash_word_max_value = @assembly.device_info.flash_word_max_value
       end
 
@@ -297,7 +297,7 @@ module RPicSim
 
     # Makes a new simulation using the settings specified when the class was defined.
     def initialize
-      @assembly = Mplab::Assembly.new(device)
+      @assembly = Mplab::MplabAssembly.new(device)
       @assembly.start_simulator_and_debugger(filename)
       @simulator = @assembly.simulator
       @processor = @simulator.processor

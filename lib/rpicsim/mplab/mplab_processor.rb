@@ -1,7 +1,7 @@
 require_relative 'mplab_register'
 
 module RPicSim::Mplab
-  class Processor
+  class MplabProcessor
     # @param processor [com.microchip.mplab.mdbcore.simulator.Processor]
     def initialize(processor)
       @processor = processor

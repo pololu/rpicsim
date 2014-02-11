@@ -1,8 +1,8 @@
-require_relative 'device_info'
-require_relative 'simulator'
+require_relative 'mplab_device_info'
+require_relative 'mplab_simulator'
 
 module RPicSim::Mplab
-  class Assembly
+  class MplabAssembly
     attr_reader :device
   
     def initialize(device)
@@ -47,7 +47,7 @@ module RPicSim::Mplab
     # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
     # TODO: make private or return a wrapper object
     def simulator
-      @simulator ||= Simulator.new lookup Mdbcore.simulator.Simulator.java_class
+      @simulator ||= MplabSimulator.new lookup Mdbcore.simulator.Simulator.java_class
     end
 
     # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
@@ -58,7 +58,7 @@ module RPicSim::Mplab
     end
     
     def device_info
-      @device_info ||= DeviceInfo.new(@assembly.GetDevice)
+      @device_info ||= MplabDeviceInfo.new(@assembly.GetDevice)
     end
     
     private

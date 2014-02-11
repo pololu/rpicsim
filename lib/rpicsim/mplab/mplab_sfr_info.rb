@@ -1,5 +1,5 @@
 module RPicSim::Mplab
-  class SfrInfo
+  class MplabSfrInfo
     attr_reader :address
   
     # @param address The address of the register.

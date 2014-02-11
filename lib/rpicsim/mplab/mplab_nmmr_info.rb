@@ -1,5 +1,5 @@
 module RPicSim::Mplab
-  class NmmrInfo
+  class MplabNmmrInfo
     attr_reader :id
   
     # @param address The address of the register.

@@ -1,10 +1,10 @@
 require_relative 'mplab_memory'
-require_relative 'processor'
+require_relative 'mplab_processor'
 
 module RPicSim::Mplab
   # DeviceInfo is a wrapper for the MPLAB xPIC class which gives us information
   # about the target PIC device.
-  class Simulator
+  class MplabSimulator
     # Makes a new DeviceInfo object.
     # @param xpic [com.microchip.mplab.mdbcore.simulator.Simulator]
     def initialize(simulator)
@@ -36,7 +36,7 @@ module RPicSim::Mplab
     end
     
     def processor
-      @processor ||= Processor.new data_store.getProcessor
+      @processor ||= MplabProcessor.new data_store.getProcessor
     end
     
     def pins
