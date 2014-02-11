@@ -22,6 +22,10 @@ module RPicSim::Mplab
     def sfr_memory
       @sfr_memory ||= MplabMemory.new data_store.getSFRMemory
     end
+
+    def nmmr_memory
+      @nmmr_memory ||= MplabMemory.new data_store.getNMMRMemory
+    end
     
     def program_memory
       @program_memory ||= MplabMemory.new data_store.getProgMemory
@@ -60,7 +64,6 @@ module RPicSim::Mplab
     def check_peripherals
       check_peripherals_in_data_store
       check_peripheral_set
-      check_missing_peripherals
     end
 
     private
@@ -81,14 +84,19 @@ module RPicSim::Mplab
         raise "MPLAB X failed to load any peripherals into the PeripheralSet."
       end
     end
-
-    def check_missing_peripherals
-      # We have never seen missing peripherals but it seems like a good thing to check.
-      peripherals = data_store.getProcessor.getPeripheralSet
-      if peripherals.getMissingPeripherals.to_a.size > 0
-        raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
-      end
-    end
+    
+    # This is commented out because MPLAB X v2.00 with the PIC18F25K50
+    # reports three missing peripherals:
+    #  PBADEN_PCFG
+    #  config
+    #  CONFIG3H.PBADEN
+    #
+    #def check_missing_peripherals
+    #  peripherals = data_store.getProcessor.getPeripheralSet
+    #  if peripherals.getMissingPeripherals.to_a.size > 0
+    #    raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
+    #  end
+    #end
     
   end
 end
