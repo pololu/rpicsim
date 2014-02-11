@@ -10,8 +10,6 @@ module RPicSim
   # Attach method of the MPLAB X memory classes.  This means that it doesn't work properly
   # in some versions of MPLAB X.  See {file:docs/Flaws.textile}.
   class MemoryWatcher
-    include Java::comMicrochipMplabUtilObservers::Observer
-    
     attr_accessor :var_names_ignored
     attr_accessor :var_names_ignored_on_first_step
     
@@ -20,8 +18,6 @@ module RPicSim
     # @param memory [Mplab::MplabMemory] The memory to watch
     # @param vars [Array(Variable)]
     def initialize(sim, memory, vars)
-      memory = memory.instance_variable_get(:@memory)  # TODO: fix tmphax
-    
       # Populate the @vars_by_address instance hash
       @vars_by_address = {}
       vars.each do |var|
@@ -36,7 +32,8 @@ module RPicSim
     
       @sim = sim
       @memory = memory
-      @memory.Attach(self, nil)      
+      @memory.on_change { |ar| handle_change(ar) }
+      
       @vars_written = Set.new
       @var_names_ignored = default_var_names_ignored(sim.device)
       @var_names_ignored_on_first_step = default_var_names_ignored_on_first_step(sim.device)
@@ -78,13 +75,8 @@ module RPicSim
       [:PORTA, :LATA, :OSCCON, :PMCON2, :INTCON]
     end
     
-    # This gets called by MPLAB X code to report events on the memory.
-    def Update(event)
-      return if event.EventType != Mdbcore.memory::MemoryEvent::EVENTS::MEMORY_CHANGED
-      
-      addresses = event.AffectedAddresses.flat_map do |mr|
-        (mr.Address...(mr.Address+mr.Size)).to_a
-      end
+    def handle_change(address_ranges)
+      addresses = address_ranges.flat_map(&:to_a)
       vars = addresses.map { |a| @vars_by_address[a] || a }
 
       remove_vars(vars, @var_names_ignored)
