@@ -18,7 +18,7 @@ Here is an example:
     !!!ruby
     describe "call stack" do
       subject(:call_stack_info) do
-        RPicSim::CallStackInfo.from_program_file(MySim.program_file, [0, 4])
+        RPicSim::CallStackInfo.hash_from_program_file(MySim.program_file, [0, 4])
       end
 
       specify "mainline code uses no more than 5 levels" do

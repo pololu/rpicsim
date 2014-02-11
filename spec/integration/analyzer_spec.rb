@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe "rcs03a program structure" do
   subject(:call_stack_info) do
-    RPicSim::CallStackInfo.from_program_file(
+    RPicSim::CallStackInfo.hash_from_program_file(
       Firmware::NestedSubroutines.program_file,
       [0,4]
     )

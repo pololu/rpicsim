@@ -15,7 +15,7 @@ module RPicSim
   # in a program that has one interrupt vector at address 4 inside an RSpec test.
   # Of course, you should adjust the numbers to suit your application:
   #
-  #     infos = CallStackInfo.from_program_file(program_file, [0, 4])
+  #     infos = CallStackInfo.hash_from_program_file(program_file, [0, 4])
   #     infos[0].max_depth.should <= 5  # main-line code should take at most 5 levels
   #     infos[4].max_depth.should <= 1  # ISR should take at most 1 stack level
   # 
@@ -23,8 +23,6 @@ module RPicSim
   # call stack depth can be achieved, which can be helpful if you need to reduce
   # your maximum stack depth.
   class CallStackInfo
-    # TODO: name these better so it's clear what data type they return
-    
     # For each of the given root instruction addresses, generates a {CallStackInfo}
     # report.  Returns the reports in a hash.
     #
@@ -33,7 +31,7 @@ module RPicSim
     #   addresses of the entry vectors for your program.  On a midrange device, these
     #   are typically 0 for the main-line code and 4 for the interrupt.
     # @return [Hash(address => CallStackInfo)]
-    def self.from_program_file(program_file, root_instruction_addresses)
+    def self.hash_from_program_file(program_file, root_instruction_addresses)
       infos = {}
       root_instruction_addresses.each do |addr|
         infos[addr] = from_root_instruction(program_file.instruction(addr))
