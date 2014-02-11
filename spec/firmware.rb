@@ -66,6 +66,15 @@ module Firmware
     filename_is Dir + "ReadSFR.cof"
     def_var :x, :u8
   end
+  
+  class Test18F25K50 < RPicSim::Sim
+    device_is 'PIC18F25K50'
+    filename_is Dir + 'Test18F25K50.cof'
+    def_var :var1, :u8
+    def_var :var2, :u16
+    def_flash_var :flashVar1, :word
+    def_flash_var :flashVar2, :word
+  end
 
   class Variables < RPicSim::Sim
     device_is "PIC10F322"

@@ -11,102 +11,48 @@ isr code 4
 isr
   call emptyRoutine
   retfie
+
+flashVars code 0x20
+flashVar1
+  dw 0x1234
+flashVar2
+  db 0x12
+  db 0x34
   
-main code 0x20
+main code 0x40
 start
-  call disasmSkipTest
-  call disasmBranchTest
   bra $
 
 emptyRoutine:
   return
+
   
-disasmSkipTest code 0x0040
-disasmSkipTest
+instructions code 0x1000
+ins_addwf:
+    addwf   4, F, ACCESS
+    addwf   5, W, BANKED
 
-  ; Test every skipping instruction with a two-word goto.
-  ; If any of these are misinterpreted as not a skip, then
-  ; the analyzer cannot get to the end and it will detect the wrong
-  ; call stack depth.
+ins_addwfc:
+    addwfc  4, F, ACCESS
+    addwfc  5, W, BANKED
 
-  cpfseq var1, ACCESS
-  return
+ins_andwf: 
+    andwf   4, F, ACCESS
+    andwf   5, W, BANKED
 
-  cpfsgt var1, ACCESS
-  return
+ins_clrf:
+    clrf    4, ACCESS
+    clrf    5, BANKED
 
-  cpfslt var1, ACCESS
-  return
+ins_comf:
+    comf    4, F, ACCESS
+    comf    5, W, BANKED
+    
+ins_cpfseq:
+    cpfseq  4, ACCESS
+    cpfseq  5, BANKED
 
-  decfsz var1, ACCESS
-  return
-
-  dcfsnz var1, ACCESS
-  return
-
-  incfsz var1, ACCESS
-  return
-
-  infsnz var1, ACCESS
-  return
-  
-  tstfsz var1, ACCESS
-  return
-  
-  btfsc LATA, 0
-  return
-
-  btfss LATA, 1
-  return
-  
-  call emptyRoutine
-  return
-  
-  
-disasmGotoTest code 0x0100
-disasmGotoTest
-  btfsc LATA, 0
-  bra emptyRoutine
-  goto emptyRoutine 
-
-disasmBranchTest code 0x0080
-disasmBranchTest
-  ; Test condition branches.  If our code doesn't allow for the possibility that the branch
-  ; can be taken or not taken, then it will not think the end of this routine is reachable.
-  
-  bc emptyRoutine
-  bc $ + 2
-  goto emptyRoutine 
-
-  bn emptyRoutine
-  bn $ + 2
-  goto emptyRoutine 
-
-  bnc emptyRoutine
-  bnc $ + 2
-  goto emptyRoutine 
-
-  bnn emptyRoutine
-  bnn $ + 2
-  goto emptyRoutine 
-
-  bnov emptyRoutine
-  bnov $ + 2
-  goto emptyRoutine 
-
-  bnz emptyRoutine
-  bnz $ + 2
-  goto emptyRoutine 
-
-  bov emptyRoutine
-  bov $ + 2
-  goto emptyRoutine 
-
-  bz emptyRoutine
-  bz $ + 2
-  goto emptyRoutine  
-  
-  call emptyRoutine
-  return
-  
+    ; TODO: add the rest of the instructions
+    
+    
   end
