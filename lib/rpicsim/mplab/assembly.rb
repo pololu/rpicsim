@@ -13,11 +13,6 @@ module RPicSim::Mplab
       end
     end
     
-    def simulator
-      # TODO: wrap in Simulator.new
-      @assembly.getLookup.lookup Mdbcore.simulator.Simulator.java_class
-    end
-    
     # Connect the assembly to a simulator and debugger.
     def start_simulator_and_debugger(filename)
       # In MPLAB X v1.70, this line had to be before the call to SetTool, or else when we run
