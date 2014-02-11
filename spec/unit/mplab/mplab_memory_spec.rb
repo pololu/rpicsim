@@ -4,12 +4,7 @@ describe RPicSim::Mplab::MplabMemory do
   let(:memory) { double('memory') }
   subject(:mplab_memory) { described_class.new(memory) }
   
-  before do
-    #allow(memory).to receive(:get).and_return { pin_state }
-    #allow(memory).to receive(:pinName).and_return { pin_name }
-  end
-  
-  describe 'write_word' do
+  describe '#write_word' do
     it 'writes to memory and returns the value written' do
       expect(memory).to receive(:WriteWord).with(12, 40).and_return { nil }
       return_value = mplab_memory.write_word(12, 40)
@@ -17,14 +12,14 @@ describe RPicSim::Mplab::MplabMemory do
     end
   end
   
-  describe 'read_word' do
+  describe '#read_word' do
     it 'reads memory' do
       expect(memory).to receive(:ReadWord).with(12).and_return { 40 }
       expect(mplab_memory.read_word(12)).to eq 40
     end
   end
   
-  describe 'is_valid_address?' do
+  describe '#is_valid_address?' do
     it 'just defers to IsValidAddress' do
       expect(memory).to receive(:IsValidAddress).with(22).and_return { true }
       expect(mplab_memory.is_valid_address?(22)).to eq true
