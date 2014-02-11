@@ -46,14 +46,12 @@ module RPicSim::Mplab
     end
 
     # Gets a com.microchip.mplab.mdbcore.simulator.Simulator object.
-    # TODO: make private or return a wrapper object
     def simulator
       @simulator ||= MplabSimulator.new lookup Mdbcore.simulator.Simulator.java_class
     end
 
     # Gets a com.microchip.mplab.mdbcore.disasm.Disasm object which we can
     # use to disassemble the program binary.
-    # TODO: make private or return a wrapper object
     def disassembler
       @disassembler ||= MplabDisassembler.new lookup Mdbcore.disasm.DisAsm.java_class
     end
