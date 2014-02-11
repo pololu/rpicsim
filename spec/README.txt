@@ -10,7 +10,7 @@ integration directory:
   one place.  These tests usually test multiple RPicSim classes and make sure
   they work properly with the MPLAB X classes.
 
-mplab_x directory:
+mplab directory:
   These are the MPLAB X tests.  They test the MPLAB X classes to make sure they
   are fit for various purposes.  For example, if you wanted to make sure that
   the ADC simulation on the PIC10F322 behaves properly, you might want to add a
