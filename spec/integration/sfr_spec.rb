@@ -36,3 +36,37 @@ describe "SFRs" do
     sfr(:STATUS).value.should == 0
   end
 end
+
+describe '16-bit NMMRs' do
+  before do
+    start_sim Firmware::Test18F25K50
+  end
+  subject(:sfr16) { nmmr(:TMR0_Internal) }
+  
+  it 'should have a size of 2' do
+    expect(sfr16.size).to eq 2
+  end
+  
+  it 'should take up two byte addresses' do
+    expect(sfr16.addresses.count).to eq 2
+  end
+  
+  it 'can be read and written with #memory_value' do
+    sfr16.memory_value = 0x1234
+    expect(sfr16.memory_value).to eq 0x1234
+  end
+
+  context 'in the case of TMR0_Internal' do
+    it 'can only read the LSb with #value', flaw: true do
+      sfr16.memory_value = 0x1234
+      expect(sfr16.value).to eq 0x34
+    end
+  
+    it 'cannot be written with #value', flaw: true do
+      sfr16.value = 0x1234
+      expect(sfr16.memory_value).to eq 0
+      expect(sfr16.value).to eq 0
+    end
+  end
+ 
+end

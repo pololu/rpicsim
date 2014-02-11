@@ -308,6 +308,7 @@ module RPicSim
       # Set up our stores and helper objects.
       @fr_memory = Memory.new @simulator.fr_memory
       @sfr_memory = Memory.new @simulator.sfr_memory
+      @nmmr_memory = Memory.new @simulator.nmmr_memory
       @program_memory = Memory.new @simulator.program_memory
       @stack_memory = Memory.new @simulator.stack_memory
       @test_memory = Memory.new @simulator.test_memory
@@ -329,8 +330,8 @@ module RPicSim
     def initialize_pins
       pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
       
-      pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
-      pins.reject! { |p| p.to_s == "VSS" } or raise "Failed to filter out VSS pin."
+      #pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
+      #pins.reject! { |p| p.to_s == "VSS" } or raise "Failed to filter out VSS pin."
 
       @pins_by_name = {}
       pins.each do |pin|
@@ -369,18 +370,12 @@ module RPicSim
     def initialize_sfrs_and_nmmrs
       @sfrs = {}
       @assembly.device_info.sfrs.each do |sfr|
-        if sfr.width != 8
-          raise "We only support 8-bit registers at this time.  #{register.name} is #{register.width}-bit."
-        end
-        @sfrs[sfr.name.to_sym] = Register.new @processor.get_sfr(sfr.name), @sfr_memory
+        @sfrs[sfr.name.to_sym] = Register.new @processor.get_sfr(sfr.name), @sfr_memory, sfr.width
       end
       
       @nmmrs = {}
       @assembly.device_info.nmmrs.each do |nmmr|
-        if nmmr.width != 8
-          raise "We only support 8-bit registers at this time.  #{nmmr.name} is #{nmmr.width}-bit."
-        end
-        @nmmrs[nmmr.name.to_sym] = Register.new @processor.get_nmmr(nmmr.name)
+        @nmmrs[nmmr.name.to_sym] = Register.new @processor.get_nmmr(nmmr.name), @nmmr_memory, nmmr.width
       end
 
       @wreg = sfr_or_nmmr(:WREG)
