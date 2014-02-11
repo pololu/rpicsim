@@ -174,15 +174,16 @@ def detect_device(asm_file)
   md[1]
 end
 
-asm_files = Dir.glob("spec/firmware/dist/*.asm").map(&method(:Pathname))
-raise "No firmware found" if asm_files.empty?
+asm_files = Dir.glob('spec/firmware/src/*.asm').map(&method(:Pathname))
+raise 'No firmware found' if asm_files.empty?
 
 asm_files.each do |asm_file|
-  cof_file = asm_file.sub_ext(".cof")
+  cof_file = asm_file.parent.parent + 'dist' + asm_file.sub_ext('.cof').basename
   file cof_file => asm_file do
     device = detect_device(asm_file)
-    o_file = asm_file.sub_ext(".o")
+    o_file = cof_file.sub_ext('.o')
     begin
+      o_file.parent.mkpath
       sh %Q{#{mpasm_path} -p#{device} -q -o"#{o_file}" "#{asm_file}"}
     rescue RuntimeError
       err_file = o_file.sub_ext(".err")
@@ -195,10 +196,15 @@ asm_files.each do |asm_file|
     end
     sh %Q{#{mplink_path} -p#{device} -q -w -o"#{cof_file}" "#{o_file}"}
   end  
-  task "firmware" => cof_file
+  task 'firmware' => cof_file
 end
 
 task 'firmware' => 'spec/firmware/BoringLoop.cof'
+
+desc 'Clean up compiled firmware output files.'
+task 'firmware:clean' do
+  FileUtils.rm_r 'spec/firmware/dist', verbose: true
+end
 
 # Copy the COF file out of the dist directory so we can test that flaw in MPLAB X
 file 'spec/firmware/BoringLoop.cof' => 'spec/firmware/dist/BoringLoop.cof' do
