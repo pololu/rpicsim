@@ -182,9 +182,11 @@ asm_files.each do |asm_file|
   file cof_file => asm_file do
     device = detect_device(asm_file)
     o_file = cof_file.sub_ext('.o')
+    err_file = cof_file.sub_ext('.err')
+    lst_file = cof_file.sub_ext('.lst')
     begin
       o_file.parent.mkpath
-      sh %Q{#{mpasm_path} -p#{device} -q -o"#{o_file}" "#{asm_file}"}
+      sh %Q{#{mpasm_path} -p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}
     rescue RuntimeError
       err_file = o_file.sub_ext(".err")
       if err_file.exist?
