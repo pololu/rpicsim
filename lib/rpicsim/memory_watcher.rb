@@ -49,7 +49,7 @@ module RPicSim
       hash = {}
       @vars_written.each do |var|
         if var.is_a? Integer
-          hash[var] = @memory.ReadWord(var)
+          hash[var] = @memory.read_word(var)
         else
           hash[var.name] = var.value
         end

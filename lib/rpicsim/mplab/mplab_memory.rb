@@ -22,7 +22,7 @@ module RPicSim::Mplab
     
     def on_change(&callback)
       MplabObserver.new(@memory) do |event|
-        break if event.EventType != Mdbcore.memory::MemoryEvent::EVENTS::MEMORY_CHANGED
+        next if event.EventType != Mdbcore.memory::MemoryEvent::EVENTS::MEMORY_CHANGED
         address_ranges = event.AffectedAddresses.map do |mr|
           mr.Address...(mr.Address+mr.Size)
         end
