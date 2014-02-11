@@ -36,7 +36,7 @@ module RPicSim::Mplab
       load_file(filename)
       debugger.Program(Mdbcore.debugger.Debugger::PROGRAM_OPERATION::AUTO_SELECT)
 
-      check
+      check_for_errors
       
       nil
     end
@@ -80,7 +80,7 @@ module RPicSim::Mplab
       @assembly.getLookup.lookup klass
     end
     
-    def check
+    def check_for_errors
       warn_about_5C
       warn_about_path_retrieval
       @simulator.check_peripherals
