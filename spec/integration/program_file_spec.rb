@@ -18,6 +18,8 @@ describe RPicSim::ProgramFile do
     instruction.address.should == 0
     instruction.opcode.should == "CLRF"
     instruction.operands.should == {"f" => 0x20}
+    instruction.to_s.should == 'Instruction(0x0000 = setupNormalFlash, CLRF 0x20)'
+    instruction.inspect.should == '#<RPicSim::Instruction:0x0000 = setupNormalFlash, CLRF 0x20>'
   end
 
   it "crashes when you try to create it directly", flaw: true do

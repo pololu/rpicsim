@@ -44,25 +44,25 @@ If the two tests above pass, then we can calculate the maximum amount of call st
 The means there can be at most 7 things stored on the call stack, which is safely below the PIC10F322's limit of 8.
 
 Suppose RPicSim tells you that your mainline code could take 5 levels of the stack and you are not sure why.
-The {RPicSim::CallStackInfo#worst_case_examples_report} can produce a set of example backtraces that demonstrate how the maximum depth could potentially happen.
+The {RPicSim::CallStackInfo#worst_case_code_paths_filtered_report} can produce a set of example code paths that demonstrate how the maximum depth could potentially happen.
 To see the report, just add a line like this:
 
     !!!ruby
-    p call_stack_info[0].worst_case_examples_report
+    p call_stack_info[0].worst_case_code_paths_filtered_report
 
-The report will be a series of backtraces that look something like this:
+The report will be a series of code paths that look something like this:
 
     !!!plain
-    Backtrace:
-    Instruction(addr=0x0000, GOTO 0x20)
-    Instruction(addr=0x0024 = start2, CALL 0x40)
-    Instruction(addr=0x0040 = foo, CALL 0x41)
-    Instruction(addr=0x0041 = goo, CALL 0x60)
-    Instruction(addr=0x0060 = hoo, CALL 0x80)
-    Instruction(addr=0x0080 = ioo, CALL 0x100)
-    Instruction(addr=0x0100 = joo, CLRF 0x7)
+    CodePath:
+    Instruction(0x0000, GOTO 0x20)
+    Instruction(0x0024 = start2, CALL 0x40)
+    Instruction(0x0040 = foo, CALL 0x41)
+    Instruction(0x0041 = goo, CALL 0x60)
+    Instruction(0x0060 = hoo, CALL 0x80)
+    Instruction(0x0080 = ioo, CALL 0x100)
+    Instruction(0x0100 = joo, CLRF 0x7)
 
-This example backtrace shows five CALL instructions that could potentially be nested.
+This example code path shows five CALL instructions that could potentially be nested.
 
 How it works
 ----

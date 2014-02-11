@@ -6,8 +6,8 @@ module RPicSim
     # Every time a node is processed, it will be yielded as the first
     # and only argument to the block.
     #
-    # This is used by {CallStackInfo#backtraces} to search the instruction
-    # graph backwards in order to find backtraces for a given instruction.
+    # This is used by {CallStackInfo#code_paths} to search the instruction
+    # graph backwards in order to find code_paths for a given instruction.
     def self.depth_first_search_simple(root_nodes)
       unprocessed_nodes = root_nodes.reverse
       while !unprocessed_nodes.empty?

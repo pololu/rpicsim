@@ -60,7 +60,11 @@ module RPicSim
 
     # Human-readable string representation of the instruction.
     def to_s
-      "Instruction(addr=#{@instruction_store.address_description(address)}, #{@string})"
+      "Instruction(#{@instruction_store.address_description(address)}, #{@string})"
+    end
+    
+    def inspect
+      "#<#{self.class}:#{@instruction_store.address_description(address)}, #{@string}>"
     end
     
     # Returns info about all the instructions that this instruction could directly lead to

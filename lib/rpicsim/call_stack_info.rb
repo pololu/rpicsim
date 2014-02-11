@@ -129,63 +129,63 @@ module RPicSim
       end
     end
     
-    # Returns an array of {Backtrace}s representing all possible ways that the call stack
+    # Returns an array of {CodePath}s representing all possible ways that the call stack
     # could reach the worst-case depth.  This will often be a very large amount of data,
     # even for a small project.
-    # @return [Array(Backtrace)]
-    def worst_case_backtraces
+    # @return [Array(CodePath)]
+    def worst_case_code_paths
       instructions_with_worst_case.sort.flat_map do |instruction|
-        backtraces(instruction)
+        code_paths(instruction)
       end
     end
     
-    # Returns a filtered version of {#worst_case_backtraces}.
-    # Filters out any backtraces that are just a superset of another backtrace.
+    # Returns a filtered version of {#worst_case_code_paths}.
+    # Filters out any code paths that are just a superset of another code path.
     # For each instruction that has a back trace leading to it, it just returns
-    # the backtrace with the smallest number of interesting instructions.
-    # @return [Array(Backtrace)]
-    def interesting_backtraces
-      all_backtraces = worst_case_backtraces
+    # the code paths with the smallest number of interesting instructions.
+    # @return [Array(CodePath)]
+    def worst_case_code_paths_filtered
+      all_code_paths = worst_case_code_paths
 
-      #puts "all worst-case backtraces: #{all_backtraces.size}"
+      #puts "all worst-case code paths: #{all_code_paths.size}"
       
-      # Filter out backtraces that are just a superset of another backtrace.
+      # Filter out code path that are just a superset of another code path.
       previously_seen_instruction_sequences = Set.new
-      backtraces = []
-      all_backtraces.sort_by(&:count).each do |backtrace|
-        seen_before = (1..backtrace.instructions.size).any? do |n|
-          subsequence = backtrace.instructions[0, n]
+      code_paths = []
+      all_code_paths.sort_by(&:count).each do |code_path|
+        seen_before = (1..code_path.instructions.size).any? do |n|
+          subsequence = code_path.instructions[0, n]
           previously_seen_instruction_sequences.include? subsequence
         end
         if !seen_before
-          previously_seen_instruction_sequences << backtrace.instructions
-          backtraces << backtrace
+          previously_seen_instruction_sequences << code_path.instructions
+          code_paths << code_path
         end
       end
 
-      # For each instruction that has a backtrace leading to it, pick out
-      # the shortest back trace (in terms of interesting instructions).
-      backtraces = backtraces.group_by { |bt| bt.instructions.last }.collect do |instr, backtraces|
-        backtraces.min_by { |bt| bt.interesting_instructions.count }
+      # For each instruction that has a code path leading to it, pick out
+      # the shortest code path (in terms of interesting instructions).
+      code_paths = code_paths.group_by { |cp| cp.instructions.last }.collect do |instr, code_paths|
+        code_paths.min_by { |cp| cp.interesting_instructions.count }
       end
       
-      backtraces
+      code_paths
     end
     
-    # Returns a nice report string of all the {#interesting_backtraces}.
+    # Returns a nice report string of all the {#worst_case_code_paths_filtered}.
     # @return [String]
-    def worst_case_examples_report
+    def worst_case_code_paths_filtered_report
       s = ""
-      interesting_backtraces.each do |backtrace|
-        s += backtrace.to_s + "\n"
-        s += "\n"
+      worst_case_code_paths_filtered.each do |code_path|
+        s << code_path.to_s + "\n"
+        s << "\n"
       end
       s
     end
     
-    # @return [Array(Backtrace)] all the possible backtraces that lead to the given instruction.
-    def backtraces(instruction)
-      backtraces = []
+    # @return [Array(CodePaths)] all the possible code paths that lead to the given instruction.
+    def code_paths(instruction)
+      code_paths = []
       Search.depth_first_search_simple([[instruction]]) do |instrs|
         prev_instrs = @back_links[instrs.first]
         
@@ -195,25 +195,29 @@ module RPicSim
             raise "This instruction is not the root and has no back links: #{instrs}."
           end
           
-          backtraces << Backtrace.new(instrs)
+          code_paths << CodePath.new(instrs)
           []   # don't search anything from this node
         else
-          # Investigate all possible backtraces that could get to this instruction.
-          # However, exclude backtraces that have the same instruction twice;
+          # Investigate all possible code paths that could get to this instruction.
+          # However, exclude code paths that have the same instruction twice;
           # otherwise we get stuck in an infinite loop.
           (prev_instrs - instrs).collect do |instr|
             [instr] + instrs
           end
         end
       end
-      backtraces
+      code_paths
+    end
+    
+    def inspect
+      "#<#{self.class}:root=#{@root.inspect}>"
     end
 
     # This is a helper class for {CallStackInfo}.  It wraps an array of {Instruction} objects
     # representing an execution path from one part of the program (usually the entry vector or
     # the ISR vector) to another part of the program.
     # It has method for reducing this list of instructions by only showing the interesting ones.
-    class Backtrace  # TODO: rename to ExecutionPath?
+    class CodePath
       include Enumerable
       
       # An array of {Instruction}s that represents a possible path through the program.
@@ -293,7 +297,7 @@ module RPicSim
       
       # Returns a multi-line string representing this execution path.
       def to_s
-        "Backtrace:\n" +
+        "CodePath:\n" +
           interesting_instructions.join("\n") + "\n"
       end
     end
