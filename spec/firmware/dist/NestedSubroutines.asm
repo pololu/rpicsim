@@ -1,6 +1,6 @@
+  #include p10F322_and_config.inc
   ; This is supposed to be a test for the call stack analyzer, so we should
   ; include all the special cases that it handles.
-  #include p10F322_and_config.inc
   
   udata
 var1 res 1

@@ -164,13 +164,23 @@ def mplab_x_bottles_path
   end
 end
 
+# Detects a device string like "10F322" from the first line of the ASM file.
+def detect_device(asm_file)
+  first_line = File.open(asm_file, 'r') { |f| f.readline }
+  md = first_line.match %r{p([0-9A-Z]+)}
+  if !md
+    raise "Could not determine device from first line of #{asm_file}."
+  end
+  md[1]
+end
+
 asm_files = Dir.glob("spec/firmware/dist/*.asm").map(&method(:Pathname))
 raise "No firmware found" if asm_files.empty?
 
 asm_files.each do |asm_file|
   cof_file = asm_file.sub_ext(".cof")
   file cof_file => asm_file do
-    device = "10F322"   # TODO: detect device from asm file itself
+    device = detect_device(asm_file)
     o_file = asm_file.sub_ext(".o")
     begin
       sh %Q{#{mpasm_path} -p#{device} -q -o"#{o_file}" "#{asm_file}"}
