@@ -17,7 +17,7 @@ For example, you could mark an individual example as slow like this:
 
     !!!ruby
     it "can run for a second", slow: true do
-      run_µs 1_000_000
+      run_cycles 4_000_000
     end
 
 You can also mark an entire context or describe block as slow using the same syntax.

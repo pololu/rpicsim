@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 # Parts of this are used in docs/Pins.md
 
 require_relative '../spec_helper'

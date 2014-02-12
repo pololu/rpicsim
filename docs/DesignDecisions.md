@@ -43,13 +43,6 @@ I have not used SCL and don't know much about it, but I think the main reasons t
   The only documentation I could find is in the form of a few long forum posts at the top of the [MPLAB Simulator forum](http://www.microchip.com/forums/f18.aspx).
 
 
-Why use a special Unicode character in the name of {RPicSim::Sim#run_µs}?
-----
-That name is just an alias.
-You can use `run_microseconds` if you prefer.
-While `run_µs` is hard to type, it is easier to read and I think code is read more than it is written.
-
-
 Why not use Textile?
 ----
 Textile was not used as a markup language for the documentation because I could not figure out how to easily have Ruby syntax highlighting.

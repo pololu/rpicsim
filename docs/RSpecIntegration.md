@@ -78,7 +78,7 @@ When an RSpec example fails, the output you get will look something like this:
     Failures:
 
       1) FooWidget when exposed to 1.5 ms pulses behaves correctly
-         Failure/Error: run_microseconds 1500
+         Failure/Error: run_cycles 1500*4
            expected INTCON to satisfy block
          # ./lib/rpicsim/rspec/persistent_expectations.rb:29:in `check_expectations'
          # ./lib/rpicsim/rspec/persistent_expectations.rb:27:in `check_expectations'

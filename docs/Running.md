@@ -7,7 +7,6 @@ Any useful microcontroller simulation needs to run for some number of steps and 
 * {RPicSim::Sim#run_steps run_steps}
 * {RPicSim::Sim#run_cycles run_cycles}
 * {RPicSim::Sim#run_to_cycle_count run_to_cycle_count}
-* {RPicSim::Sim#run_microseconds run_microseconds}
 * {RPicSim::Sim#run_to run_to}
 * {RPicSim::Sim#run_subroutine run_subroutine}
 * {RPicSim::Sim#goto goto}
@@ -47,27 +46,8 @@ The {RPicSim::Sim#run_to_cycle_count run_to_cycle_count} method is similar to `r
     !!!ruby
     run_to_cycle_count 1000  # runs the simulation until the total cycle count is 1000
 
-The {RPicSim::Sim#run_microseconds} method runs the simulation for the specified number of microseconds of simulated time.  Before running this method, you need to tell RPicSim how fast the simulated device is running by setting the {RPicSim::Sim#frequency_mhz} attribute.  For example:
-
-    !!!ruby
-    before do
-      start_sim MySim
-      sim.frequency_mhz = 4
-    end
-
-The `frequency_mhz` attribute can be changed during the simulation in order to model a firmware that changes its own clock speed.
-
-Once you have set `frequency_mhz`, you can use `run_microseconds` or its more readable UTF-8 alias `run_µs`:
-
-    !!!ruby
-    run_microseconds 15   # run for approximately 15 microseconds
-    run_µs 15             # same
-
-To use `run_µs`, be sure to configure your text editor to save files using UTF-8 encoding, and put a comment at the very top line of your file that says `# coding: UTF-8`.
-If you don't do this, you might get an "invalid byte sequence in US-ASCII" error.
-
-Regarding time accuracy:  Certain instructions take two cycles and there is no way to stop the simulation in the middle of an instruction, so both `run_cycles` and `run_microseconds` will sometimes run the simulation one cycle longer than requested.
-These one-cycle errors can accumulate if you call the method many times.
+Regarding time accuracy:  Certain instructions take two cycles and there is no way to stop the simulation in the middle of an instruction, so the simulation will sometimes run one cycle longer than requested.
+These one-cycle errors can accumulate as the test runs.
 Therefore, if you need to test something with high time-precision (like a software serial library) you might need to do something more complex using {RPicSim::Sim#cycle_count} and {RPicSim::Sim#step}.
 
 

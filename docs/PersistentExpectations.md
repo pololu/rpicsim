@@ -44,20 +44,20 @@ The following RSpec example tests that the main output pin is held low (after gi
 
     !!!ruby
     it "mirrors the main input onto the main output pin" do
-      run_µs 30    # Give the device time to start up.
+      run_cycles 120    # Give the device time to start up.
 
       expecting main_output => be_driving_low
-      run_µs 200
+      run_cycles 800
 
       main_input.set true
 
       # Turn off the persistent expectation temporarily to give the device
       # time to detect the change in the input.
       expecting main_output => nil
-      run_µs 50
+      run_cycles 200
 
       expecting main_output => be_driving_high
-      run_µs 200
+      run_cycles 800
     end
 
 In the above example, we removed the persistent expectation on `main_output` temporarily because the device was in a transitionary period and we didn't know exactly when the transition would happen.
@@ -68,9 +68,9 @@ If you need to repeat this patten many times in your tests, you might consider a
     !!!ruby
     def transition(opts={})
       opts = opts.dup
-      time_microseconds = opts.delete(:microseconds) || 50
+      cycles = opts.delete(:cycles) || 50
       opts.keys.each { |k| expectations.delete k }
-      run_microseconds time_microseconds
+      run_cycles cycles
       expectations.merge! opts
       check_expectations
     end
@@ -79,15 +79,15 @@ Then the test above could become:
 
     !!!ruby
     it "mirrors the main input onto the main output pin" do
-      run_µs 30    # Give the device time to start up.
+      run_cycles 120    # Give the device time to start up.
 
       expecting main_output => be_driving_low
-      run_µs 200
+      run_cycles 800
 
       main_input.set true
 
       transition main_output => be_driving_high
-      run_µs 200
+      run_cycles 800
     end
 
 The `transition` method above does not check anything about the main output during the transition time, so unfortunately it might miss any glitches that happen during that time.
