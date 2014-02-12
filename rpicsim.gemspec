@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   #s.homepage = ""
 
   s.authors = ['David Grayson']
-  s.email = 'davidegrayson@gmail.com'
+  s.email = 'david@pololu.com'
   s.license = 'MIT'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 2')
