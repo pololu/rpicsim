@@ -1,4 +1,15 @@
 class Memory
+  # This object allows read and write access to the current data
+  # stored in a memory space of the simulated device.
+  #
+  # The behavior of this class differs depending on what kind of Memory
+  # it represents, as shown in the table below:
+  #
+  #                       Address type   Read/write chunk
+  #     Any type of RAM:  Byte address   1 byte (8 bits)
+  #     Midrange Flash:   Word address   1 word (14 bits)
+  #     PIC18 flash:      Byte address   1 word (16 bits)
+  #
   # @param mplab_memory [Mplab::Memory]
   def initialize(mplab_memory)
     @mplab_memory = mplab_memory
