@@ -2,7 +2,7 @@ module RPicSim::Mplab
   class MplabNmmrInfo
     attr_reader :id
   
-    # @param address The address of the register.
+    # @param id The id of the register.  This is like an address.
     # @param register [com.microchip.crownking.edc.Register]
     def initialize(id, register)
       @id = id

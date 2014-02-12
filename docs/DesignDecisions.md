@@ -46,16 +46,3 @@ I have not used SCL and don't know much about it, but I think the main reasons t
 Why not use Textile?
 ----
 Textile was not used as a markup language for the documentation because I could not figure out how to easily have Ruby syntax highlighting.
-
-
-How are RPicSim version numbers chosen?
-----
-
-RPicSim mostly attempts to use {http://semver.org/ semantic versioning 2.0.0} for its version numbers, except that the "public API" of RPicSim has not officially been defined yet.
-Nothing from the {RPicSim::MPLABX MPLABX} module should be considered public.
-Any method that Ruby considers to be public, and which also has a documentation string above its definition in the source, can probably be considered part of the public API, but we are not ready to commit to that yet.
-At some point, the public API should be carefully defined and documented.
-
-* * *
-
-_This page was written by David Grayson, the main author of RPicSim._

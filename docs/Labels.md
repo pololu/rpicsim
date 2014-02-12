@@ -13,7 +13,7 @@ For a C program, RPicSim labels usually correspond to functions.
 Getting a Label object
 ---
 
-To get a Label object, call {RPicSim::Pic#label} and pass it the name of the label as the first argument:
+To get a Label object, call {RPicSim::Sim#label} and pass it the name of the label as the first argument:
 
     !!!ruby
     sim.label(:loopStart)  # => returns a Label object

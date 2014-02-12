@@ -46,8 +46,7 @@ The {RPicSim::Sim#run_to_cycle_count run_to_cycle_count} method is similar to `r
     !!!ruby
     run_to_cycle_count 1000  # runs the simulation until the total cycle count is 1000
 
-Regarding time accuracy:  Certain instructions take two cycles and there is no way to stop the simulation in the middle of an instruction, so the simulation will sometimes run one cycle longer than requested.
-These one-cycle errors can accumulate as the test runs.
+Regarding time accuracy:  Certain instructions take two cycles and there is no way to stop the simulation in the middle of an instruction, so the simulation will sometimes run one cycle longer than requested when calling one of the methods described on this page.
 Therefore, if you need to test something with high time-precision (like a software serial library) you might need to do something more complex using {RPicSim::Sim#cycle_count} and {RPicSim::Sim#step}.
 
 

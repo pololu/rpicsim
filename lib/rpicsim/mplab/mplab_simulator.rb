@@ -6,7 +6,7 @@ module RPicSim::Mplab
   # about the target PIC device.
   class MplabSimulator
     # Makes a new DeviceInfo object.
-    # @param xpic [com.microchip.mplab.mdbcore.simulator.Simulator]
+    # @param simulator [com.microchip.mplab.mdbcore.simulator.Simulator]
     def initialize(simulator)
       @simulator = simulator
     end

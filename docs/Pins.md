@@ -140,4 +140,4 @@ In `spec/pin_mirror_spec.rb`, we write a simple test that changes the input and 
       end
     end
 
-The calls to {RPicSim::Pic#run_cycles} are needed to give the simulated device enough time to react to the change on its input.
+The calls to {RPicSim::Sim#run_cycles} are needed to give the simulated device enough time to react to the change on its input.

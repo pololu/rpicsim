@@ -5,7 +5,7 @@ module RPicSim
     # The size of the register in bytes.
     attr_reader :size
   
-    # @param register [Mplab::MplabRegister]
+    # @param mplab_register [Mplab::MplabRegister]
     # @param memory An optional parameter that enables memory_value.
     def initialize(mplab_register, memory, width)
       @mplab_register = mplab_register
