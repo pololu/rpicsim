@@ -10,7 +10,9 @@ module RPicSim
   class Instruction
     include Comparable
     
-    # The word address in flash of the instruction.
+    # The flash address of the instruction.
+    # For PIC18s this will be the byte address.
+    # For other PIC architectures, it will be the word address.
     # @return (Integer)
     attr_reader :address
     
@@ -22,18 +24,20 @@ module RPicSim
     # @return (Hash)
     attr_reader :operands
     
-    # The number of words of flash that this instruction takes.
+    # The number of flash address units that this instruction takes.
+    # The units of this are the same as the units of {#address}.
     # @return (Integer)
-    attr_reader :increment
+    attr_reader :size
 
     # Creates a new instruction.
     # @param instruction_store some object such as {ProgramFile} that responds to #instruction and #address_description.
-    def initialize(address, instruction_store, opcode, operands, increment, string, properties)
+    def initialize(address, instruction_store, opcode, operands, size, address_increment, string, properties)
       @address = address
       @instruction_store = instruction_store
       @opcode = opcode
       @operands = operands
-      @increment = increment  # the number of words this instruction takes up
+      @size = size
+      @address_increment = address_increment
       @string = string
       
       modules = {
@@ -101,22 +105,32 @@ module RPicSim
     # Makes a transition representing the default behavior: the microcontroller
     # will increment the program counter and execute the next instruction in memory.
     def advance(num)
-      transition(address + num * increment)
+      transition(address + num * size)
     end
     
     def transition(addr, attrs={})
       next_instruction = @instruction_store.instruction(addr)
       Transition.new(self, next_instruction, attrs)
     end
-        
+    
+    private
+    # Returns the address indicated by the operand 'k'.
+    # k is assumed to be a word address and it is assumed to be absolute
+    # k=0 is word 0 of memory, k=1 is word one.
+    # We need to multiply by the address increment because on PIC18
+    # flash addresses are actually byte-based instead of word-based.
+    def k_address
+      operands['k'] * @address_increment
+    end
+    
     ### Modules that modify the behavior of the instruction. ###
-
+    
     
     # This module is mixed into any {Instruction} that represents a goto or branch.
     module Goto
       def generate_transitions
         # Assumption: The GOTO instruction's k operand is absolute on all architectures
-        [ transition(operands["k"], non_local: true) ]
+        [ transition(k_address, non_local: true) ]
       end
     end
     
@@ -139,7 +153,7 @@ module RPicSim
     # This module is mixed into any {Instruction} that represents a subroutine call.
     module Call
       def generate_transitions
-        [ transition(operands["k"], call_depth_change: 1), advance(1) ]
+        [ transition(k_address, call_depth_change: 1), advance(1) ]
       end
     end
     

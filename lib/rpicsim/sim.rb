@@ -34,7 +34,7 @@ module RPicSim
       def device_is(device)
         @device = device
         @assembly = Mplab::MplabAssembly.new(device)
-        @flash_word_max_value = @assembly.device_info.flash_word_max_value
+        @code_word_max_value = @assembly.device_info.code_word_max_value
       end
 
       # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
@@ -164,7 +164,7 @@ module RPicSim
                 end
 
         variable = klass.new(name, address)
-        variable.max_value = @flash_word_max_value
+        variable.max_value = @code_word_max_value
         @flash_vars[name] = variable
 
         self::Shortcuts.send(:define_method, name) { flash_var name }

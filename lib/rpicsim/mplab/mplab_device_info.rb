@@ -11,8 +11,18 @@ module RPicSim::Mplab
       @xpic = xpic
     end
   
-    def flash_word_max_value
+    def code_word_max_value
+      # Assumption: the initial value is the same as the maximum value
+      # because all bits start as 1.
       @xpic.getMemTraits.getCodeWordTraits.getInitValue
+    end
+    
+    # The number that a flash address increases when you
+    # advance to the next word of flash.
+    # For PIC18s this is 2.
+    # For other architectures this is 1.
+    def code_address_increment
+      @xpic.getMemTraits.getCodeWordTraits.getAddrInc
     end
     
     def sfrs

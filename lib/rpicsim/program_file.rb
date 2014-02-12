@@ -14,19 +14,14 @@ module RPicSim
       @filename = filename
       @device = device
       @mplab_program_file = Mplab::MplabProgramFile.new(filename, device)
+      
+      @assembly = Mplab::MplabAssembly.new(device)
+      @assembly.load_file(filename)
+      @address_increment = @assembly.device_info.code_address_increment
+      
       @instructions = []
     end
     
-    private
-    def assembly
-      @assembly ||= begin
-        assembly = Mplab::MplabAssembly.new(device)
-        assembly.load_file(filename)
-        assembly
-      end
-    end
-    
-    public
     # Returns a hash associating RAM variable names (as symbols) to their addresses.
     # @return (Hash)
     def var_addresses
@@ -99,16 +94,27 @@ module RPicSim
     end
 
     def make_instruction(address)
-      mplab_instruction = assembly.disassembler.disassemble(address)
-
-      # Convert the increment from units of bytes to units of words.
-      # I am not sure if my assumptions here or the code below is right in all cases.
-      increment = mplab_instruction.inc / 2
+      mplab_instruction = @assembly.disassembler.disassemble(address)
+      
+      # Convert the increment, which is the number of bytes, into 'size',
+      # which is the same units as the flash address space.
+      if @address_increment == 1
+        # Non-PIC18 architectures: flash addresses are in terms of words
+        # so we devide by two to convert from bytes to words.
+        size = mplab_instruction.inc / 2
+      elsif @address_increment == 2
+        # PIC18 architecture: No change necessary because both are in terms
+        # of bytes.
+        size = mplab_instruction.inc
+      else
+        raise "Cannot handle address increment value of #{@address_increment}."
+      end
 
       # TODO: add support for all other 8-bit PIC architectures
       properties = Array case mplab_instruction.opcode
       when 'ADDWF'
       when 'ANDWF'
+      when 'CPFSEQ' then [:conditional_skip]
       when 'CLRF'
       when 'CLRW'
       when 'COMF'
@@ -142,12 +148,13 @@ module RPicSim
       when 'SLEEP'
       when 'XORLW'
       else
-        raise "Unrecognized opcode #{opcode} (operands #{operands.inspect})."
+        raise "Unrecognized opcode #{mplab_instruction.opcode} " +
+          "(#{address_description(address)}, operands #{mplab_instruction.operands.inspect})."
       end
       
       Instruction.new(address, self, mplab_instruction.opcode,
-        mplab_instruction.operands, increment, mplab_instruction.instruction_string,
-        properties)
+        mplab_instruction.operands, size, @address_increment,
+        mplab_instruction.instruction_string, properties)
     end
   end
 end

@@ -17,7 +17,7 @@ module RPicSim::Mplab
       @operands ||= operands_hash(@instruction.operands)
     end
     
-    # This seems to be the number of bytes that the instruction takes.
+    # The number of bytes that the instruction takes.
     def inc
       @instruction.inc
     end

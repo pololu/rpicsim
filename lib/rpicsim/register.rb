@@ -10,7 +10,6 @@ module RPicSim
     def initialize(mplab_register, memory, width)
       @mplab_register = mplab_register
       @name = mplab_register.name.to_sym
-      @memory = memory
       
       @size = case width
               when 8 then 1

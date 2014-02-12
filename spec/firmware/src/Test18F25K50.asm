@@ -62,6 +62,10 @@ ins_comf:
 ins_cpfseq:
     cpfseq  4, ACCESS
     cpfseq  5, BANKED
+   
+ins_goto:
+    goto    2
+    goto    3
 
     ; TODO: add the rest of the instructions
     
