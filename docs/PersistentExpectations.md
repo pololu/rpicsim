@@ -10,6 +10,11 @@ As discussed in the {file:Pins.md Pins page}, to write an expectation that the m
 This is fine, but it is not a great way to test firmware because (unless you put it in a loop or method), it only runs once, at one particular cycle of the simulation.  It will not catch any accidental glitches on the main output pin that occur at a later time.
 
 RPicSim helps to address this by adding a new feature to RSpec examples called "persistent expectations".
+Persistent expectations are implemented in the module {RPicSim::RSpec::PersistentExpectations}, which is part of RPicSim's {file:RSpecIntegration.md RSpec integration}.
+
+Usage
+----
+
 To set a persistent expectation, call the {RPicSim::RSpec::PersistentExpectations#expecting expecting} method inside an RSpec example or a before/after hook:
 
     !!!ruby
