@@ -35,14 +35,14 @@ Microchip's [Stimulus Control Language (SCL)](http://www.microchip.com/forums/m1
 It can simulate an external stimulus being applied to pins of a device and see how it behaves.
 MPLAB X has a button in the "Stimulus" pane for attaching an SCL script to a simulation.
 
-I have not used SCL and don't know much about it, but I think the main reasons to not use SCL are:
+We have not used SCL and don't know much about it, but we think the main reasons to not use SCL are:
 
 * It seems like SCL does not have several features required for unit tests, such as reading and writing the internal state of the simulated device.
 * SCL does not appear to have functions or subroutines.
 * SCL has been around since at least 2005, but as of January 2014, it seems to not be officially documented.
-  The only documentation I could find is in the form of a few long forum posts at the top of the [MPLAB Simulator forum](http://www.microchip.com/forums/f18.aspx).
+  The only documentation we could find is in the form of a few long forum posts at the top of the [MPLAB Simulator forum](http://www.microchip.com/forums/f18.aspx).
 
 
 Why not use Textile?
 ----
-Textile was not used as a markup language for the documentation because I could not figure out how to easily have Ruby syntax highlighting.
+Textile was not used as a markup language for the documentation because we could not figure out how to easily have Ruby syntax highlighting.
