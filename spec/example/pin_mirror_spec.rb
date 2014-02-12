@@ -7,7 +7,6 @@ require_relative '../spec_helper'
 describe "PinMirror" do
   before do
     start_sim Firmware::PinMirror
-    sim.frequency_mhz = 1
   end
 
   context "when RA0 input is high" do
@@ -53,19 +52,19 @@ describe "PinMirror" do
   end
 
   it "mirrors the main input onto the main output pin" do
-    run_µs 30    # Give the device time to start up.
+    run_cycles 30    # Give the device time to start up.
 
     expecting main_output => be_driving_low
-    run_µs 200
+    run_cycles 200
 
     main_input.set true
 
     # Turn off the persistent expectation temporarily to give the device
     # time to detect the change in the input.
     expecting main_output => nil
-    run_µs 50
+    run_cycles 50
 
     expecting main_output => be_driving_high
-    run_µs 200
+    run_cycles 200
   end
 end

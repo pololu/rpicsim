@@ -121,27 +121,6 @@ describe RPicSim::Sim do
     end
   end
 
-  describe "run_microseconds" do
-    it "just calls run_cycles with a scaled value" do
-      sim.frequency_mhz = 2
-      sim.should_receive(:run_cycles).with(8)
-      run_microseconds 4
-    end
-
-    it "raises an error if you haven't set frequency_mhz yet" do
-      sim.frequency_mhz = nil
-      expect { run_microseconds 4 }.to raise_error "frequency_mhz needs to be set before calling run_microseconds."
-    end
-  end
-
-  describe "run_µs" do
-    it "calls run_microseconds or is an alias" do
-      sim.frequency_mhz = 2
-      sim.should_receive(:run_cycles).with(12)
-      run_µs 6
-    end
-  end
-
   describe "run_subroutine" do
     it "pushes the current pc value onto the stack" do
       sim.stack_push 1

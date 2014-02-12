@@ -244,7 +244,6 @@ module RPicSim
         :pin,
         :ram_watcher,
         :run_cycles,
-        :run_microseconds,
         :run_steps,
         :run_subroutine,
         :run_to,
@@ -259,9 +258,6 @@ module RPicSim
 
       extend Forwardable
       def_delegators :@sim, *ForwardedMethods
-
-      # It is nice for this to be separate so the ASCII-only name is printed in stack traces.
-      alias :run_µs :run_microseconds
     end
 
     extend ClassDefinitionMethods, ClassMethods
@@ -270,11 +266,6 @@ module RPicSim
     # current address in program space that is being executed.
     # @return [RPicSim::ProgramCounter]
     attr_reader :pc
-
-    # This attribute lets you get and set an integer that specifies the frequency
-    # the chip is running at in MHz (e.g. 4).  This affects {#run_microseconds}.
-    # @return [Integer]
-    attr_accessor :frequency_mhz
 
     # Returns a {MemoryWatcher} object configured to watch for changes to RAM.
     # @return [MemoryWatcher]
@@ -602,26 +593,6 @@ module RPicSim
         step
       end
     end
-
-    # Runs the simulation for the specified number of microseconds.
-    #
-    # Before calling this, you need to assign a value to {#frequency_mhz}.
-    #
-    # Note that the existence of multi-cycle instructions means that sometimes this
-    # method can run one cycle longer than desired.
-    #
-    # @param [Integer] time_microseconds
-    def run_microseconds(time_microseconds)
-      # Structuring it this way allows subclasses to override frequency_mhz and
-      # not worry that we are calling it a bunch of times.
-      freq = frequency_mhz
-      if freq.nil?
-        raise "frequency_mhz needs to be set before calling run_microseconds."
-      end
-      run_cycles time_microseconds * freq
-    end
-
-    alias run_µs :run_microseconds
 
     # Simulates a return instruction being executed by popping the top value off
     # of the stack and setting the {#pc} value equal to it.
