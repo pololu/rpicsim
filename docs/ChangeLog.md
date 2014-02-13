@@ -1,7 +1,7 @@
 Change log
 ====
 
-0.9.0
+0.1.0
 ----
 
 Released on 2014-02-12.
