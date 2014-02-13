@@ -48,7 +48,10 @@ RPicSim has features that allow you to:
 
 For some applications, RPicSim can also analyze the firmware and verify that the call stack will never overflow.
 
-RPicSim is distributed as a Ruby gem named `rpicsim`.
+RPicSim is distributed as a Ruby gem named `rpicsim`.  To install RPicSim, run:
+
+    jgem install rpicsim
+
 
 RPicSim has been tested with MPLAB X v1.85, v1.90, v1.95, and v2.00.
 However, it uses a lot of undocumented and internal features of the Microchip Java libraries, so it will probably need to be updated as new versions of MPLAB X are released.
@@ -60,8 +63,4 @@ The names Microchip, PIC, MPLAB, and MPASM are trademarks of Microchip Technolog
 
 <github>For complete documentation, see the [RPicSim API documentation](http://www.davidegrayson.com/hold/rpicsim/_index.html) and the [RPicSim manual](http://www.davidegrayson.com/hold/rpicsim/file.Manual.html).</github>
 
-The gem is not on RubyGems.org yet, but you can [download it from here](http://www.davidegrayson.com/hold/rpicsim-1.0.1.gem) and install it with:
 
-    gem install rpicsim-1.0.1.gem
-
-The source code is temporarily hosted on a [private github repository](https://github.com/shicholas/rpicsim) provided by Nick Shook.
