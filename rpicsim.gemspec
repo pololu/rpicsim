@@ -6,9 +6,11 @@ Gem::Specification.new do |s|
   s.name = 'rpicsim'
   s.version  = RPicSim::VERSION
   s.date = '2014-01-22'
-  s.summary = 'RPicSim provides an interface to the MPLAB X PIC simulator that allows you to write simulator-based automated tests of PIC firmware.'
+
+  # The summary should be the same as the description at https://github.com/pololu/rpicsim
+  s.summary = 'RPicSim provides an interface to the MPLAB X PIC simulator that allows you to write simulator-based automated tests of PIC firmware with Ruby and RSpec.'
   #s.description = ""
-  #s.homepage = ""
+  s.homepage = 'https://github.com/pololu/rpicsim'
 
   s.authors = ['Pololu']
   s.license = 'MIT'
@@ -16,7 +18,6 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new('>= 2')
   s.requirements << 'JRuby'
   s.requirements << 'MPLAB X'
-  s.metadata['allowed_push_host'] = 'pololu.com'
 
   s.files = Dir['lib/**/*.rb', 'Introduction.md', 'LICENSE.txt', '*.md', 'Gemfile', 'docs/*', '.yardopts']
 end
