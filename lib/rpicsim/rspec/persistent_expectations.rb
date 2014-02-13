@@ -46,7 +46,14 @@ module RPicSim
       #
       # To remove an expectation on an object, just provide +nil+ for the matcher.
       def expecting(hash)
-        expectations.merge! hash
+        if block_given?
+          saved_expectations = expectations.clone
+          expecting(hash)
+          yield
+          @expectations = saved_expectations
+        else
+          expectations.merge! hash
+        end
       end
     end
   end
