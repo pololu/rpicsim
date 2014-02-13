@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   #s.description = ""
   #s.homepage = ""
 
-  s.authors = ['Pololu']
+  s.authors = ['Pololu', 'David Grayson']
   s.license = 'MIT'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 2')
