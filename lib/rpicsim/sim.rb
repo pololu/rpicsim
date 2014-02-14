@@ -7,8 +7,9 @@ require_relative 'mplab'
 require_relative 'flaws'
 require_relative 'pin'
 require_relative 'memory'
-require_relative 'register'
+require_relative 'storage/memory_integer'
 require_relative 'variable'
+require_relative 'storage/register'
 require_relative 'program_counter'
 require_relative 'label'
 require_relative 'memory_watcher'
@@ -97,14 +98,14 @@ module RPicSim
 
         klass = case type
                   when Class then type
-                  when :u8 then VariableU8
-                  when :s8 then VariableS8
-                  when :u16 then VariableU16
-                  when :s16 then VariableS16
-                  when :u24 then VariableU24
-                  when :s24 then VariableS24
-                  when :u32 then VariableU32
-                  when :s32 then VariableS32
+                  when :u8 then Storage::MemoryUInt8
+                  when :s8 then Storage::MemoryInt8
+                  when :u16 then Storage::MemoryUInt16
+                  when :s16 then Storage::MemoryInt16
+                  when :u24 then Storage::MemoryUInt24
+                  when :s24 then Storage::MemoryInt24
+                  when :u32 then Storage::MemoryUInt32
+                  when :s32 then Storage::MemoryInt32
                   else raise "Unknown type '#{type}'."
                 end
 
@@ -157,7 +158,7 @@ module RPicSim
 
         klass = case type
                   when Class then type
-                  when :word then VariableWord
+                  when :word then Storage::MemoryWord
                   else raise "Unknown type '#{type}'."
                 end
 
@@ -248,6 +249,7 @@ module RPicSim
         :run_to_cycle_count,
         :sfr,
         :sfr_or_nmmr,
+        :register,
         :step,
         :var,
         :wreg,
@@ -337,7 +339,7 @@ module RPicSim
     def initialize_vars
       @vars = {}
       self.class.vars.each do |name, unbound_var|
-        @vars[name] = unbound_var.bind(@fr_memory)
+        @vars[name] = Variable.new(unbound_var.bind(@fr_memory))
       end
     end
 
@@ -352,19 +354,19 @@ module RPicSim
           raise "Flash variable's address is valid in both program memory and test memory.  Not sure which memory to use: #{unbound_var.inspect}."
         end
 
-        @flash_vars[name] = unbound_var.bind(possible_memories.first)
+        @flash_vars[name] = Variable.new(unbound_var.bind(possible_memories.first))
       end
     end
 
     def initialize_sfrs_and_nmmrs
       @sfrs = {}
       @assembly.device_info.sfrs.each do |sfr|
-        @sfrs[sfr.name.to_sym] = Register.new @processor.get_sfr(sfr.name), @sfr_memory, sfr.width
+        @sfrs[sfr.name.to_sym] = Variable.new Storage::Register.new @processor.get_sfr(sfr.name), @sfr_memory, sfr.width
       end
       
       @nmmrs = {}
       @assembly.device_info.nmmrs.each do |nmmr|
-        @nmmrs[nmmr.name.to_sym] = Register.new @processor.get_nmmr(nmmr.name), @nmmr_memory, nmmr.width
+        @nmmrs[nmmr.name.to_sym] = Variable.new Storage::Register.new @processor.get_nmmr(nmmr.name), @nmmr_memory, nmmr.width
       end
 
       @wreg = sfr_or_nmmr(:WREG)
@@ -389,14 +391,15 @@ module RPicSim
       @sfrs[name.to_sym] or raise ArgumentError, "Cannot find SFR named '#{name}'."
     end
 
-    # Returns a {Register} object if an SFR or NMMR by that name is found,
+    # Returns a {Variable} object if an SFR or NMMR by that name is found,
     # or raises an exception.
     # @param name [Symbol] The name from the datasheet.
     # @return [Register]
-    def sfr_or_nmmr(name)
+    def register(name)
       name = name.to_sym
       @sfrs[name] || @nmmrs[name] or raise ArgumentError, "Cannot find SFR or NMMR named '#{name}'."
     end
+    alias_method :sfr_or_nmmr, :register
 
     # Returns a {Register} object if an NMMR by that name is found,
     # or raises an exception.

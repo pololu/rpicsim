@@ -1,4 +1,4 @@
-module RPicSim
+module RPicSim::Storage
   class Register
     attr_reader :name
     
@@ -20,10 +20,10 @@ module RPicSim
               end
       
       var_type = case size
-                 when 1 then VariableU8
-                 when 2 then VariableU16
-                 when 3 then VariableU24
-                 when 4 then VariableU32
+                 when 1 then MemoryUInt8
+                 when 2 then MemoryUInt16
+                 when 3 then MemoryUInt24
+                 when 4 then MemoryUInt32
                  end
       
       @var = var_type.new(name, address).bind(memory)
