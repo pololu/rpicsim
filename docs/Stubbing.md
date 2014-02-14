@@ -21,7 +21,7 @@ To stub a method in the most basic way, you can do something like this:
 The example above just alters our simulation so that whenever the `foo` subroutine is called, instead of running as normal it will return immediately using {RPicSim::Sim#return}.
 
 The example above can be expanded in many ways:
-You might read and write from {file:Variables.md variables} and {file:SFRs.md SFRs}.
+You might read and write from {file:Variables.md variables} and {file:Registers.md Registers}.
 You might record information about how the subroutine was called.
 
 

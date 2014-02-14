@@ -126,4 +126,4 @@ In this example, `main_output` is a pin alias, as described in the {file:Pins.md
 
 Some subroutine values might store input or output values in RAM.  To test those subroutines, you will need to be able to read and write RAM as described in the {file:Variables.md Variables page}.
 
-Some subroutine values might store input or output values in SFRs.  To test those subroutines, you will need to be able to read and write SFRs as described in the {file:SFRs.md SFRs page}.
+Some subroutine values might store input or output values in registers.  To test those subroutines, you will need to be able to read and write registers as described in the {file:Registers.md Registers page}.

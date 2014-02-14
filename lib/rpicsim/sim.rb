@@ -271,12 +271,12 @@ module RPicSim
     # @return [MemoryWatcher]
     attr_reader :ram_watcher
 
-    # Returns a {Register} object corresponding to WREG.  You can use this
+    # Returns a {Variable} object corresponding to WREG.  You can use this
     # to read and write the value of the W register.
     # @return [Register]
     attr_reader :wreg
 
-    # Returns a {Register} object corresponding to the stack pointer.  You can use
+    # Returns a {Variable} object corresponding to the stack pointer.  You can use
     # this to read and write the value of the stack pointer.
     # @return [Register]
     attr_reader :stkptr
@@ -383,7 +383,7 @@ module RPicSim
       @pins_by_name[name.to_sym] or raise ArgumentError, "Cannot find pin named '#{name}'."
     end
 
-    # Returns a {Register} object if an SFR by that name is found,
+    # Returns a {Variable} object if an SFR by that name is found,
     # or raises an exception.
     # @param name [Symbol] The name from the datasheet.
     # @return [Register]
@@ -401,7 +401,7 @@ module RPicSim
     end
     alias_method :sfr_or_nmmr, :register
 
-    # Returns a {Register} object if an NMMR by that name is found,
+    # Returns a {Variable} object if an NMMR by that name is found,
     # or raises an exception.
     # @param name [Symbol] The name from the datasheet.
     # @return [Register]
