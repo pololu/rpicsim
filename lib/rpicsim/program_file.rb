@@ -111,6 +111,7 @@ module RPicSim
       end
 
       # TODO: add support for all other 8-bit PIC architectures
+      # TODO: organize this list
       properties = Array case mplab_instruction.opcode
       when 'ADDWF'
       when 'ADDWFC'
@@ -123,11 +124,14 @@ module RPicSim
       when 'COMF'
       when 'DECF'
       when 'DECFSZ' then [:conditional_skip]
+      when 'DCFSNZ' then
       when 'INCF'
       when 'INCFSZ' then [:conditional_skip]
+      when 'INFSNZ' then [:conditional_skip]
       when 'IORWF'
       when 'MOVWF'
       when 'MOVF'
+      when 'MOVFF'
       when 'NOP'
       when 'RLF'
       when 'RRF'
@@ -148,8 +152,18 @@ module RPicSim
       when 'RETFIE' then [:return]
       when 'RETLW'  then [:return]
       when 'RETURN' then [:return]
+      when 'SETF'
       when 'SLEEP'
+      when 'SUBWFB'
+      when 'TSTFSZ' then [:conditional_skip]
       when 'XORLW'
+      when 'MULWF'
+      when 'NEGF'
+      when 'RLCF'
+      when 'RLNCF'
+      when 'RRCF'
+      when 'RRNCF'
+      
       else
         raise "Unrecognized opcode #{mplab_instruction.opcode} " +
           "(#{address_description(address)}, operands #{mplab_instruction.operands.inspect})."

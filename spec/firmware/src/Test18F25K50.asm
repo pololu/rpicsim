@@ -39,6 +39,9 @@ readFlashVar1:
 
   
 instructions code 0x1000
+
+; == Byte-oriented instructions ==
+
 ins_addwf:
     addwf   4, F, ACCESS
     addwf   5, W, BANKED
@@ -70,7 +73,97 @@ ins_cpfsgt:
 ins_cpfslt:
     cpfslt  4, ACCESS
     cpfslt  5, BANKED
+
+ins_decf:
+    decf    4, F, ACCESS
+    decf    5, W, BANKED
+
+ins_decfsz:
+    decfsz  4, F, ACCESS
+    decfsz  5, W, BANKED
+
+ins_dcfsnz:
+    dcfsnz  4, F, ACCESS
+    dcfsnz  5, W, BANKED
+
+ins_incf:
+    incf    4, F, ACCESS
+    incf    5, W, BANKED
+
+ins_incfsz:
+    incfsz  4, F, ACCESS
+    incfsz  5, W, BANKED
+
+ins_infsnz:
+    infsnz  4, F, ACCESS
+    infsnz  5, W, BANKED
+
+ins_iorwf:
+    iorwf   4, F, ACCESS
+    iorwf   5, W, BANKED
+
+ins_movf:
+    movf    4, F, ACCESS
+    movf    5, W, BANKED
+
+ins_movff:
+    movff   6, 7
+
+ins_movwf:
+    movwf   4, ACCESS
+    movwf   5, BANKED
     
+ins_mulwf:
+    mulwf   4, ACCESS
+    mulwf   5, BANKED
+
+ins_negf:
+    negf    4, ACCESS
+    negf    5, BANKED
+
+ins_rlcf:
+    rlcf    4, F, ACCESS
+    rlcf    5, W, BANKED
+
+ins_rlncf:
+    rlncf   4, F, ACCESS
+    rlncf   5, W, BANKED
+
+ins_rrcf:
+    rrcf    4, F, ACCESS
+    rrcf    5, W, BANKED
+
+ins_rrncf:
+    rrncf   4, F, ACCESS
+    rrncf   5, W, BANKED
+
+ins_setf:
+    setf    4, ACCESS
+    setf    5, BANKED
+
+ins_subwf:
+    subwf   4, F, ACCESS
+    subwf   5, W, BANKED
+
+ins_subwfb:
+    subwfb  4, F, ACCESS
+    subwfb  5, W, BANKED
+
+ins_swapf:
+    swapf   4, F, ACCESS
+    swapf   5, W, BANKED
+
+ins_tstfsz:
+    tstfsz  4, ACCESS
+    tstfsz  5, BANKED
+
+ins_xorwf:
+    xorwf   4, F, ACCESS
+    xorwf   5, W, BANKED
+    
+    
+; == Control operations ==
+ 
 ins_goto:
     goto    2
     goto    3
