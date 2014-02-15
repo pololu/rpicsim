@@ -45,8 +45,23 @@ module RPicSim
       #     expecting main_output_pin: be_driving_high
       #
       # To remove an expectation on an object, just provide +nil+ for the matcher.
+      #
+      # If given a block, applies the new expectations, executes the
+      # block, then resets expectations to their former state.
+      # Expectation blocks may be nested and freely mixed with other
+      # calls to `expecting`.
       def expecting(hash)
-        expectations.merge! hash
+        if block_given?
+          saved_expectations = expectations.clone
+          begin
+            expecting(hash)
+            yield
+          ensure
+            @expectations = saved_expectations
+          end
+        else
+          expectations.merge! hash
+        end
       end
     end
   end

@@ -32,7 +32,17 @@ To remove a persistent expectation, specify a matcher of `nil`:
     !!!ruby
     expecting main_output => nil
 
-The persistent expectations will not be checked right away when they are added but they will be checked after every step of the simulation.
+If `expecting` is given a block, expectations will only be valid for the duration of the block:
+
+    !!!ruby
+    # Verify that the main output stays high for 10 cycles.
+    expecting main_output => be_driving_high do
+      # The expectation will be checked within the block.
+      run_cycles 10
+    end
+    # The expectation will not be checked here.
+
+The persistent expectations will not be checked immediately when they are added, but they will be checked after every step of the simulation.
 You can also check them at any time by calling `check_expecations` inside your RSPec example.
 
 Persistent expectations, when combined with RSpec's `satisfy` matcher, are very powerful.  If `counter` is a {RPicSim::Variable variable} in your simulation, you could use this code to ensure that `counter` never goes above 120:
@@ -67,6 +77,25 @@ The following RSpec example tests that the main output pin is held low (after gi
 
 In the above example, we removed the persistent expectation on `main_output` temporarily because the device was in a transitionary period and we didn't know exactly when the transition would happen.
 We chose to stop monitoring the pin for the duration of the transition and then start monitoring it later, at which point we expect the pin to be in its new state.
+We can rewrite that using block arguments instead of explicitly clearing the expectation:
+
+    !!!ruby
+    it "mirrors the main input onto the main output pin" do
+      run_cycles 120    # Give the device time to start up.
+
+      expecting main_output => be_driving_low do
+        run_cycles 800
+      end
+
+      main_input.set true
+
+      # Give the device time to detect the change in the input.
+      run_cycles 200
+
+      expecting main_output => be_driving_high do
+        run_cycles 800
+      end
+    end
 
 If you need to repeat this patten many times in your tests, you might consider adding a method in `spec_helper.rb` to help you do it:
 
