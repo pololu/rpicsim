@@ -19,7 +19,7 @@ describe 'RPicSim disassembly' do
   let(:address) { @program_file.label('ins_' + opcode.downcase).address }
   
   let(:instruction0) { @program_file.instruction(address) }
-  let(:instruction1) { @program_file.instruction(address + 1) }
+  let(:instruction1) { @program_file.instruction(address + example.metadata[:address_increment]) }
   
   shared_examples_for 'instruction' do |opts|
     size = opts[:size]
@@ -44,12 +44,21 @@ describe 'RPicSim disassembly' do
     
   end
   
-  context 'for PIC18 architecture' do
+  shared_examples_for 'conditional skip FA' do
+    it 'leads to the next two instructions after it' do
+      expect(instruction0.next_addresses).to eq [address + 2, address + 4]
+    end
+  
+    it 'can properly decode all operands' do
+      expect(instruction0.operands).to eq(:f => 4, :a => 0)
+      expect(instruction1.operands).to eq(:f => 5, :a => 1)
+    end
+  end
+  
+  context 'for PIC18 architecture', address_increment: 2 do
     before(:all) do
       @program_file = RPicSim::ProgramFile.new(Firmware::Test18F25K50.filename, Firmware::Test18F25K50.device)
     end
-    
-    conditional_skips_fa = %w{ CPFSEQ }
     
     describe 'GOTO', opcode: 'GOTO' do
       it_behaves_like 'instruction', size: 4, string: 'GOTO 0x2'
@@ -62,22 +71,10 @@ describe 'RPicSim disassembly' do
         expect(instruction0.next_addresses).to eq [2]
       end
     end
-    
-    conditional_skips_fa.each do |name|
-      specify name do
-        address = @program_file.label('ins_' + name.downcase).address
-        i0 = @program_file.instruction(address)
-        expect(i0.address).to eq address
-        expect(i0.opcode).to eq name
-        expect(i0.operands).to eq(:f => 4, :a => 0)
-        expect(i0.size).to eq 2
-        expect(i0).to be_a_kind_of RPicSim::Instruction::ConditionalSkip
-        expect(i0.next_addresses).to eq [address + 2, address + 4]
-        
-        i1 = @program_file.instruction(address + 2)
-        expect(i1.opcode).to eq name
-        expect(i1.operands).to eq(:f => 5, :a => 1)
-      end
+
+    describe 'CPFSEQ', opcode: 'CPFSEQ' do
+      it_behaves_like 'instruction', size: 2, string: 'CPFSEQ 0x4, ACCESS'
+      it_behaves_like 'conditional skip FA'
     end
 
   end
