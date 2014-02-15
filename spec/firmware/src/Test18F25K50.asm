@@ -160,7 +160,29 @@ ins_tstfsz:
 ins_xorwf:
     xorwf   4, F, ACCESS
     xorwf   5, W, BANKED
-    
+
+; == Bit-oriented operations ==
+
+ins_bcf:
+    bcf     4, 6, ACCESS
+    bcf     5, 7, BANKED
+
+ins_bsf:
+    bsf     4, 6, ACCESS
+    bsf     5, 7, BANKED
+
+ins_btfsc:
+    btfsc   4, 6, ACCESS
+    btfsc   5, 7, BANKED
+
+ins_btfss:
+    btfss   4, 6, ACCESS
+    btfss   5, 7, BANKED
+
+ins_btg:
+    btg     4, 6, ACCESS
+    btg     5, 7, BANKED
+
     
 ; == Control operations ==
  

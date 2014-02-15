@@ -79,6 +79,18 @@ describe 'RPicSim disassembly' do
       expect(instruction1.operands).to eq(f: 5, d: 0, a: 1)
     end
   end
+  
+  shared_examples_for 'instruction with fields f, b, and a' do
+    string = metadata[:opcode] + ' 0x4, 6, ACCESS'
+    it "has string #{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'can properly decode all fields' do
+      expect(instruction0.operands).to eq(f: 4, b: 6, a: 0)
+      expect(instruction1.operands).to eq(f: 5, b: 7, a: 1)
+    end
+  end
 
   shared_examples_for 'instruction with field k' do
     string = metadata[:opcode] + ' 0x2'
@@ -95,7 +107,7 @@ describe 'RPicSim disassembly' do
   context 'for PIC18 architecture', address_increment: 2 do
     let(:program_file) { Firmware::Test18F25K50.program_file }
 
-    context 'byte-oriented operations' do
+    describe 'byte-oriented operations' do
 
       describe_instruction 'ADDWF' do
         it_behaves_like 'instruction'
@@ -278,7 +290,40 @@ describe 'RPicSim disassembly' do
 
     end
 
-    context 'control oeprations' do
+    describe 'bit-oriented operations' do
+      describe_instruction 'BCF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, b, and a'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'BSF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, b, and a'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'BTFSC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, b, and a'
+        it_behaves_like 'conditional skip'
+      end
+
+      describe_instruction 'BTFSS' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, b, and a'
+        it_behaves_like 'conditional skip'
+      end
+
+      describe_instruction 'BTG' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, b, and a'
+        it_behaves_like 'instruction that does not affect control'
+      end
+    end
+    
+    
+    describe 'control oeprations' do
 
       describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4

@@ -119,6 +119,7 @@ module RPicSim
       when 'ANDWF'
       when 'BCF'
       when 'BSF'
+      when 'BTG'
       when 'BTFSC'  then [:conditional_skip]
       when 'BTFSS'  then [:conditional_skip]
       when 'CALL'   then [:call]
