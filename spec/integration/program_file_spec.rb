@@ -91,12 +91,12 @@ describe 'RPicSim disassembly' do
     
     context 'byte-oriented operations' do
     
-      describe 'ADDWF', opcode: 'ADDWF' do
+      describe_instruction 'ADDWF' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f, d, and a'
       end
       
-      describe 'ADDWFC', opcode: 'ADDWFC' do
+      describe_instruction 'ADDWFC' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f, d, and a'    
       end
@@ -116,19 +116,19 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction with fields f, d, and a'
       end
 
-      describe 'CPFSEQ', opcode: 'CPFSEQ' do
+      describe_instruction 'CPFSEQ' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
       end
       
-      describe 'CPFSGT', opcode: 'CPFSGT' do
+      describe_instruction 'CPFSGT' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
       end
       
-      describe 'CPFSLT', opcode: 'CPFSLT' do
+      describe_instruction 'CPFSLT' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
@@ -138,7 +138,7 @@ describe 'RPicSim disassembly' do
     
     context 'control oeprations' do
           
-      describe 'GOTO', opcode: 'GOTO' do
+      describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4
         it_behaves_like 'instruction with field k'
         
