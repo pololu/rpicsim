@@ -62,7 +62,15 @@ ins_comf:
 ins_cpfseq:
     cpfseq  4, ACCESS
     cpfseq  5, BANKED
-   
+
+ins_cpfsgt:
+    cpfsgt  4, ACCESS
+    cpfsgt  5, BANKED
+
+ins_cpfslt:
+    cpfslt  4, ACCESS
+    cpfslt  5, BANKED
+    
 ins_goto:
     goto    2
     goto    3

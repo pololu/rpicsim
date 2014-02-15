@@ -115,6 +115,8 @@ module RPicSim
       when 'ADDWF'
       when 'ANDWF'
       when 'CPFSEQ' then [:conditional_skip]
+      when 'CPFSGT' then [:conditional_skip]
+      when 'CPFSLT' then [:conditional_skip]
       when 'CLRF'
       when 'CLRW'
       when 'COMF'

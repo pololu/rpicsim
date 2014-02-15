@@ -17,12 +17,13 @@ end
 describe 'RPicSim disassembly' do
   let(:opcode) { example.metadata[:opcode] }
   let(:address) { @program_file.label('ins_' + opcode.downcase).address }
+  let(:address_increment) { example.metadata[:address_increment] }
   
   let(:instruction0) { @program_file.instruction(address) }
-  let(:instruction1) { @program_file.instruction(address + example.metadata[:address_increment]) }
+  let(:instruction1) { @program_file.instruction(address + address_increment) }
   
   shared_examples_for 'instruction' do |opts|
-    size = opts[:size]
+    size = opts[:size] || metadata[:address_increment]
     string = opts[:string]
   
     it 'has the right address' do
@@ -44,20 +45,34 @@ describe 'RPicSim disassembly' do
     
   end
   
-  shared_examples_for 'conditional skip FA' do
+  shared_examples_for 'conditional skip' do
     it 'leads to the next two instructions after it' do
-      expect(instruction0.next_addresses).to eq [address + 2, address + 4]
+      expect(instruction0.next_addresses).to eq [address + address_increment, address + address_increment * 2]
     end
+  end
   
-    it 'can properly decode all operands' do
-      expect(instruction0.operands).to eq(:f => 4, :a => 0)
-      expect(instruction1.operands).to eq(:f => 5, :a => 1)
+  shared_examples_for 'instruction with fields F and A' do
+    it 'can properly decode all fields' do
+      expect(instruction0.operands).to eq(f: 4, a: 0)
+      expect(instruction1.operands).to eq(f: 5, a: 1)
+    end
+  end
+  
+  shared_examples_for 'instruction with fields F, D, and A' do
+    it 'can properly decode all fields' do
+      expect(instruction0.operands).to eq(f: 4, d: 1, a: 0)
+      expect(instruction1.operands).to eq(f: 5, d: 0, a: 1)
     end
   end
   
   context 'for PIC18 architecture', address_increment: 2 do
     before(:all) do
       @program_file = RPicSim::ProgramFile.new(Firmware::Test18F25K50.filename, Firmware::Test18F25K50.device)
+    end
+    
+    describe 'ADDWF', opcode: 'ADDWF' do
+      it_behaves_like 'instruction', string: 'ADDWF 0x4, F, ACCESS'
+      it_behaves_like 'instruction with fields F, D, and A'
     end
     
     describe 'GOTO', opcode: 'GOTO' do
@@ -73,8 +88,21 @@ describe 'RPicSim disassembly' do
     end
 
     describe 'CPFSEQ', opcode: 'CPFSEQ' do
-      it_behaves_like 'instruction', size: 2, string: 'CPFSEQ 0x4, ACCESS'
-      it_behaves_like 'conditional skip FA'
+      it_behaves_like 'instruction', string: 'CPFSEQ 0x4, ACCESS'
+      it_behaves_like 'instruction with fields F and A'
+      it_behaves_like 'conditional skip'
+    end
+    
+    describe 'CPFSGT', opcode: 'CPFSGT' do
+      it_behaves_like 'instruction', string: 'CPFSGT 0x4, ACCESS'
+      it_behaves_like 'instruction with fields F and A'
+      it_behaves_like 'conditional skip'
+    end
+    
+    describe 'CPFSLT', opcode: 'CPFSLT' do
+      it_behaves_like 'instruction', string: 'CPFSLT 0x4, ACCESS'
+      it_behaves_like 'instruction with fields F and A'
+      it_behaves_like 'conditional skip'
     end
 
   end
