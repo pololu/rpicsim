@@ -14,13 +14,17 @@ describe RPicSim::ProgramFile do
 
 end
 
+def describe_instruction(opcode, &proc)
+  describe(opcode, {opcode: opcode}, &proc)
+end
+
 describe 'RPicSim disassembly' do
   let(:opcode) { example.metadata[:opcode] }
-  let(:address) { @program_file.label('ins_' + opcode.downcase).address }
+  let(:address) { program_file.label('ins_' + opcode.downcase).address }
   let(:address_increment) { example.metadata[:address_increment] }
   
-  let(:instruction0) { @program_file.instruction(address) }
-  let(:instruction1) { @program_file.instruction(address + address_increment) }
+  let(:instruction0) { program_file.instruction(address) }
+  let(:instruction1) { program_file.instruction(address + address_increment) }
   
   shared_examples_for 'instruction' do |opts = {}|
     size = opts[:size] || metadata[:address_increment]
@@ -83,9 +87,7 @@ describe 'RPicSim disassembly' do
   end
   
   context 'for PIC18 architecture', address_increment: 2 do
-    before(:all) do
-      @program_file = RPicSim::ProgramFile.new(Firmware::Test18F25K50.filename, Firmware::Test18F25K50.device)
-    end
+    let(:program_file) { Firmware::Test18F25K50.program_file }
     
     context 'byte-oriented operations' do
     
@@ -98,21 +100,36 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f, d, and a'    
       end
+      
+      describe_instruction 'ANDWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, d, and a'
+      end
+      
+      describe_instruction 'CLRF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and a'      
+      end
+
+      describe_instruction 'COMF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, d, and a'
+      end
 
       describe 'CPFSEQ', opcode: 'CPFSEQ' do
-        it_behaves_like 'instruction', string: 'CPFSEQ 0x4, ACCESS'
+        it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
       end
       
       describe 'CPFSGT', opcode: 'CPFSGT' do
-        it_behaves_like 'instruction', string: 'CPFSGT 0x4, ACCESS'
+        it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
       end
       
       describe 'CPFSLT', opcode: 'CPFSLT' do
-        it_behaves_like 'instruction', string: 'CPFSLT 0x4, ACCESS'
+        it_behaves_like 'instruction'
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'conditional skip'
       end
