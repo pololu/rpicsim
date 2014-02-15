@@ -28,6 +28,11 @@ module RPicSim
     # The units of this are the same as the units of {#address}.
     # @return (Integer)
     attr_reader :size
+    
+    # A line of assembly language that would represent this instruction.
+    # For example "GOTO 0x2".
+    # @return (String)
+    attr_reader :string
 
     # Creates a new instruction.
     # @param instruction_store some object such as {ProgramFile} that responds to #instruction and #address_description.
@@ -120,7 +125,7 @@ module RPicSim
     # We need to multiply by the address increment because on PIC18
     # flash addresses are actually byte-based instead of word-based.
     def k_address
-      operands['k'] * @address_increment
+      operands[:k] * @address_increment
     end
     
     ### Modules that modify the behavior of the instruction. ###

@@ -23,10 +23,14 @@ module RPicSim::Mplab
     end
     
     private
+    # Convert from Map<String, Integer> to a Ruby hash
+    # with symbols as keys instead of strings.
     def operands_hash(map)
-      # Convert from Map<String, Integer> to a Ruby hash.
-      # TODO: use symbols for keys instead of strings
-      map.to_hash
+      operands = {}
+      map.each do |operand_name, value|
+        operands[operand_name.to_sym] = value
+      end
+      operands
     end
   end
 end
