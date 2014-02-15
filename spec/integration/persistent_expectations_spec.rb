@@ -45,12 +45,12 @@ describe RPicSim::RSpec::PersistentExpectations do
 
   it "checks persistent expectations in a block" do
     # we should get an error on the NEXT step if we expect high
-    test = double(:object)
-    test.should_receive(:hello).once
+    yield_count = 0
     expecting(pin(:RA1) => be_driving_high) do
-      test.hello
+      yield_count += 1
       expect { step }.to raise_error RSpec::Expectations::ExpectationNotMetError
     end
+    expect(yield_count). to eq 1
 
     # clearing should not be necessary after a block
     expect { step }.to_not raise_error
