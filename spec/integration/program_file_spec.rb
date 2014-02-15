@@ -22,9 +22,8 @@ describe 'RPicSim disassembly' do
   let(:instruction0) { @program_file.instruction(address) }
   let(:instruction1) { @program_file.instruction(address + address_increment) }
   
-  shared_examples_for 'instruction' do |opts|
+  shared_examples_for 'instruction' do |opts = {}|
     size = opts[:size] || metadata[:address_increment]
-    string = opts[:string]
   
     it 'has the right address' do
       expect(instruction0.address).to eq address
@@ -38,11 +37,7 @@ describe 'RPicSim disassembly' do
       # the PIC18 stores flash addresses in terms of bytes, not words
       expect(instruction0.size).to eq size
     end
-    
-    it "has string '#{string}'" do
-      expect(instruction0.string). to eq string
-    end
-    
+
   end
   
   shared_examples_for 'conditional skip' do
@@ -59,6 +54,11 @@ describe 'RPicSim disassembly' do
   end
   
   shared_examples_for 'instruction with fields F, D, and A' do
+    string = metadata[:opcode] + ' 0x4, F, ACCESS'
+    it "has string #{string}'" do
+      expect(instruction0.string).to eq string
+    end
+  
     it 'can properly decode all fields' do
       expect(instruction0.operands).to eq(f: 4, d: 1, a: 0)
       expect(instruction1.operands).to eq(f: 5, d: 0, a: 1)
@@ -70,40 +70,50 @@ describe 'RPicSim disassembly' do
       @program_file = RPicSim::ProgramFile.new(Firmware::Test18F25K50.filename, Firmware::Test18F25K50.device)
     end
     
-    describe 'ADDWF', opcode: 'ADDWF' do
-      it_behaves_like 'instruction', string: 'ADDWF 0x4, F, ACCESS'
-      it_behaves_like 'instruction with fields F, D, and A'
-    end
+    context 'byte-oriented operations' do
     
-    describe 'GOTO', opcode: 'GOTO' do
-      it_behaves_like 'instruction', size: 4, string: 'GOTO 0x2'
-      
-      it 'has a k operand with a word address in it' do
-        expect(instruction0.operands).to eq(k: 1)
+      describe 'ADDWF', opcode: 'ADDWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields F, D, and A'
       end
       
-      it 'leads to the instruction specified by k' do
-        expect(instruction0.next_addresses).to eq [2]
+      describe 'ADDWFC', opcode: 'ADDWFC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields F, D, and A'    
       end
-    end
+      
+      describe 'GOTO', opcode: 'GOTO' do
+        it_behaves_like 'instruction', size: 4, string: 'GOTO 0x2'
+        
+        it 'has a k operand with a word address in it' do
+          expect(instruction0.operands).to eq(k: 1)
+        end
+        
+        it 'leads to the instruction specified by k' do
+          expect(instruction0.next_addresses).to eq [2]
+        end
+      end
 
-    describe 'CPFSEQ', opcode: 'CPFSEQ' do
-      it_behaves_like 'instruction', string: 'CPFSEQ 0x4, ACCESS'
-      it_behaves_like 'instruction with fields F and A'
-      it_behaves_like 'conditional skip'
+      describe 'CPFSEQ', opcode: 'CPFSEQ' do
+        it_behaves_like 'instruction', string: 'CPFSEQ 0x4, ACCESS'
+        it_behaves_like 'instruction with fields F and A'
+        it_behaves_like 'conditional skip'
+      end
+      
+      describe 'CPFSGT', opcode: 'CPFSGT' do
+        it_behaves_like 'instruction', string: 'CPFSGT 0x4, ACCESS'
+        it_behaves_like 'instruction with fields F and A'
+        it_behaves_like 'conditional skip'
+      end
+      
+      describe 'CPFSLT', opcode: 'CPFSLT' do
+        it_behaves_like 'instruction', string: 'CPFSLT 0x4, ACCESS'
+        it_behaves_like 'instruction with fields F and A'
+        it_behaves_like 'conditional skip'
+      end
+
     end
     
-    describe 'CPFSGT', opcode: 'CPFSGT' do
-      it_behaves_like 'instruction', string: 'CPFSGT 0x4, ACCESS'
-      it_behaves_like 'instruction with fields F and A'
-      it_behaves_like 'conditional skip'
-    end
-    
-    describe 'CPFSLT', opcode: 'CPFSLT' do
-      it_behaves_like 'instruction', string: 'CPFSLT 0x4, ACCESS'
-      it_behaves_like 'instruction with fields F and A'
-      it_behaves_like 'conditional skip'
-    end
 
   end
 

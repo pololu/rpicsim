@@ -113,6 +113,7 @@ module RPicSim
       # TODO: add support for all other 8-bit PIC architectures
       properties = Array case mplab_instruction.opcode
       when 'ADDWF'
+      when 'ADDWFC'
       when 'ANDWF'
       when 'CPFSEQ' then [:conditional_skip]
       when 'CPFSGT' then [:conditional_skip]
