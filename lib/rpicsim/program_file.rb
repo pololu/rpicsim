@@ -111,59 +111,57 @@ module RPicSim
       end
 
       # TODO: add support for all other 8-bit PIC architectures
-      # TODO: organize this list
       properties = Array case mplab_instruction.opcode
+      when 'ADDLW'
       when 'ADDWF'
       when 'ADDWFC'
+      when 'ANDLW'
       when 'ANDWF'
+      when 'BCF'
+      when 'BSF'
+      when 'BTFSC'  then [:conditional_skip]
+      when 'BTFSS'  then [:conditional_skip]
+      when 'CALL'   then [:call]
       when 'CPFSEQ' then [:conditional_skip]
       when 'CPFSGT' then [:conditional_skip]
       when 'CPFSLT' then [:conditional_skip]
       when 'CLRF'
       when 'CLRW'
+      when 'CLRWDT'
       when 'COMF'
       when 'DECF'
       when 'DECFSZ' then [:conditional_skip]
       when 'DCFSNZ' then
+      when 'GOTO'   then [:goto]
       when 'INCF'
       when 'INCFSZ' then [:conditional_skip]
       when 'INFSNZ' then [:conditional_skip]
+      when 'IORLW'
       when 'IORWF'
+      when 'MOVLW'
       when 'MOVWF'
       when 'MOVF'
       when 'MOVFF'
+      when 'MULWF'
+      when 'NEGF'
       when 'NOP'
-      when 'RLF'
-      when 'RRF'
-      when 'SUBWF'
-      when 'SWAPF'
-      when 'XORWF'
-      when 'BCF'
-      when 'BSF'
-      when 'BTFSC'  then [:conditional_skip]
-      when 'BTFSS'  then [:conditional_skip]
-      when 'ADDLW'
-      when 'ANDLW'
-      when 'CALL'   then [:call]
-      when 'CLRWDT'
-      when 'GOTO'   then [:goto]
-      when 'IORLW'
-      when 'MOVLW'
       when 'RETFIE' then [:return]
       when 'RETLW'  then [:return]
       when 'RETURN' then [:return]
-      when 'SETF'
-      when 'SLEEP'
-      when 'SUBWFB'
-      when 'TSTFSZ' then [:conditional_skip]
-      when 'XORLW'
-      when 'MULWF'
-      when 'NEGF'
       when 'RLCF'
+      when 'RLF'
       when 'RLNCF'
       when 'RRCF'
+      when 'RRF'
       when 'RRNCF'
-      
+      when 'SETF'
+      when 'SLEEP'
+      when 'SUBWF'
+      when 'SUBWFB'
+      when 'SWAPF'
+      when 'TSTFSZ' then [:conditional_skip]
+      when 'XORLW'
+      when 'XORWF'      
       else
         raise "Unrecognized opcode #{mplab_instruction.opcode} " +
           "(#{address_description(address)}, operands #{mplab_instruction.operands.inspect})."
