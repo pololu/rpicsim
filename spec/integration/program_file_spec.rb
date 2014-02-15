@@ -191,6 +191,11 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction', size: 4
 
         describe 'instruction with fields fs and fd' do
+          string = 'MOVFF 0x6, 0x7'
+          it "has string '#{string}'" do
+            expect(instruction0.string).to eq string
+          end
+
           it 'can properly decode all fields' do
             expect(instruction0.operands).to eq(:fs => 6, :fd => 7)
           end
