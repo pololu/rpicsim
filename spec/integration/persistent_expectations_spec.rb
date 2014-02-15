@@ -20,10 +20,10 @@ describe RPicSim::RSpec::PersistentExpectations do
     old_cycle_count = cycle_count
     expect { step }.to raise_error RSpec::Expectations::ExpectationNotMetError
 
-    # verify that the processor is running
-    expect(cycle_count - old_cycle_count).to be > 0
+    # verify that the processor did take a step
+    expect(cycle_count - old_cycle_count).to be_between(1, 2)
 
-    # we sould not get an error on the step if we expect low 
+    # we should not get an error on the step if we expect low 
     expecting pin(:RA1) => be_driving_low
     expect { step }.to_not raise_error
 
@@ -36,10 +36,9 @@ describe RPicSim::RSpec::PersistentExpectations do
     
     # we should get an error on the NEXT step if we expect low
     expecting pin(:RA1) => be_driving_low
-    old_cycle_count = cycle_count
     expect { step }.to raise_error RSpec::Expectations::ExpectationNotMetError
 
-    # we sould not get an error on the step if we expect high
+    # we should not get an error on the step if we expect high
     expecting pin(:RA1) => be_driving_high
     expect { step }.to_not raise_error
   end
