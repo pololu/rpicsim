@@ -13,6 +13,7 @@ module RPicSim
     def initialize(filename, device)
       @filename = filename
       @device = device
+      
       @mplab_program_file = Mplab::MplabProgramFile.new(filename, device)
       
       @assembly = Mplab::MplabAssembly.new(device)
@@ -117,11 +118,18 @@ module RPicSim
       when 'ADDWFC'
       when 'ANDLW'
       when 'ANDWF'
+      when 'BC'     then [:conditional_relative_branch]
       when 'BCF'
+      when 'BN'     then [:conditional_relative_branch]
+      when 'BNC'    then [:conditional_relative_branch]
+      when 'BNN'    then [:conditional_relative_branch]
+      when 'BNOV'   then [:conditional_relative_branch]
+      when 'BRA'    then [:conditional_relative_branch]
       when 'BSF'
       when 'BTG'
       when 'BTFSC'  then [:conditional_skip]
       when 'BTFSS'  then [:conditional_skip]
+      when 'BZ'     then [:conditional_relative_branch]
       when 'CALL'   then [:call]
       when 'CPFSEQ' then [:conditional_skip]
       when 'CPFSGT' then [:conditional_skip]

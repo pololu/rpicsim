@@ -1,5 +1,7 @@
 require_relative '../spec_helper'
 
+# TODO: test support for the PIC18 extended instruction set
+
 describe RPicSim::ProgramFile do
   subject(:program_file) do
     Firmware::FlashVariables.program_file
@@ -44,18 +46,6 @@ describe 'RPicSim disassembly' do
 
   end
 
-  shared_examples_for 'instruction that does not affect control' do
-    it 'leads to the instruction after it' do
-      expect(instruction0.next_addresses).to eq [address + instruction0.size]
-    end
-  end
-
-  shared_examples_for 'conditional skip' do
-    it 'leads to the next two instructions after it' do
-      expect(instruction0.next_addresses).to eq [address + address_increment, address + address_increment * 2]
-    end
-  end
-
   shared_examples_for 'instruction with fields f and a' do
     string = metadata[:opcode] + ' 0x4, ACCESS'
     it "has string #{string}'" do
@@ -98,11 +88,49 @@ describe 'RPicSim disassembly' do
       expect(instruction0.string).to eq string
     end
 
-    it 'k operand with a word address in it' do
+    it 'has a k field with a word address in it' do
       expected_k = 2 / example.metadata[:address_increment]
       expect(instruction0.operands).to eq(k: expected_k)
     end
   end
+  
+  shared_examples_for 'instruction with field n' do
+    it "has the right string" do
+      string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:n] + 1) ]
+      expect(instruction0.string).to eq string
+    end
+
+    it 'has an n field with a relative word address in it' do
+      expected_n = 0xC / example.metadata[:address_increment] - 1
+      expect(instruction0.operands).to eq(n: expected_n)
+      expect(instruction1.operands).to eq(n: -expected_n)
+    end
+  end
+  
+  shared_examples_for 'instruction that does not affect control' do
+    it 'leads to the instruction after it' do
+      expect(instruction0.next_addresses).to eq [address + instruction0.size]
+    end
+  end
+
+  shared_examples_for 'conditional skip' do
+    it 'leads to the next two instructions after it' do
+      expect(instruction0.next_addresses).to eq [
+        address + address_increment,
+        address + address_increment * 2
+      ]
+    end
+  end
+
+  shared_examples_for 'conditional relative branch' do
+    it 'leads to the next instruction and to the branch target' do
+      expect(instruction0.next_addresses).to eq [
+        address + address_increment * (instruction0.operands[:n] + 1),
+        address + address_increment,
+      ]
+    end
+  end
+
 
   context 'for PIC18 architecture', address_increment: 2 do
     let(:program_file) { Firmware::Test18F25K50.program_file }
@@ -321,10 +349,51 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction that does not affect control'
       end
     end
-    
-    
-    describe 'control oeprations' do
+        
+    describe 'control operations' do
 
+      describe_instruction 'BC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+
+      describe_instruction 'BN' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+      
+      describe_instruction 'BNC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+
+      describe_instruction 'BNN' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+
+      describe_instruction 'BNOV' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+
+      describe_instruction 'BRA' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+      
+      describe_instruction 'BZ' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
+      
       describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4
         it_behaves_like 'instruction with field k'

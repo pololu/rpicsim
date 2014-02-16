@@ -47,6 +47,7 @@ module RPicSim
       
       modules = {
         conditional_skip: ConditionalSkip,
+        conditional_relative_branch: ConditionalRelativeBranch,
         goto: Goto,
         return: Return,
         call: Call
@@ -96,9 +97,7 @@ module RPicSim
     # Returns the addresses of all the instructions this instruction could directly lead to.
     # @return [Array(Integer)]
     def next_addresses
-      transitions.collect do |t|
-        t.next_instruction.address
-      end
+      transitions.collect(&:next_address)
     end
 
     private
@@ -114,8 +113,7 @@ module RPicSim
     end
     
     def transition(addr, attrs={})
-      next_instruction = @instruction_store.instruction(addr)
-      Transition.new(self, next_instruction, attrs)
+      Transition.new(self, addr, @instruction_store, attrs)
     end
     
     private
@@ -126,6 +124,10 @@ module RPicSim
     # flash addresses are actually byte-based instead of word-based.
     def k_address
       operands[:k] * @address_increment
+    end
+    
+    def n_address
+      address + @address_increment * (operands[:n] + 1)
     end
     
     ### Modules that modify the behavior of the instruction. ###
@@ -162,13 +164,28 @@ module RPicSim
       end
     end
     
-    class Transition
-      attr_reader :next_instruction, :previous_instruction
+    module ConditionalRelativeBranch
+      def generate_transitions
+        [ transition(n_address, non_local: true), advance(1) ]
+      end
+    end
     
-      def initialize(previous_instruction, next_instruction, attrs)
+    class Transition
+      attr_reader :previous_instruction
+    
+      def initialize(previous_instruction, next_address, instruction_store, attrs)
         @previous_instruction = previous_instruction
-        @next_instruction = next_instruction
+        @next_address = next_address
+        @instruction_store = instruction_store
         @attrs = attrs
+      end
+      
+      def next_address
+        @next_address
+      end
+      
+      def next_instruction
+        @next_instruction ||= @instruction_store.instruction(next_address)
       end
       
       def non_local?
