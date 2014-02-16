@@ -26,7 +26,7 @@ describe 'RPicSim disassembly' do
   let(:address_increment) { example.metadata[:address_increment] }
 
   let(:instruction0) { program_file.instruction(address) }
-  let(:instruction1) { program_file.instruction(address + address_increment) }
+  let(:instruction1) { program_file.instruction(address + instruction0.size) }
 
   shared_examples_for 'instruction' do |opts = {}|
     size = opts[:size] || metadata[:address_increment]
@@ -46,9 +46,20 @@ describe 'RPicSim disassembly' do
 
   end
 
+  shared_examples_for 'instruction with no fields' do
+    string = metadata[:opcode]
+    it "has string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'has no fields' do
+      expect(instruction0.operands).to be_empty
+    end
+  end
+  
   shared_examples_for 'instruction with fields f and a' do
     string = metadata[:opcode] + ' 0x4, ACCESS'
-    it "has string #{string}'" do
+    it "has string '#{string}'" do
       expect(instruction0.string).to eq string
     end
 
@@ -60,7 +71,7 @@ describe 'RPicSim disassembly' do
 
   shared_examples_for 'instruction with fields f, d, and a' do
     string = metadata[:opcode] + ' 0x4, F, ACCESS'
-    it "has string #{string}'" do
+    it "has string '#{string}'" do
       expect(instruction0.string).to eq string
     end
 
@@ -72,7 +83,7 @@ describe 'RPicSim disassembly' do
   
   shared_examples_for 'instruction with fields f, b, and a' do
     string = metadata[:opcode] + ' 0x4, 6, ACCESS'
-    it "has string #{string}'" do
+    it "has string '#{string}'" do
       expect(instruction0.string).to eq string
     end
 
@@ -84,12 +95,12 @@ describe 'RPicSim disassembly' do
 
   shared_examples_for 'instruction with field k' do
     string = metadata[:opcode] + ' 0x2'
-    it "has string #{string}'" do
+    it "has string '#{string}'" do
       expect(instruction0.string).to eq string
     end
 
     it 'has a k field with a word address in it' do
-      expected_k = 2 / example.metadata[:address_increment]
+      expected_k = 2 / address_increment
       expect(instruction0.operands).to eq(k: expected_k)
     end
   end
@@ -107,16 +118,34 @@ describe 'RPicSim disassembly' do
     end
   end
   
+  shared_examples_for 'instruction with field s' do
+    string = "#{metadata[:opcode]} 0"
+    it "has the string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'decodes all fields properly' do
+      expect(instruction0.operands).to eq(s: 0)
+      expect(instruction1.operands).to eq(s: 1)
+    end
+  end
+  
   shared_examples_for 'instruction that does not affect control' do
     it 'leads to the instruction after it' do
       expect(instruction0.next_addresses).to eq [address + instruction0.size]
+    end
+  end
+  
+  shared_examples_for 'instruction that ends control' do
+    it 'leads to no insturctions' do
+      expect(instruction0.next_addresses).to be_empty    
     end
   end
 
   shared_examples_for 'conditional skip' do
     it 'leads to the next two instructions after it' do
       expect(instruction0.next_addresses).to eq [
-        address + address_increment,
+        address + instruction0.size,
         address + address_increment * 2
       ]
     end
@@ -126,11 +155,40 @@ describe 'RPicSim disassembly' do
     it 'leads to the next instruction and to the branch target' do
       expect(instruction0.next_addresses).to eq [
         address + address_increment * (instruction0.operands[:n] + 1),
-        address + address_increment,
+        address + instruction0.size,
       ]
+    end
+    
+    specify 'neither transition has an affect on call stack depth' do
+      expect(instruction0.transitions.map(&:call_depth_change)).to eq [0, 0]
+    end
+  end
+  
+  shared_examples_for 'call' do
+    it 'leads to the next instruction and to the call' do
+      expect(instruction0.next_addresses).to eq [
+        address_increment * instruction0.operands[:k],
+        address + instruction0.size,
+      ]
+    end
+    
+    specify 'the first transition counts as a call' do
+      expect(instruction0.transitions.map(&:call_depth_change)).to eq [1, 0]
     end
   end
 
+  shared_examples_for 'relative call' do
+    it 'leads to the next instruction and to the call' do
+      expect(instruction0.next_addresses).to eq [
+        address + address_increment * (instruction0.operands[:n] + 1),
+        address + instruction0.size,
+      ]
+    end
+    
+    specify 'the first transition counts as a call' do
+      expect(instruction0.transitions.map(&:call_depth_change)).to eq [1, 0]
+    end
+  end
 
   context 'for PIC18 architecture', address_increment: 2 do
     let(:program_file) { Firmware::Test18F25K50.program_file }
@@ -394,6 +452,36 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'conditional relative branch'
       end
       
+      describe_instruction 'CALL' do
+        it_behaves_like 'instruction', size: 4
+        
+        describe 'instruction with fields k and s' do
+          string = 'CALL 0xA, 0'
+          it "has the string '#{string}'" do
+            expect(instruction0.string).to eq string
+          end
+
+          it 'has the right operands' do
+            expect(instruction0.operands).to eq(k: 5, s: 0)
+            expect(instruction1.operands).to eq(k: 6, s: 1)
+          end
+        end
+        
+        it_behaves_like 'call'
+      end
+      
+      describe_instruction 'CLRWDT' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'DAW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
       describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4
         it_behaves_like 'instruction with field k'
@@ -403,6 +491,60 @@ describe 'RPicSim disassembly' do
         end
       end
 
+      describe_instruction 'NOP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'PUSH' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        # Technically PUSH and POP do affect control but we have not implemented that yet.
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'POP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        # Technically PUSH and POP do affect control but we have not implemented that yet.
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'RCALL' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'relative call'
+      end
+      
+      describe_instruction 'RESET' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that ends control'
+      end
+      
+      describe_instruction 'RETFIE' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field s'
+        it_behaves_like 'instruction that ends control'        
+      end
+
+      describe_instruction 'RETURN' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field s'
+        it_behaves_like 'instruction that ends control'        
+      end
+      
+      describe_instruction 'SLEEP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+    end
+    
+    describe 'literal operaions' do
+    
     end
 
   end

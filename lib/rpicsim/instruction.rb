@@ -48,8 +48,9 @@ module RPicSim
       modules = {
         conditional_skip: ConditionalSkip,
         conditional_relative_branch: ConditionalRelativeBranch,
+        relative_call: RelativeCall,
         goto: Goto,
-        return: Return,
+        control_ender: ControlEnder,
         call: Call
       }
       
@@ -150,8 +151,9 @@ module RPicSim
       end
     end
     
-    # This module is mixed into any {Instruction} that represents a return from a subroutine.
-    module Return
+    # This module is mixed into any {Instruction} that represents a return from a subroutine
+    # or a RESET instruction.
+    module ControlEnder
       def generate_transitions
         []
       end
@@ -161,6 +163,12 @@ module RPicSim
     module Call
       def generate_transitions
         [ transition(k_address, call_depth_change: 1), advance(1) ]
+      end
+    end
+    
+    module RelativeCall
+      def generate_transitions
+        [ transition(n_address, call_depth_change: 1), advance(1) ]
       end
     end
     

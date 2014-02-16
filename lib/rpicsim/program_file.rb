@@ -138,6 +138,7 @@ module RPicSim
       when 'CLRW'
       when 'CLRWDT'
       when 'COMF'
+      when 'DAW'
       when 'DECF'
       when 'DECFSZ' then [:conditional_skip]
       when 'DCFSNZ' then
@@ -154,9 +155,13 @@ module RPicSim
       when 'MULWF'
       when 'NEGF'
       when 'NOP'
-      when 'RETFIE' then [:return]
-      when 'RETLW'  then [:return]
-      when 'RETURN' then [:return]
+      when 'PUSH'
+      when 'POP'
+      when 'RCALL'  then [:relative_call]
+      when 'RESET'  then [:control_ender]
+      when 'RETFIE' then [:control_ender]
+      when 'RETLW'  then [:control_ender]
+      when 'RETURN' then [:control_ender]
       when 'RLCF'
       when 'RLF'
       when 'RLNCF'

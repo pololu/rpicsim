@@ -250,8 +250,8 @@ ins_bz:
     bz      $ - 0xFE
     
 ins_call:
-    call    2, 0
-    call    3, 1
+    call    0xA, 0
+    call    0xC, 1
 
 ins_clrwdt:
     clrwdt
@@ -273,8 +273,8 @@ ins_push:
     push
 
 ins_rcall:
-    rcall    $ + 4
-    nop
+    rcall    $ + 0xC
+    rcall    $ - 0x8
     rcall    $ + 2
     rcall    $ + 0x800
     rcall    $ - 0x7FE
@@ -283,7 +283,8 @@ ins_reset:
     reset
 
 ins_retfie:
-    retfie
+    retfie   0
+    retfie   1
 
 ins_retlw:
     retlw    9
