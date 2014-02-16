@@ -261,7 +261,6 @@ ins_daw:
 
 ins_goto:
     goto    2
-    goto    3
 
 ins_nop:
     nop
@@ -295,7 +294,37 @@ ins_return:
 
 ins_sleep:
     sleep
+
+; Literal operations
+
+ins_addlw:
+    addlw    9
+
+ins_andlw:
+    andlw    9
+
+ins_iorlw:
+    iorlw    9
+
+ins_lfsr:
+    lfsr     FSR0, 0x18
+    lfsr     FSR2, 0x19
+
+ins_movlb:
+    movlb    9
+
+ins_movlw:
+    movlw    9
+
+ins_mullw:
+    mullw    9
+
+ins_sublw:
+    sublw    9
     
+ins_xorlw:
+    xorlw    9
+
     ; TODO: add the rest of the instructions
     
     

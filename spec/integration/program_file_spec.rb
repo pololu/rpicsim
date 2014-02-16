@@ -93,7 +93,18 @@ describe 'RPicSim disassembly' do
     end
   end
 
-  shared_examples_for 'instruction with field k' do
+  shared_examples_for 'instruction with field k that is not a word address' do
+    string = metadata[:opcode] + ' 0x9'
+    it "has string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'can properly decode k field' do
+      expect(instruction0.operands).to eq(k: 9)
+    end
+  end
+  
+  shared_examples_for 'instruction with field k that is a word address' do
     string = metadata[:opcode] + ' 0x2'
     it "has string '#{string}'" do
       expect(instruction0.string).to eq string
@@ -127,6 +138,18 @@ describe 'RPicSim disassembly' do
     it 'decodes all fields properly' do
       expect(instruction0.operands).to eq(s: 0)
       expect(instruction1.operands).to eq(s: 1)
+    end
+  end
+  
+  shared_examples_for 'instruction with fields f and k' do
+    string = "#{metadata[:opcode]} 0, 0x18"
+    it "has the string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'decodes all fields properly' do
+      expect(instruction0.operands).to eq(f: 0, k: 0x18)
+      expect(instruction1.operands).to eq(f: 2, k: 0x19)
     end
   end
   
@@ -484,7 +507,7 @@ describe 'RPicSim disassembly' do
       
       describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4
-        it_behaves_like 'instruction with field k'
+        it_behaves_like 'instruction with field k that is a word address'
 
         it 'leads to the instruction specified by k' do
           expect(instruction0.next_addresses).to eq [2]
@@ -528,6 +551,14 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction with field s'
         it_behaves_like 'instruction that ends control'        
       end
+      
+      # NOTE: In some documents from Microchip this is categorized as a control
+      # operation and in others it is a literal operation, or both.
+      describe_instruction 'RETLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that ends control'
+      end
 
       describe_instruction 'RETURN' do
         it_behaves_like 'instruction'
@@ -544,8 +575,62 @@ describe 'RPicSim disassembly' do
     end
     
     describe 'literal operaions' do
-    
+      describe_instruction 'ADDLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'ANDLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'IORLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'LFSR' do
+        it_behaves_like 'instruction', size: 4
+        it_behaves_like 'instruction with fields f and k'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MOVLB' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MOVLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MULLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'SUBLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'XORLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
     end
+    
 
   end
 
