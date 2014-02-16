@@ -88,7 +88,8 @@ However, there are some things that can mess up the algorithm in a bad way and g
 * If you write to the PC register in order to do a computed jump, the algorithm does not currently detect that and will not correctly consider code paths coming from that instruction.
   Be careful about this, because a computed jump might be generated automatically by a C compiler.
 * Similarly, it cannot handle jumps on devices that have paged memory.  In order to determine where a jump actually goes, it would need to know what page is selected by looking at the history of the program's execution.
+* It does not account for the effect of PUSH and POP instructions on the call stack depth.
 
-This code is not suitable (yet) for any firmware that uses a computed jump or paged program memory.
+This code is not suitable (yet) for any firmware that uses a computed jump, paged program memory, or PUSH or POP instructions.
   
 This code only checks the hardware call stack; it does not check any kind of data stack that your compiler might use to store the values of local variables.  Checking that kind of stack is important, but would be much harder.
