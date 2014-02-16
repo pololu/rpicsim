@@ -185,11 +185,116 @@ ins_btg:
 
     
 ; == Control operations ==
- 
+
+ins_bc:
+    bc      $ + 0xC
+    bc      $ - 0x8
+    bc      $ + 2
+    bc      $ + 0x100
+    bc      $ - 0xFE
+
+ins_bn:
+    bn      $ + 0xC
+    bn      $ - 0x8
+    bn      $ + 2
+    bn      $ + 0x100
+    bn      $ - 0xFE
+
+ins_bnc:
+    bnc     $ + 0xC
+    bnc     $ - 0x8
+    bnc     $ + 2
+    bnc     $ + 0x100
+    bnc     $ - 0xFE
+
+ins_bnn:
+    bnn     $ + 0xC
+    bnn     $ - 0x8
+    bnn     $ + 2
+    bnn     $ + 0x100
+    bnn     $ - 0xFE
+
+ins_bnov:
+    bnov    $ + 0xC
+    bnov    $ - 0x8
+    bnov    $ + 2
+    bnov    $ + 0x100
+    bnov    $ - 0xFE
+
+ins_bnz:
+    bnz     $ + 0xC
+    bnz     $ - 0x8
+    bnz     $ + 2
+    bnz     $ + 0x100
+    bnz     $ - 0xFE
+
+ins_bov:
+    bov    $ + 0xC
+    bov    $ - 0x8
+    bov    $ + 2
+    bov    $ + 0x100
+    bov    $ - 0xFE
+    
+ins_bra:
+    bra     $ + 0xC
+    bra     $ - 0x8
+    bra     $ + 2
+    bra     $ + 0x800
+    bra     $ - 0x7FE
+
+ins_bz:
+    bz      $ + 0xC
+    bz      $ - 0x8
+    bz      $ + 2
+    bz      $ + 0x100
+    bz      $ - 0xFE
+    
+ins_call:
+    call    2, 0
+    call    3, 1
+
+ins_clrwdt:
+    clrwdt
+    
+ins_daw:
+    daw
+
 ins_goto:
     goto    2
     goto    3
 
+ins_nop:
+    nop
+
+ins_pop:
+    pop
+
+ins_push:
+    push
+
+ins_rcall:
+    rcall    $ + 4
+    nop
+    rcall    $ + 2
+    rcall    $ + 0x800
+    rcall    $ - 0x7FE
+    
+ins_reset:
+    reset
+
+ins_retfie:
+    retfie
+
+ins_retlw:
+    retlw    9
+
+ins_return:
+    return   0
+    return   1
+
+ins_sleep:
+    sleep
+    
     ; TODO: add the rest of the instructions
     
     

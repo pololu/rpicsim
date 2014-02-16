@@ -6,6 +6,7 @@ module RPicSim::Mplab
     end
     
     def opcode
+      # TODO: maybe make opcode be a symbol too, since the field names are
       @instruction.opcode
     end
     
@@ -23,14 +24,40 @@ module RPicSim::Mplab
     end
     
     private
-    # Convert from Map<String, Integer> to a Ruby hash
-    # with symbols as keys instead of strings.
     def operands_hash(map)
+      operands = convert_map_to_hash(map)
+      fix_signed_fields(operands)
+      operands
+    end
+    
+    def convert_map_to_hash(map)
+      # Convert from Map<String, Integer> to a Ruby hash
+      # with symbols as keys instead of strings.    
       operands = {}
       map.each do |operand_name, value|
         operands[operand_name.to_sym] = value
       end
       operands
+    end
+
+    # Warning: This mutates the supplied hash.
+    def fix_signed_fields(operands)
+      case opcode
+      when 'BC', 'BN', 'BNC', 'BNN', 'BNOV', 'BNZ', 'BOV', 'BZ'
+        operands[:n] = convert_unsigned_to_signed(operands[:n], 8)
+      when 'BRA', 'RCALL'
+        operands[:n] = convert_unsigned_to_signed(operands[:n], 11)
+      end
+      
+      operands
+    end
+    
+    def convert_unsigned_to_signed(unsigned, bits)
+      if unsigned >= (1 << (bits - 1))
+        unsigned - (1 << bits)
+      else
+        unsigned
+      end
     end
   end
 end
