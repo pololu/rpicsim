@@ -47,9 +47,9 @@ task "stats" do
   sh "find docs -type f | xargs wc -w"
 end
 
-desc "Print TODO items from the source code"
-task "todo" do
-  sh "grep -ni todo -r lib"
+desc 'Print TODO items from the source code'
+task 'todo' do
+  sh 'grep -ni todo -r lib spec docs'
 end
 
 task "spec" => "firmware"
