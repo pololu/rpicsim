@@ -159,6 +159,7 @@ module RPicSim
       when 'MULWF'
       when 'NEGF'
       when 'NOP'
+      when 'OPTION'
       when 'PUSH'
       when 'POP'
       when 'RCALL'  then [:relative_call]
@@ -186,6 +187,7 @@ module RPicSim
       when 'TBLWT*+'
       when 'TBLWT*-'
       when 'TBLWT+*'
+      when 'TRIS'
       when 'TSTFSZ' then [:conditional_skip]
       when 'XORLW'
       when 'XORWF'      

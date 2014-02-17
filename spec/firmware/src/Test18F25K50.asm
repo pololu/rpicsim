@@ -250,8 +250,8 @@ ins_bz:
     bz      $ - 0xFE
     
 ins_call:
-    call    0xA, 0
-    call    0xC, 1
+    call    4, 0
+    call    6, 1
 
 ins_clrwdt:
     clrwdt
