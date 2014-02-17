@@ -46,6 +46,8 @@ describe 'RPicSim disassembly' do
     end
 
   end
+  
+  ##### Shared examples to test our decoding of fields #####
 
   shared_examples_for 'instruction with no fields' do
     string = metadata[:opcode]
@@ -142,6 +144,18 @@ describe 'RPicSim disassembly' do
     end
   end
   
+  shared_examples_for 'instruction with fields k and s' do
+    string = "#{metadata[:opcode]} 0xA, 0"
+    it "has the string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'has the right operands' do
+      expect(instruction0.operands).to eq(k: 5, s: 0)
+      expect(instruction1.operands).to eq(k: 6, s: 1)
+    end
+  end
+  
   shared_examples_for 'instruction with fields f and k' do
     string = "#{metadata[:opcode]} 0, 0x18"
     it "has the string '#{string}'" do
@@ -153,6 +167,19 @@ describe 'RPicSim disassembly' do
       expect(instruction1.operands).to eq(f: 2, k: 0x19)
     end
   end
+  
+  shared_examples_for 'instruction with fields fs and fd' do
+    string = "#{metadata[:opcode]} 0x6, 0x7"
+    it "has string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+
+    it 'can properly decode all fields' do
+      expect(instruction0.operands).to eq(:fs => 6, :fd => 7)
+    end
+  end
+  
+  ##### Shared examples to test our knowledge of control flow.  ######
   
   shared_examples_for 'instruction that does not affect control' do
     it 'leads to the instruction after it' do
@@ -200,6 +227,12 @@ describe 'RPicSim disassembly' do
       expect(instruction0.transitions.map(&:call_depth_change)).to eq [1, 0]
     end
   end
+  
+  shared_examples_for 'goto' do
+    it 'leads to the instruction specified by k' do
+      expect(instruction0.next_addresses).to eq [instruction0.operands[:k]]
+    end  
+  end
 
   shared_examples_for 'relative call' do
     it 'leads to the next instruction and to the call' do
@@ -214,6 +247,7 @@ describe 'RPicSim disassembly' do
     end
   end
 
+  
   context 'for PIC18 architecture', address_increment: 2 do
     let(:program_file) { Firmware::Test18F25K50.program_file }
 
@@ -311,18 +345,7 @@ describe 'RPicSim disassembly' do
 
       describe_instruction 'MOVFF' do
         it_behaves_like 'instruction', size: 4
-
-        describe 'instruction with fields fs and fd' do
-          string = 'MOVFF 0x6, 0x7'
-          it "has string '#{string}'" do
-            expect(instruction0.string).to eq string
-          end
-
-          it 'can properly decode all fields' do
-            expect(instruction0.operands).to eq(:fs => 6, :fd => 7)
-          end
-        end
-
+        it_behaves_like 'instruction with fields fs and fd'
         it_behaves_like 'instruction that does not affect control'
       end
 
@@ -490,19 +513,7 @@ describe 'RPicSim disassembly' do
       
       describe_instruction 'CALL' do
         it_behaves_like 'instruction', size: 4
-        
-        describe 'instruction with fields k and s' do
-          string = 'CALL 0xA, 0'
-          it "has the string '#{string}'" do
-            expect(instruction0.string).to eq string
-          end
-
-          it 'has the right operands' do
-            expect(instruction0.operands).to eq(k: 5, s: 0)
-            expect(instruction1.operands).to eq(k: 6, s: 1)
-          end
-        end
-        
+        it_behaves_like 'instruction with fields k and s'
         it_behaves_like 'call'
       end
       
@@ -521,10 +532,7 @@ describe 'RPicSim disassembly' do
       describe_instruction 'GOTO' do
         it_behaves_like 'instruction', size: 4
         it_behaves_like 'instruction with field k that is a word address'
-
-        it 'leads to the instruction specified by k' do
-          expect(instruction0.next_addresses).to eq [2]
-        end
+        it_behaves_like 'goto'
       end
 
       describe_instruction 'NOP' do
