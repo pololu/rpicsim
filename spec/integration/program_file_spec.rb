@@ -16,13 +16,14 @@ describe RPicSim::ProgramFile do
 
 end
 
-def describe_instruction(opcode, &proc)
-  describe(opcode, {opcode: opcode}, &proc)
+def describe_instruction(opcode, metadata = {}, &proc)
+  describe(opcode, {opcode: opcode}.merge(metadata), &proc)
 end
 
 describe 'RPicSim disassembly' do
   let(:opcode) { example.metadata[:opcode] }
-  let(:address) { program_file.label('ins_' + opcode.downcase).address }
+  let(:label_name) { example.metadata[:label_name] || ('ins_' + opcode.downcase) }
+  let(:address) { program_file.label(label_name).address }
   let(:address_increment) { example.metadata[:address_increment] }
 
   let(:instruction0) { program_file.instruction(address) }
@@ -372,6 +373,12 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction with fields f and a'
         it_behaves_like 'instruction that does not affect control'
       end
+      
+      describe_instruction 'SUBWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f, d, and a'
+        it_behaves_like 'instruction that does not affect control'
+      end
 
       describe_instruction 'SUBWFB' do
         it_behaves_like 'instruction'
@@ -462,6 +469,12 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction with field n'
         it_behaves_like 'conditional relative branch'
       end
+      
+      describe_instruction 'BNZ' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field n'
+        it_behaves_like 'conditional relative branch'
+      end
 
       describe_instruction 'BRA' do
         it_behaves_like 'instruction'
@@ -520,14 +533,14 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction that does not affect control'
       end
 
-      describe_instruction 'PUSH' do
+      describe_instruction 'POP' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with no fields'
         # Technically PUSH and POP do affect control but we have not implemented that yet.
         it_behaves_like 'instruction that does not affect control'
       end
 
-      describe_instruction 'POP' do
+      describe_instruction 'PUSH' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with no fields'
         # Technically PUSH and POP do affect control but we have not implemented that yet.
@@ -575,6 +588,7 @@ describe 'RPicSim disassembly' do
     end
     
     describe 'literal operaions' do
+    
       describe_instruction 'ADDLW' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with field k that is not a word address'
@@ -629,6 +643,58 @@ describe 'RPicSim disassembly' do
         it_behaves_like 'instruction that does not affect control'
       end
       
+    end
+    
+    describe 'program memory operations' do
+    
+      describe_instruction 'TBLRD*', label_name: :ins_tblrd do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'TBLRD*+', label_name: :ins_tblrd_postinc do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'TBLRD*-', label_name: :ins_tblrd_postdec do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'TBLRD+*', label_name: :ins_tblrd_preinc do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'TBLWT*', label_name: :ins_tblwt do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'TBLWT*+', label_name: :ins_tblwt_postinc do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'TBLWT*-', label_name: :ins_tblwt_postdec do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'TBLWT+*', label_name: :ins_tblwt_preinc do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
     end
     
 

@@ -124,6 +124,7 @@ module RPicSim
       when 'BNC'    then [:conditional_relative_branch]
       when 'BNN'    then [:conditional_relative_branch]
       when 'BNOV'   then [:conditional_relative_branch]
+      when 'BNZ'    then [:conditional_relative_branch]
       when 'BRA'    then [:conditional_relative_branch]
       when 'BSF'
       when 'BTG'
@@ -177,6 +178,14 @@ module RPicSim
       when 'SUBWF'
       when 'SUBWFB'
       when 'SWAPF'
+      when 'TBLRD*'
+      when 'TBLRD*+'
+      when 'TBLRD*-'
+      when 'TBLRD+*'
+      when 'TBLWT*'
+      when 'TBLWT*+'
+      when 'TBLWT*-'
+      when 'TBLWT+*'
       when 'TSTFSZ' then [:conditional_skip]
       when 'XORLW'
       when 'XORWF'      

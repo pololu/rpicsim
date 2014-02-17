@@ -325,7 +325,30 @@ ins_sublw:
 ins_xorlw:
     xorlw    9
 
-    ; TODO: add the rest of the instructions
+; Program memory operations
+
+ins_tblrd:
+    tblrd*
     
+ins_tblrd_postinc:
+    tblrd*+
+
+ins_tblrd_postdec:
+    tblrd*-
     
+ins_tblrd_preinc:
+    tblrd+*
+    
+ins_tblwt:
+    tblwt*
+    
+ins_tblwt_postinc:
+    tblwt*+
+    
+ins_tblwt_postdec:
+    tblwt*-
+    
+ins_tblwt_preinc:
+    tblwt+*
+
   end

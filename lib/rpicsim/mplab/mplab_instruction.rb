@@ -3,15 +3,24 @@ module RPicSim::Mplab
     # @param instruction [com.microchip.mplab.mdbcore.disasm.Instruction]
     def initialize(instruction)
       @instruction = instruction
+      
+      @opcode = @instruction.opcode
+      @string = @instruction.instruction
+      
+      # Fix a typo in MPLAB X.
+      if @opcode == 'RBLRD+*'  # TODO: reproduce this as an MPLAB X bug and report to Microchip
+        @opcode = 'TBLRD+*'
+        @string = @string.gsub('RBLRD', 'TBLRD')
+      end
     end
     
     def opcode
       # TODO: maybe make opcode be a symbol too, since the field names are
-      @instruction.opcode
+      @opcode
     end
     
     def instruction_string
-      @instruction.instruction
+      @string
     end
     
     def operands
