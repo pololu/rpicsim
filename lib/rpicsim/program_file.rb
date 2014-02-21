@@ -113,11 +113,13 @@ module RPicSim
 
       # TODO: add support for all other 8-bit PIC architectures
       properties = Array case mplab_instruction.opcode
+      when 'ADDFSR'
       when 'ADDLW'
       when 'ADDWF'
       when 'ADDWFC'
       when 'ANDLW'
       when 'ANDWF'
+      when 'ASRF'
       when 'BC'     then [:conditional_relative_branch]
       when 'BCF'
       when 'BN'     then [:conditional_relative_branch]
@@ -125,13 +127,15 @@ module RPicSim
       when 'BNN'    then [:conditional_relative_branch]
       when 'BNOV'   then [:conditional_relative_branch]
       when 'BNZ'    then [:conditional_relative_branch]
-      when 'BRA'    then [:conditional_relative_branch]
+      when 'BRA'    then [:relative_branch]
+      when 'BRW'    then [:control_ender]    # Hard to predict
       when 'BSF'
       when 'BTG'
       when 'BTFSC'  then [:conditional_skip]
       when 'BTFSS'  then [:conditional_skip]
       when 'BZ'     then [:conditional_relative_branch]
       when 'CALL'   then [:call]
+      when 'CALLW'  then [:control_ender]    # Hard to predict
       when 'CPFSEQ' then [:conditional_skip]
       when 'CPFSGT' then [:conditional_skip]
       when 'CPFSLT' then [:conditional_skip]
@@ -150,7 +154,12 @@ module RPicSim
       when 'IORLW'
       when 'IORWF'
       when 'LFSR'
+      when 'LSLF'
+      when 'LSRF'
+      when 'MOVIW'
+      when 'MOVWI'
       when 'MOVLB'
+      when 'MOVLP'
       when 'MOVLW'
       when 'MOVWF'
       when 'MOVF'

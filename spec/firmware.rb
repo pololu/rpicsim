@@ -76,6 +76,11 @@ module Firmware
     device_is 'PIC10F322'
     filename_is Dir + 'Test10F322.cof'
   end
+  
+  class Test16F1826 < RPicSim::Sim
+    device_is 'PIC16F1826'
+    filename_is Dir + 'Test16F1826.cof'
+  end
 
   class Test18F25K50 < RPicSim::Sim
     device_is 'PIC18F25K50'

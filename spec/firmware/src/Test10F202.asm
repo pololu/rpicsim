@@ -99,23 +99,23 @@ ins_btfss:
 ; == Literal and control operations ==
 
 ins_andlw:
-    andlw    9
+    andlw   9
 
 ins_call:
-    call     2
-    call     3
+    call    2
+    call    3
 
 ins_clrwdt:
     clrwdt
 
 ins_iorlw:
-    iorlw    9
+    iorlw   9
 
 ins_goto:
     goto    2
 
 ins_movlw:
-    movlw    9
+    movlw   9
 
 ins_nop:
     nop
@@ -124,16 +124,16 @@ ins_option:
     option
 
 ins_retlw:
-    retlw    9
+    retlw   9
 
 ins_sleep:
     sleep
 
 ins_tris:
-    tris 5
-    tris 9
+    tris    5
+    tris    7
 
 ins_xorlw:
-    xorlw    9
+    xorlw   9
 
   end

@@ -48,6 +48,7 @@ module RPicSim
       modules = {
         conditional_skip: ConditionalSkip,
         conditional_relative_branch: ConditionalRelativeBranch,
+        relative_branch: RelativeBranch,
         relative_call: RelativeCall,
         goto: Goto,
         control_ender: ControlEnder,
@@ -131,6 +132,20 @@ module RPicSim
       address + @address_increment * (operands[:n] + 1)
     end
     
+    def relative_k_address
+      address + @address_increment * (operands[:k] + 1)
+    end
+    
+    def relative_target_address
+      if operands[:k]
+        relative_k_address
+      elsif operands[:n]
+        n_address
+      else
+        raise "This instruction does not have fields k or n."
+      end
+    end
+    
     ### Modules that modify the behavior of the instruction. ###
     
     
@@ -175,6 +190,12 @@ module RPicSim
     module ConditionalRelativeBranch
       def generate_transitions
         [ transition(n_address, non_local: true), advance(1) ]
+      end
+    end
+
+    module RelativeBranch
+      def generate_transitions
+        [ transition(relative_target_address, non_local: true) ]
       end
     end
     

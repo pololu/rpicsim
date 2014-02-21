@@ -53,12 +53,21 @@ module RPicSim::Mplab
     def fix_signed_fields(operands)
       case opcode
       when 'BC', 'BN', 'BNC', 'BNN', 'BNOV', 'BNZ', 'BOV', 'BZ'
-        operands[:n] = convert_unsigned_to_signed(operands[:n], 8)
-      when 'BRA', 'RCALL'
-        operands[:n] = convert_unsigned_to_signed(operands[:n], 11)
+        convert_if_present(operands, :n, 8)   # PIC18
+      when 'RCALL'
+        convert_if_present(operands, :n, 11)  # PIC18
+      when 'BRA'
+        convert_if_present(operands, :n, 11)  # PIC18
+        convert_if_present(operands, :k, 9)   # enhanced midrange
+      when 'ADDFSR'
+        convert_if_present(operands, :k, 6)   # enhanced midrange
       end
       
       operands
+    end
+
+    def convert_if_present(operands, name, bits)
+      operands[name] = convert_unsigned_to_signed(operands[name], bits) if operands[name]
     end
     
     def convert_unsigned_to_signed(unsigned, bits)

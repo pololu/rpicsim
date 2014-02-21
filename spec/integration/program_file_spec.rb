@@ -162,7 +162,20 @@ describe 'RPicSim disassembly' do
     end
   end
   
+  shared_examples_for 'instruction with field k that is a relative word address' do
+    it "has the right string" do
+      string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:k] + 1) ]
+      expect(instruction0.string).to eq string
+    end
+
+    it 'has a k field with a relative word address in it' do
+      expect(instruction0.operands).to eq(k: 4)
+      expect(instruction1.operands).to eq(k: -4)
+    end
+  end
+  
   shared_examples_for 'instruction with field n' do
+  
     it "has the right string" do
       string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:n] + 1) ]
       expect(instruction0.string).to eq string
@@ -172,6 +185,18 @@ describe 'RPicSim disassembly' do
       expected_n = 0xC / example.metadata[:address_increment] - 1
       expect(instruction0.operands).to eq(n: expected_n)
       expect(instruction1.operands).to eq(n: -expected_n)
+    end
+  end
+  
+  shared_examples_for 'instruction with fields n and k' do
+    string = "#{metadata[:opcode]} 0, 9"
+    it "has the string #{string}" do
+      expect(instruction0.string).to eq string
+    end
+    
+    it 'decodes all fields properly' do
+      expect(instruction0.operands).to eq({n: 0, k: 9})
+      expect(instruction1.operands).to eq({n: 1, k: -9})
     end
   end
   
@@ -187,7 +212,7 @@ describe 'RPicSim disassembly' do
     end
   end
   
-  shared_examples_for 'instruction with field f between 5 and 9' do
+  shared_examples_for 'instruction with field f with a very limited range' do
     string = "#{metadata[:opcode]} 0x5"
     it "has the string '#{string}'" do
       expect(instruction0.string).to eq string
@@ -195,7 +220,7 @@ describe 'RPicSim disassembly' do
 
     it 'decodes all fields properly' do
       expect(instruction0.operands).to eq(f: 5)
-      expect(instruction1.operands).to eq(f: 9)
+      expect(instruction1.operands).to eq(f: 7)
     end
     
   end
@@ -235,6 +260,19 @@ describe 'RPicSim disassembly' do
     end
   end
   
+  shared_examples_for 'instruction with the MOVIW/MOVWI fields' do
+    string = "#{metadata[:opcode]} ++FSR1"
+    it "has string '#{string}'" do
+      expect(instruction0.string).to eq string
+    end
+    
+    it 'can properly decode all fields' do
+      expect(instruction0.operands).to eq({n: 1, m: 0})  # ++FSR1
+      expect(instruction1.operands).to eq({n: 0, k: 2})  # 2[FSR0]
+    end
+  end
+
+  
   ##### Shared examples to test our knowledge of control flow.  ######
   
   shared_examples_for 'instruction that does not affect control' do
@@ -244,9 +282,15 @@ describe 'RPicSim disassembly' do
   end
   
   shared_examples_for 'instruction that ends control' do
-    it 'leads to no insturctions' do
+    it 'leads to no instructions' do
       expect(instruction0.next_addresses).to be_empty    
     end
+  end
+  
+  shared_examples_for 'instruction with hard-to-predict effect on control' do
+     it 'leads to no instructions' do
+       expect(instruction0.next_addresses).to be_empty
+     end
   end
 
   shared_examples_for 'conditional skip' do
@@ -300,6 +344,18 @@ describe 'RPicSim disassembly' do
     
     specify 'the first transition counts as a call' do
       expect(instruction0.transitions.map(&:call_depth_change)).to eq [1, 0]
+    end
+  end
+  
+  shared_examples_for 'relative branch' do |field_name|
+    it 'leads to the branch target' do
+      expect(instruction0.next_addresses).to eq [
+        address + address_increment * (instruction0.operands[field_name] + 1),
+      ]
+    end
+    
+    specify 'the transition does not count as a call' do
+      expect(instruction0.transitions.map(&:call_depth_change)).to eq [0]
     end
   end
   
@@ -501,7 +557,7 @@ describe 'RPicSim disassembly' do
 
       describe_instruction 'TRIS' do
         it_behaves_like 'instruction'
-        it_behaves_like 'instruction with field f between 5 and 9'
+        it_behaves_like 'instruction with field f with a very limited range'
         it_behaves_like 'instruction that does not affect control'
       end
 
@@ -730,8 +786,325 @@ describe 'RPicSim disassembly' do
 
   end
   
+  context 'for enhanced midrange architecture', address_increment: 1 do
+    let(:program_file) { Firmware::Test16F1826.program_file }
+    
+    describe 'byte-oriented operations' do
+      describe_instruction 'ADDWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'ADDWFC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'ANDWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
 
-  
+      describe_instruction 'ASRF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'CLRF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field f'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'CLRW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'COMF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'DECF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'INCF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'IORWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'LSLF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'LSRF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'MOVF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'MOVWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field f'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'RLF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'RRF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'SUBWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'SUBWFB' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'SWAPF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'XORWF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'instruction that does not affect control'
+      end
+    end
+    
+    describe 'byte-oriented skip operations' do
+      describe_instruction 'DECFSZ' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'conditional skip'
+      end
+      
+      describe_instruction 'INCFSZ' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and d'
+        it_behaves_like 'conditional skip'
+      end
+    end
+
+    describe 'bit-oriented operations' do
+      describe_instruction 'BCF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and b'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'BSF' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and b'
+        it_behaves_like 'instruction that does not affect control'
+      end
+    end
+    
+    describe 'bit-oriented skip operations' do
+      describe_instruction 'BTFSC' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and b'
+        it_behaves_like 'conditional skip'
+      end
+
+      describe_instruction 'BTFSS' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields f and b'
+        it_behaves_like 'conditional skip'
+      end
+    end
+    
+    describe 'literaloperations' do
+    
+      describe_instruction 'ADDLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'ANDLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'IORLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MOVLB' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'MOVLP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'MOVLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'SUBLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'XORLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that does not affect control'
+      end
+    end
+
+    describe 'control operations' do
+      describe_instruction 'BRA' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is a relative word address'
+        it_behaves_like 'relative branch', :k
+      end
+      
+      describe_instruction 'BRW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction with hard-to-predict effect on control'
+      end
+    
+      describe_instruction 'CALL' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is a word address'
+        it_behaves_like 'call'
+      end
+      
+      describe_instruction 'CALLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction with hard-to-predict effect on control'
+      end
+      
+      describe_instruction 'GOTO' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is a word address'
+        it_behaves_like 'goto'
+      end
+
+      describe_instruction 'RETFIE' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that ends control'
+      end
+
+      describe_instruction 'RETLW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with field k that is not a word address'
+        it_behaves_like 'instruction that ends control'
+      end
+
+      describe_instruction 'RETURN' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that ends control'
+      end
+    end
+    
+    describe 'inherent oeprations' do
+      describe_instruction 'CLRWDT' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      describe_instruction 'NOP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      # OPTION cannot be handled by the MPLAB X disassembler.
+      
+      describe_instruction 'RESET' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that ends control'
+      end
+
+      describe_instruction 'SLEEP' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with no fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+
+      # TRIS cannot be handled by the MPLAB X disassembler.
+      
+    end
+    
+    describe 'C-compiler optimized' do
+      describe_instruction 'ADDFSR' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with fields n and k'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MOVIW' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with the MOVIW/MOVWI fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+      
+      describe_instruction 'MOVWI' do
+        it_behaves_like 'instruction'
+        it_behaves_like 'instruction with the MOVIW/MOVWI fields'
+        it_behaves_like 'instruction that does not affect control'
+      end
+    end
+  end
   
   context 'for PIC18 architecture', address_increment: 2 do
     let(:program_file) { Firmware::Test18F25K50.program_file }
@@ -987,7 +1360,7 @@ describe 'RPicSim disassembly' do
       describe_instruction 'BRA' do
         it_behaves_like 'instruction'
         it_behaves_like 'instruction with field n'
-        it_behaves_like 'conditional relative branch'
+        it_behaves_like 'relative branch', :n
       end
       
       describe_instruction 'BZ' do
