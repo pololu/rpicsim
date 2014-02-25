@@ -5,10 +5,10 @@ class Memory
   # The behavior of this class differs depending on what kind of Memory
   # it represents, as shown in the table below:
   #
-  #                       Address type   Read/write chunk
-  #     Any type of RAM:  Byte address   1 byte (8 bits)
-  #     Midrange Flash:   Word address   1 word (14 bits)
-  #     PIC18 flash:      Byte address   1 word (16 bits)
+  #                        Address type   Read/write chunk
+  #     Any type of RAM:   Byte address   1 byte (8 bits)
+  #     PIC18 code space:  Byte address   1 word (16 bits)
+  #     Other code space:  Word address   1 word (12 or 14 bits)
   #
   # @param mplab_memory [Mplab::Memory]
   def initialize(mplab_memory)
