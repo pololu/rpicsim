@@ -636,9 +636,12 @@ module RPicSim
     # @return [StackTrace]
     def stack_trace
       # The stack stores return addresses, not call addresses.
-      # We get the call addresses by calling pred (subtract 1).
-      # TODO: make this work for PIC18 devices where we probably have to subtract 2
-      addresses = stack_contents.collect(&:pred) + [pc.value]
+      # We get the call addresses by subtracting the address increment,
+      # which is the number of address units that each word of flash takes up.
+      addresses = stack_contents.collect do |return_address|
+        return_address - address_increment
+      end
+      addresses << pc.value
       entries = addresses.collect do |address|
         StackTraceEntry.new address, self.class.program_file.address_description(address)
       end
@@ -695,6 +698,11 @@ module RPicSim
 
     def shortcuts
       self.class::Shortcuts
+    end
+    
+    private
+    def address_increment
+      @assembly.device_info.code_address_increment
     end
   end
 

@@ -17,8 +17,8 @@ module RPicSim::Mplab
       @xpic.getMemTraits.getCodeWordTraits.getInitValue
     end
     
-    # The number that a flash address increases when you
-    # advance to the next word of flash.
+    # The number that a code-space address increases by when you
+    # advance to the next word of code space.
     # For PIC18s this is 2.
     # For other architectures this is 1.
     def code_address_increment

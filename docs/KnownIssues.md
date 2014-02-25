@@ -71,18 +71,12 @@ There is no support for variables larger than 32 bits.
 There is no support for arrays or structs of variables.
 There is also no support for reading and writing directly from the simulated device's RAM, Flash, EEPROM, and stack memories from Ruby.
 
+
 No EEPROM support
 ----
 _Type: RPicSim missing feature_
 
 RPicSim does not support reading or writing from EEPROM from Ruby.
-
-
-Stack trace will show slightly wrong values for PIC18 microcontrollers
-----
-_Type: RPicSim bug_
-
-For the PIC18, {RPicSim::Sim#stack_trace} will probably show values that are too high by one because it does not account for the fact that PIC18 instructions take two bytes.
 
 
 Cannot detect PIC model from COF file

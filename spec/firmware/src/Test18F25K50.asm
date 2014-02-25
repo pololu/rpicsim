@@ -25,6 +25,10 @@ start
 
 emptyRoutine:
   return
+  
+testCall:
+  call emptyRoutine
+  return
 
 readFlashVar1:
   movlw     low(flashVar1)
