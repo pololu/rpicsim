@@ -20,11 +20,13 @@ module RPicSim
 
     # Writes the value to the variable in a lower-level way that
     # overrides any read-only bits.
+    # For some types of variables, this is the same as {#value=}.
     def memory_value=(val)
       @storage.memory_value = val
     end
 
     # Reads the value directly from the memory object backing the register.
+    # For some types of variables, this is the same as {#value}.
     def memory_value
       @storage.memory_value
     end
@@ -43,10 +45,6 @@ module RPicSim
 
     def name
       @storage.name
-    end
-
-    def inspect
-      "<%s %s 0x%x>" % [self.class, name, address]
     end
   end
 end
