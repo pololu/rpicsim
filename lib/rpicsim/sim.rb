@@ -237,7 +237,6 @@ module RPicSim
         :goto,
         :label,
         :location_address,
-        :nmmr,
         :pc,
         :pc_description,
         :pin,
@@ -247,9 +246,7 @@ module RPicSim
         :run_subroutine,
         :run_to,
         :run_to_cycle_count,
-        :sfr,
-        :sfr_or_nmmr,
-        :register,
+        :reg,
         :step,
         :var,
         :wreg,
@@ -369,8 +366,8 @@ module RPicSim
         @nmmrs[nmmr.name.to_sym] = Variable.new Storage::Register.new @processor.get_nmmr(nmmr.name), @nmmr_memory, nmmr.width
       end
 
-      @wreg = sfr_or_nmmr(:WREG)
-      @stkptr = sfr_or_nmmr(:STKPTR)
+      @wreg = reg(:WREG)
+      @stkptr = reg(:STKPTR)
     end
 
     public
@@ -383,34 +380,18 @@ module RPicSim
       @pins_by_name[name.to_sym] or raise ArgumentError, "Cannot find pin named '#{name}'."
     end
 
-    # Returns a {Variable} object if an SFR by that name is found,
-    # or raises an exception.
+    # Returns a {Variable} object if a Special Function Register (SFR) or
+    # Non-Memory-Mapped Register (NMMR) by that name is found.
+    # If the register cannot be found, this method raises an exception.
     # @param name [Symbol] The name from the datasheet.
     # @return [Register]
-    def sfr(name)
-      @sfrs[name.to_sym] or raise ArgumentError, "Cannot find SFR named '#{name}'."
-    end
-
-    # Returns a {Variable} object if an SFR or NMMR by that name is found,
-    # or raises an exception.
-    # @param name [Symbol] The name from the datasheet.
-    # @return [Register]
-    def register(name)
+    def reg(name)
       name = name.to_sym
       @sfrs[name] || @nmmrs[name] or raise ArgumentError, "Cannot find SFR or NMMR named '#{name}'."
     end
-    alias_method :sfr_or_nmmr, :register
 
-    # Returns a {Variable} object if an NMMR by that name is found,
-    # or raises an exception.
-    # @param name [Symbol] The name from the datasheet.
-    # @return [Register]
-    def nmmr(name)
-      @nmmrs[name.to_sym] or raise ArgumentError, "Cannot find NMMR named '#{name}'."
-    end
-
-    # Returns a {Variable} object if a RAM variable by that name is found,
-    # or raises an exception.
+    # Returns a {Variable} object if a RAM variable by that name is found.
+    # If the variable cannot be found, this method raises an exception.
     # @return [Variable]
     def var(name)
       @vars[name.to_sym] or raise ArgumentError, "Cannot find var named '#{name}'."

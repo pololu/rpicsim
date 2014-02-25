@@ -6,38 +6,34 @@ describe "SFRs as variables" do
   end
 
   it 'is a variable' do
-    expect(register(:PMADRL)).to be_a_kind_of RPicSim::Variable
+    expect(reg(:PMADRL)).to be_a_kind_of RPicSim::Variable
   end
 
   it "can be written and read from Ruby" do
-    register(:PMADRL).value.should == 0
-    register(:PMADRL).value = 3
-    register(:PMADRL).value.should == 3
+    reg(:PMADRL).value.should == 0
+    reg(:PMADRL).value = 3
+    reg(:PMADRL).value.should == 3
     run_subroutine :ReadPMADRL, cycle_limit: 100
     x.value.should == 3
   end
   
   it "has the right name" do
-    register(:PMADRL).name.should == :PMADRL
+    reg(:PMADRL).name.should == :PMADRL
   end
   
   it "returns the name with #to_s" do
-    register(:PMADRL).to_s.should == "PMADRL"
-  end
-  
-  it "has a nice inspect function" do
-    register(:PMADRL).inspect.should == "<RPicSim::Variable PMADRL 0x20>"
+    reg(:PMADRL).to_s.should == "PMADRL"
   end
   
   it "cannot always write to all the bits with #value=" do
-    register(:STATUS).value = 0
-    register(:STATUS).value.should == 0b00011000
+    reg(:STATUS).value = 0
+    reg(:STATUS).value.should == 0b00011000
   end
   
   it "has #memory_value= in case there are some bits we need to change but can't change with value=" do
-    register(:STATUS).memory_value = 0
-    register(:STATUS).memory_value.should == 0
-    register(:STATUS).value.should == 0
+    reg(:STATUS).memory_value = 0
+    reg(:STATUS).memory_value.should == 0
+    reg(:STATUS).value.should == 0
   end
 end
 
@@ -45,7 +41,7 @@ describe '16-bit NMMRs' do
   before do
     start_sim Firmware::Test18F25K50
   end
-  subject(:sfr16) { register(:TMR0_Internal) }
+  subject(:sfr16) { reg(:TMR0_Internal) }
   
   it 'is a variable' do
     expect(sfr16).to be_a_kind_of RPicSim::Variable
