@@ -60,7 +60,7 @@ You can use the `address` option to specify an arbitrary address instead of usin
     def_var :counter, :u8, address: 0x63
 
 
-Defining a Flash variable
+Defining a flash variable
 ----
 
 Flash (program space) variables work the same way as RAM variables except:
@@ -70,7 +70,7 @@ Flash (program space) variables work the same way as RAM variables except:
 * Flash variables cannot be accessed with {RPicSim::Sim#var}, but can be accessed with {RPicSim::Sim#flash_var}
 
 
-Accessing Special Function Registers
+Accessing special function registers
 ----
 
 The Special Function Registers (SFRs) on a microcontroller enable the firmware to interact with the microcontroller's peripherals and talk to the outside world.
