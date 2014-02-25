@@ -35,16 +35,121 @@ module RPicSim
     attr_reader :string
 
     # Creates a new instruction.
-    # @param instruction_store some object such as {ProgramFile} that responds to #instruction and #address_description.
-    def initialize(address, instruction_store, opcode, operands, size, address_increment, string, properties)
+    def initialize(mplab_instruction, address, address_increment, instruction_store)
       @address = address
       @instruction_store = instruction_store
-      @opcode = opcode
-      @operands = operands
-      @size = size
       @address_increment = address_increment
-      @string = string
-      
+      @opcode = mplab_instruction.opcode
+      @operands = mplab_instruction.operands
+      @string = mplab_instruction.instruction_string
+
+      # Convert the increment, which is the number of bytes, into 'size',
+      # which is the same units as the flash address space.
+      if @address_increment == 1
+        # Non-PIC18 architectures: flash addresses are in terms of words
+        # so we devide by two to convert from bytes to words.
+        @size = mplab_instruction.inc / 2
+      elsif @address_increment == 2
+        # PIC18 architecture: No change necessary because both are in terms
+        # of bytes.
+        @size = mplab_instruction.inc
+      else
+        raise "Cannot handle address increment value of #{@address_increment}."
+      end
+
+      properties = Array case mplab_instruction.opcode
+      when 'ADDFSR'
+      when 'ADDLW'
+      when 'ADDWF'
+      when 'ADDWFC'
+      when 'ANDLW'
+      when 'ANDWF'
+      when 'ASRF'
+      when 'BC'     then [:conditional_relative_branch]
+      when 'BCF'
+      when 'BN'     then [:conditional_relative_branch]
+      when 'BNC'    then [:conditional_relative_branch]
+      when 'BNN'    then [:conditional_relative_branch]
+      when 'BNOV'   then [:conditional_relative_branch]
+      when 'BNZ'    then [:conditional_relative_branch]
+      when 'BRA'    then [:relative_branch]
+      when 'BRW'    then [:control_ender]    # Hard to predict
+      when 'BSF'
+      when 'BTG'
+      when 'BTFSC'  then [:conditional_skip]
+      when 'BTFSS'  then [:conditional_skip]
+      when 'BZ'     then [:conditional_relative_branch]
+      when 'CALL'   then [:call]
+      when 'CALLW'  then [:control_ender]    # Hard to predict
+      when 'CPFSEQ' then [:conditional_skip]
+      when 'CPFSGT' then [:conditional_skip]
+      when 'CPFSLT' then [:conditional_skip]
+      when 'CLRF'
+      when 'CLRW'
+      when 'CLRWDT'
+      when 'COMF'
+      when 'DAW'
+      when 'DECF'
+      when 'DECFSZ' then [:conditional_skip]
+      when 'DCFSNZ' then
+      when 'GOTO'   then [:goto]
+      when 'INCF'
+      when 'INCFSZ' then [:conditional_skip]
+      when 'INFSNZ' then [:conditional_skip]
+      when 'IORLW'
+      when 'IORWF'
+      when 'LFSR'
+      when 'LSLF'
+      when 'LSRF'
+      when 'MOVIW'
+      when 'MOVWI'
+      when 'MOVLB'
+      when 'MOVLP'
+      when 'MOVLW'
+      when 'MOVWF'
+      when 'MOVF'
+      when 'MOVFF'
+      when 'MULLW'
+      when 'MULWF'
+      when 'NEGF'
+      when 'NOP'
+      when 'OPTION'
+      when 'PUSH'
+      when 'POP'
+      when 'RCALL'  then [:relative_call]
+      when 'RESET'  then [:control_ender]
+      when 'RETFIE' then [:control_ender]
+      when 'RETLW'  then [:control_ender]
+      when 'RETURN' then [:control_ender]
+      when 'RLCF'
+      when 'RLF'
+      when 'RLNCF'
+      when 'RRCF'
+      when 'RRF'
+      when 'RRNCF'
+      when 'SETF'
+      when 'SLEEP'
+      when 'SUBLW'
+      when 'SUBWF'
+      when 'SUBWFB'
+      when 'SWAPF'
+      when 'TBLRD*'
+      when 'TBLRD*+'
+      when 'TBLRD*-'
+      when 'TBLRD+*'
+      when 'TBLWT*'
+      when 'TBLWT*+'
+      when 'TBLWT*-'
+      when 'TBLWT+*'
+      when 'TRIS'
+      when 'TSTFSZ' then [:conditional_skip]
+      when 'XORLW'
+      when 'XORWF'
+      else
+        raise "Unrecognized opcode #{mplab_instruction.opcode} " +
+          "(#{address_description(address)}, operands #{mplab_instruction.operands.inspect})."
+      end
+    
       modules = {
         conditional_skip: ConditionalSkip,
         conditional_relative_branch: ConditionalRelativeBranch,
