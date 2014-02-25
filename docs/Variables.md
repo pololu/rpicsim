@@ -74,19 +74,19 @@ Accessing Special Function Registers
 ----
 
 The Special Function Registers (SFRs) on a microcontroller enable the firmware to interact with the microcontroller's peripherals and talk to the outside world.
-The {RPicSim::Sim#register} method can be called on your simulation object to retrieve a {RPicSim::Variable} object:
+The {RPicSim::Sim#reg} method can be called on your simulation object to retrieve a {RPicSim::Variable} object:
 
     !!!ruby
-    sim.register(:LATA)  # => returns a Register object
+    sim.reg(:LATA)  # => returns a Variable object
 
-If you are using RPicSim's {file:RSpecIntegration.md RSpec integration}, the `register` method inside an example automatically redirects to the `@sim` object:
+If you are using RPicSim's {file:RSpecIntegration.md RSpec integration}, the `reg` method inside an example automatically redirects to the `@sim` object:
 
     !!!ruby
     it "works" do
-      register(:LATA)  # => returns a Register object
+      reg(:LATA)  # => returns a Variable object
     end
 
-The first argument of {RPicSim::Sim#register} should be a symbol containing the name of the SFR.
+The first argument of {RPicSim::Sim#reg} should be a symbol containing the name of the SFR.
 The name comes from the MPLAB X code, but we expect it to match the name given in the microcontroller's datasheet.
 
 Note that the MPLAB X code considers "SFRs" to only be the special registers that have an address in memory.
@@ -96,7 +96,7 @@ You can access NMMRs in exactly the same way as SFRs:
 
     !!!ruby
     it "sets W to 5" do
-      expect(register(:WREG).value).to eq 5
+      expect(reg(:WREG).value).to eq 5
     end
 
 
