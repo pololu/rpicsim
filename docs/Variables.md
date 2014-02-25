@@ -1,17 +1,16 @@
 Variables
 ====
 
-RPicSim allows you to read and write from simulated variables stored in RAM or flash, which can be useful for {file:UnitTesting.md unit testing}.  Variables are represented as Ruby objects that are instances of a subclass of {RPicSim::Variable}.
+RPicSim uses the {RPicSim::Variable} class to let you access simulated program variables stored in RAM or flash as well as Special Function Registers, which can be useful for {file:UnitTesting.md unit testing}.
 
 To access a variable, RPicSim needs to know the name it will be called in your Ruby code, what data type it is (e.g. 16-bit unsigned integer), and its address in memory.
-In most cases, RPicSim can deduce the address by looking at the symbol table in your COF file, so you will not need to
-type the address.
-However, RPicSim cannot deduce the data type of a variable, so any variables used need to be explicitly defined beforehand.
+This information is deduced in different ways for the different types of variables described below.
 
 Defining a RAM variable
 ----
-
-RAM variables that you want to access from Ruby must be defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}.  For example:
+For RAM variables defined in your code, RPicSim can usually deduce the address by looking at the symbol table in your COF file, so you will not need to type the address.
+However, RPicSim cannot deduce the data type of a variable, so any variables used need to be explicitly defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}.
+For example:
 
     !!!ruby
     class MySim < RPicSim::Sim
@@ -61,7 +60,7 @@ You can use the `address` option to specify an arbitrary address instead of usin
     def_var :counter, :u8, address: 0x63
 
 
-Defining Flash variables
+Defining a Flash variable
 ----
 
 Flash (program space) variables work the same way as RAM variables except:
@@ -69,6 +68,36 @@ Flash (program space) variables work the same way as RAM variables except:
 * They are defined with {RPicSim::Sim::ClassDefinitionMethods#def_flash_var def_flash_var}.
 * The set of allowed data types for the second argument of `def_flash_var` is different, and you can see the documentation by clicking the link above.
 * Flash variables cannot be accessed with {RPicSim::Sim#var}, but can be accessed with {RPicSim::Sim#flash_var}
+
+
+Accessing Special Function Registers
+----
+
+The Special Function Registers (SFRs) on a microcontroller enable the firmware to interact with the microcontroller's peripherals and talk to the outside world.
+The {RPicSim::Sim#reg} method can be called on your simulation object to retrieve a {RPicSim::Variable} object:
+
+    !!!ruby
+    sim.reg(:LATA)  # => returns a Variable object
+
+If you are using RPicSim's {file:RSpecIntegration.md RSpec integration}, the `reg` method inside an example automatically redirects to the `@sim` object:
+
+    !!!ruby
+    it "works" do
+      reg(:LATA)  # => returns a Variable object
+    end
+
+The first argument of {RPicSim::Sim#reg} should be a symbol containing the name of the SFR.
+The name comes from the MPLAB X code, but we expect it to match the name given in the microcontroller's datasheet.
+
+Note that the MPLAB X code considers "SFRs" to only be the special registers that have an address in memory.
+The special registers without a memory address are called Non-Memory-Mapped Registers (NMMRs).
+For example, on some chips, WREG and STKPTR are NMMRs.
+You can access NMMRs in exactly the same way as SFRs:
+
+    !!!ruby
+    it "sets W to 5" do
+      expect(reg(:WREG).value).to eq 5
+    end
 
 
 Using a variable
@@ -79,6 +108,24 @@ Once you have defined a variable and accessed it using one of the methods above,
     !!!ruby
     counter.value = 0x6A
     expect(counter.value).to eq 0x6A
+
+
+Protected bits
+----
+
+When you write to the register with {RPicSim::Variable#value=}, you are (according to our understanding of MPLAB X) writing to it in the same way that the simulated microcontroller would write to it.
+This means that some bits might not be writable or might have restrictions on what value can be written to them.
+For example, the TO and PD bits of the STATUS register on the PIC10F322 are not writable by the microcontroller.
+
+To get around this, you can use {RPicSim::Variable#memory_value=} instead, which should allow you to write to any of the bits.
+
+
+Peripheral updating
+----
+
+The MPLAB X code contains various objects that simulate the peripherals on a chip, such as the ADC.
+We have not determined whether writing to SFRs using the {RPicSim::Variable} object updates the simulation of those peripherals in the proper way.
+Also, whether the peripherals get updated might depend on whether the `value` or the `memory_value` attribute is used for writing.
 
 
 Addition example

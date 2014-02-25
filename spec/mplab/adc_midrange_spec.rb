@@ -8,7 +8,7 @@ describe "Simulated ADC for midrange PICs" do
   context "when the pin has not been set" do
     it "reads 0" do
       run_subroutine :ReadADC, cycle_limit: 1000
-      sfr(:ADRES).value.should == 0
+      reg(:ADRES).value.should == 0
     end
   end
 
@@ -19,7 +19,7 @@ describe "Simulated ADC for midrange PICs" do
     end
   
     it "reads 0", flaw: true do
-      sfr(:ADRES).value.should == 0
+      reg(:ADRES).value.should == 0
     end
   end
   
@@ -31,11 +31,11 @@ describe "Simulated ADC for midrange PICs" do
   
     if RPicSim::Flaws[:adc_midrange] == :bad_modulus
       it "reads 0", flaw: true do
-        sfr(:ADRES).value.should == 0
+        reg(:ADRES).value.should == 0
       end
     else
       it "reads 255" do
-        sfr(:ADRES).value.should == 255
+        reg(:ADRES).value.should == 255
       end
     end
   end
@@ -47,7 +47,7 @@ describe "Simulated ADC for midrange PICs" do
     end
     
     it "reads 0", flaw: true do
-      sfr(:ADRES).value.should == 0
+      reg(:ADRES).value.should == 0
     end
   end  
   
@@ -59,11 +59,11 @@ describe "Simulated ADC for midrange PICs" do
     
     if RPicSim::Flaws[:adc_midrange] == :no_middle_values
       it "reads 255", flaw: true do
-        sfr(:ADRES).value.should == 255
+        reg(:ADRES).value.should == 255
       end
     else
       it "reads 5" do
-        sfr(:ADRES).value.should == 5
+        reg(:ADRES).value.should == 5
       end    
     end
   end  
@@ -76,11 +76,11 @@ describe "Simulated ADC for midrange PICs" do
     
     if RPicSim::Flaws[:adc_midrange] == :no_middle_values
       it "reads 255", flaw: true do
-        sfr(:ADRES).value.should == 255
+        reg(:ADRES).value.should == 255
       end
     else
       it "reads 128" do
-        sfr(:ADRES).value.should == 128
+        reg(:ADRES).value.should == 128
       end    
     end
   end
@@ -93,11 +93,11 @@ describe "Simulated ADC for midrange PICs" do
   
     if RPicSim::Flaws[:adc_midrange] == :bad_modulus
       it "reads 128", flaw: true do
-        sfr(:ADRES).value.should == 128
+        reg(:ADRES).value.should == 128
       end
     else
       it "reads 255" do
-        sfr(:ADRES).value.should == 255      
+        reg(:ADRES).value.should == 255
       end
     end
   end

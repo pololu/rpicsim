@@ -55,9 +55,9 @@ describe "Pic#pin" do
     step  # clear TRISA
     step  # set LATA
     pin(:RA0).should be_driving_high  # good
-    sfr(:LATA).value.should == 1      # good
+    reg(:LATA).value.should == 1      # good
     step  # clear TRISA again
-    sfr(:LATA).value.should == 1      # good
+    reg(:LATA).value.should == 1      # good
     pin(:RA0).should be_driving_low   # bad
   end
   
