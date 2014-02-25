@@ -78,14 +78,6 @@ _Type: RPicSim missing feature_
 RPicSim does not support reading or writing from EEPROM from Ruby.
 
 
-Dissasembly is limited to midrange and baseline PIC microcontrollers
-----
-_Type: RPicSim missing feature_
-
-The disassembled instruction graph created by {RPicSim::ProgramFile} currently only supports baseline and midrange PICs, but it should be easy to expand to other PICs.
-This is a side feature of RPicSim, and not required for simulation.
-
-
 Stack trace will show slightly wrong values for PIC18 microcontrollers
 ----
 _Type: RPicSim bug_

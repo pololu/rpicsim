@@ -73,8 +73,6 @@ The {RPicSim::CallStackInfo} class traverses all possible paths through that gra
 Limitations
 ----
 
-The code for disassembling in {RPicSim::ProgramFile} currently only works with the midrange and baseline PIC instruction sets.  However, it should be easy to expand it to the other instruction sets.
-
 The algorithm is pessimistic:
 
 * It does not try to track the runtime values of any of your program's variables in order to predict which code paths will happen.

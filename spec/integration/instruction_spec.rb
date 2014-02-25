@@ -5,8 +5,6 @@ require_relative '../spec_helper'
 #  Midrange: http://ww1.microchip.com/downloads/en/DeviceDoc/41375A.pdf
 
 # TODO: test support for the PIC18 extended instruction set
-# TODO: if we are testing field decoding here, then actually test the min and max values of each field
-
 
 describe RPicSim::Instruction do
   subject(:instruction) { Firmware::FlashVariables.program_file.instruction(0) }
