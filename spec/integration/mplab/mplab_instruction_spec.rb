@@ -12,7 +12,7 @@ describe RPicSim::Mplab::MplabInstruction do
   #   8-bit signed field named n:  BC, BN, BNC, BNN, BNOV, BNZ, BOV, BZ
   #   11-bit signed field named n: BRA, RCALL
   #
-  # Enhanced midrange:  (TODO: fix disassembly of enhanced midrange BRA)
+  # Enhanced midrange:
   #   9-bit signed field named k:  BRA
   describe 'fields that hold a signed value' do
     describe 'for PIC18 architecture' do
