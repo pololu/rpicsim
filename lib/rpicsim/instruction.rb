@@ -39,6 +39,15 @@ module RPicSim
       @address = address
       @instruction_store = instruction_store
       @address_increment = address_increment
+
+      if mplab_instruction == :invalid
+        @valid = false
+        @size = @address_increment
+        @string = '[INVALID]'
+        return
+      end
+      
+      @valid = true
       @opcode = mplab_instruction.opcode
       @operands = mplab_instruction.operands
       @string = mplab_instruction.instruction_string
@@ -223,6 +232,10 @@ module RPicSim
       Transition.new(self, addr, @instruction_store, attrs)
     end
     
+    def valid?
+      @valid
+    end
+    
     private
     # Returns the address indicated by the operand 'k'.
     # k is assumed to be a word address and it is assumed to be absolute
@@ -329,6 +342,7 @@ module RPicSim
       def call_depth_change
         @attrs.fetch(:call_depth_change, 0)
       end
+      
     end
   end
 end

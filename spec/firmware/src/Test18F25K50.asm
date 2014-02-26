@@ -26,6 +26,9 @@ start
 emptyRoutine:
   return
   
+invalidInstruction:
+  dw 0x0001
+
 testCall:
   call emptyRoutine
   return

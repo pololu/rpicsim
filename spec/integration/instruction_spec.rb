@@ -42,6 +42,10 @@ describe 'Disassembly' do
       # the PIC18 stores flash addresses in terms of bytes, not words
       expect(instruction0.size).to eq size
     end
+    
+    it "is valid" do
+      expect(instruction0).to be_valid
+    end
 
   end
   
@@ -1558,4 +1562,32 @@ describe 'Disassembly' do
     
   end
 
+end
+
+
+describe 'Disassembly of invalid instructions' do
+  let(:program_file) { Firmware::Test18F25K50.program_file }
+  let(:address) { program_file.label(:invalidInstruction).address }
+  subject(:instruction) { program_file.instruction(address)}
+  
+  it 'is invalid' do
+    expect(instruction).to_not be_valid
+  end
+  
+  it 'has a size equal to the address increment' do
+    expect(instruction.size).to eq 2
+  end
+  
+  it 'has a string of [INVALID]' do
+    expect(instruction.string).to eq '[INVALID]'
+  end
+  
+  it 'has the right address' do
+    expect(instruction.address).to eq address
+  end
+  
+  it 'has a transition to the next instruction' do
+    # because that is most likely what the PIC will do
+    expect(instruction.next_addresses).to eq [address + 2]
+  end
 end

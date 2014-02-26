@@ -123,9 +123,8 @@ describe RPicSim::Mplab::MplabInstruction do
     ['TRIS', 'OPTION'].each do |opcode|
       specify "does not recognize #{opcode}" do
         address = @mplab_program_file.symbols_in_code_space[:ins_option]
-        # TODO: This test is not a very good test right now but it will get better after
-        # we change the code to not raise exceptions for unrecognized instructions.
-        expect { @disassembler.disassemble(address) }.to raise_error
+        mplab_instruction = @disassembler.disassemble(address)
+        expect(mplab_instruction).to eq :invalid
       end
   end
   
