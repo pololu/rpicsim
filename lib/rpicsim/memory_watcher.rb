@@ -36,7 +36,6 @@ module RPicSim
       
       @vars_written = Set.new
       @var_names_ignored = default_var_names_ignored(sim.device)
-      @var_names_ignored_on_first_step = default_var_names_ignored_on_first_step(sim.device)
     end
 
     # Generate a nice report of what variables have been written to since the
@@ -62,30 +61,16 @@ module RPicSim
       @vars_written.clear
     end
     
-    def default_var_names_ignored(device_name)
-      # The datasheet says the PCLATH is not affected by pushing or popping the stack, but
-      # we still get spurious events for it when a return instruction is executed.
-
-      [:PCL, :PCLATH, :STATUS]
-    end
-    
-    def default_var_names_ignored_on_first_step(device_name)
-      #TODO: get rid of this stuff? people should just have a goto or something harmless at
-      # the beginning of their program and take a single step like we do.
-      [:PORTA, :LATA, :OSCCON, :PMCON2, :INTCON]
-    end
-    
     def handle_change(address_ranges)
       addresses = address_ranges.flat_map(&:to_a)
       vars = addresses.map { |a| @vars_by_address[a] || a }
 
       remove_vars(vars, @var_names_ignored)
-      remove_vars(vars, @var_names_ignored_on_first_step) if @sim.cycle_count <= 1
       
       # The line below works because @vars_written is a Set, not a Hash.
       @vars_written.merge vars
     end
-
+    
     private
     def remove_vars(vars, var_names_to_remove)
       vars.reject! do |key, val|
@@ -93,6 +78,13 @@ module RPicSim
         var_names_to_remove.include?(name)
       end
     end
-   
+    
+    def default_var_names_ignored(device_name)
+      # The datasheet says the PCLATH is not affected by pushing or popping the stack, but
+      # we still get spurious events for it when a return instruction is executed.
+
+      [:PCL, :PCLATH, :STATUS]
+    end
+    
   end
 end

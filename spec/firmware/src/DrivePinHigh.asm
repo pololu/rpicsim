@@ -1,5 +1,7 @@
   #include p10F322_and_config.inc
   code 0
+  goto $
+  
 ClearAClearTSetL
   clrf  ANSELA
   bcf   TRISA, 0

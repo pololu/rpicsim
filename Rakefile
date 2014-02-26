@@ -203,14 +203,13 @@ asm_files.each do |asm_file|
   task 'firmware' => cof_file
 end
 
-task 'firmware' => 'spec/firmware/BoringLoop.cof'
-
 desc 'Clean up compiled firmware output files.'
 task 'firmware:clean' do
   FileUtils.rm_r 'spec/firmware/dist', verbose: true
 end
 
 # Copy the COF file out of the dist directory so we can test that flaw in MPLAB X
+task 'firmware' => 'spec/firmware/BoringLoop.cof'
 file 'spec/firmware/BoringLoop.cof' => 'spec/firmware/dist/BoringLoop.cof' do
   FileUtils.cp 'spec/firmware/dist/BoringLoop.cof', 'spec/firmware/BoringLoop.cof', verbose: true
 end

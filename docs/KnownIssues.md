@@ -159,14 +159,33 @@ This issue is tested in `spec/mplab_x/memory_attach_spec.rb`.
 If you want to use the {file:RamWatcher.md RAM watcher}, you should use MPLAB X version 1.85 or 1.90.
 
 
-RAM watcher reports a write to PORTA instead of to LATA
+RAM watcher reports a write to PORTA and LATA when LATA is written
 ----
 _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-The {file:RamWatcher.md RAM watcher}, when testing code that writes to LATA, might actually report it as a write to PORTA instead of LATA.
-This issue has been observed on a PIC10F322 but it probably affects other PORTx and LATx registers.
+The {file:RamWatcher.md RAM watcher}, when testing code that writes to LATA, might actually report both a write to LATA and a write to PORTA.
+This issue has been observed on a PIC10F322 but it probably affects other PORTx and LATx registers on other devices.
+
+This issue is tested in `spec/integration/ram_watcher_spec.rb`.
+This issue could not be tested on MPLAB X versions affected by the "RAM watcher is useless" issue above.
+
+
+RAM watcher reports extra writes on devices where registers have multiple addresses
+----
+_Type: RPicSim missing feature_
+
+_MPLAB X versions affected: all tested verisons_
+
+On certain devices, some registers are available at multiple addresses.
+When the value of the register changes, the RAM watcher will report writes to each of the addresses that the register occupies, which makes the resulting hash large and hard to work with.
+
+For example, on the PIC16F1459, PCL occupies the third byte of each of the 32 banks of RAM, so it
+can be accessed no matter which bank is selected.
+Whenever the program counter advances, the RAM watcher reports writes to all 32 addresses that PCL occupies.
+
+One workaround is to write a helper function that filters uninteresting addresses out of the hash returned by the RAM watcher.
 
 This issue is tested in `spec/integration/ram_watcher_spec.rb`.
 This issue could not be tested on MPLAB X versions affected by the "RAM watcher is useless" issue above.

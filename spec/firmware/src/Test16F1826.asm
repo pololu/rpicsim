@@ -7,6 +7,10 @@ main code 0x40
 start
     goto $
 
+testNops
+    nop
+    nop
+    
 ; == Byte-oriented instructions ==
 
 ins_addwf:

@@ -1,6 +1,9 @@
 # TODO: for performance, consider making people explicitly enable (or construct?) the ram_watcher
 # before they can use it.  See if this would affect the run time of rcs03a specs before committing to it.
 
+# TODO: deal with the bugs caused by the STKPTR being all ones at reset on the PIC16F1826.
+# The breaks all the methods using the stack, including run_subroutine.
+
 require 'forwardable'
 
 require_relative 'mplab'
