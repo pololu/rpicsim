@@ -93,8 +93,6 @@ describe RPicSim::Mplab::MplabPin do
     specify "#names returns all the names" do
       expect(mplab_pin.names).to eq ["signal1", "signal2"]
     end
-
-    # TODO - test for mutability of these strings
   end
 
   context 'when pinName returns "foo"' do

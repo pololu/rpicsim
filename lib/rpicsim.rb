@@ -2,6 +2,9 @@ require_relative 'rpicsim/version'
 require_relative 'rpicsim/sim'
 require_relative 'rpicsim/call_stack_info'
 
+# TODO: add arbitrary access to code space, RAM, EEPROM
+# TODO: unify the way that code space, RAM, and EEPROM variables can be defined and accessed
+
 # TODO: add a feature for Flash size reports
 # TODO: add a feature for RAM usage reports
 
