@@ -3,7 +3,7 @@ module Firmware
 
   class Addition < RPicSim::Sim
     device_is "PIC10F322"
-    filename_is Dir + "addition.cof"  # TODO: rename files to Addition
+    filename_is Dir + "Addition.cof"
     def_var :x, :u16
     def_var :y, :u16
     def_var :z, :u16
