@@ -12,10 +12,10 @@ module RPicSim::Mplab
         @opcode = 'TBLRD+*'
         @string = @string.gsub('RBLRD', 'TBLRD')
       end
+      @opcode.freeze
     end
     
     def opcode
-      # TODO: maybe make opcode be a symbol too, since the field names are
       @opcode
     end
     
