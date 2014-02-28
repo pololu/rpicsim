@@ -8,7 +8,7 @@ module RPicSim::Mplab
       @string = @instruction.instruction
       
       # Fix a typo in MPLAB X.
-      if @opcode == 'RBLRD+*'  # TODO: reproduce this as an MPLAB X bug and report to Microchip
+      if @opcode == 'RBLRD+*'
         @opcode = 'TBLRD+*'
         @string = @string.gsub('RBLRD', 'TBLRD')
       end
