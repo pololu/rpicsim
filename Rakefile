@@ -171,11 +171,43 @@ end
 # Detects a device string like "10F322" from the first line of the ASM file.
 def detect_device(asm_file)
   first_line = File.open(asm_file, 'r') { |f| f.readline }
-  md = first_line.match %r{p([0-9A-Z]+)}
+  md = first_line.match %r{p([0-9A-Za-z]+)}
   if !md
     raise "Could not determine device from first line of #{asm_file}."
   end
   md[1]
+end
+
+# err_file should be a Pathname object to an MPASM .err file.
+# When the compilation goes wrong, we want to print out the .err file.
+def display_err_file(err_file)
+  if err_file.exist?
+    $stderr.puts err_file.read
+  else
+    $stderr.puts "MPASM failed but the ERR file was not found: #{err_file}"
+  end
+end
+
+def mpasm(options, o_file)
+  err_file = o_file.sub_ext('.err')
+
+  original_mtime = o_file.exist? ? o_file.mtime : nil
+
+  command = "#{mpasm_path} #{options}"
+  begin
+    sh command
+  rescue RuntimeError
+    display_err_file(err_file)
+    raise
+  end
+
+  # Unfortunately, the error handling above does not work in Linux because
+  # MPASMX for Linux always has a process return code of 0.
+  # Instead, we check to see if the .o file has been changed.
+  if !o_file.exist? || original_mtime == o_file.mtime
+    display_err_file(err_file)
+    raise 'MPASM error.'
+  end
 end
 
 asm_files = Dir.glob('spec/firmware/src/*.asm').map(&method(:Pathname))
@@ -186,21 +218,10 @@ asm_files.each do |asm_file|
   file cof_file => asm_file do
     device = detect_device(asm_file)
     o_file = cof_file.sub_ext('.o')
-    err_file = cof_file.sub_ext('.err')
-    lst_file = cof_file.sub_ext('.lst')
+    err_file = o_file.sub_ext('.err')
+    lst_file = o_file.sub_ext('.lst')
     o_file.parent.mkpath
-    command = %Q{#{mpasm_path} -p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}
-    begin
-      sh command
-    rescue RuntimeError
-      err_file = o_file.sub_ext(".err")
-      if err_file.exist?
-        $stderr.puts err_file.read
-      else
-        $stderr.puts "MPASM failed but the ERR file was not found: #{err_file}"
-      end
-      raise
-    end
+    mpasm %Q{-p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}, o_file
     sh %Q{#{mplink_path} -p#{device} -q -w -o"#{cof_file}" "#{o_file}"}
   end  
   task 'firmware' => cof_file
