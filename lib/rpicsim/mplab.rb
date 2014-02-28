@@ -9,25 +9,27 @@ module RPicSim
     # @return [Pathname]
     def self.dir
       @dir ||= begin
-        dir = ENV['RPICSIM_MPLABX']
-
-        dir ||= [
-          "C:/Program Files (x86)/Microchip/MPLABX/",
-          "C:/Program Files/Microchip/MPLABX/",
-          # TODO: add entries here for MPLAB X folders in Linux and Mac OS X
-        ].detect { |d| File.directory?(d) }
-
-        if !dir
-          raise "Cannot find MPLABX.  Install it in the standard location or " +
-            "set the RPICSIM_MPASM environment variable to its full path."
-        end
-
-        if !File.directory?(dir)
-          raise "MPLABX directory does not exist: #{dir}"
-        end
-
+        dir = ENV['RPICSIM_MPLABX'] or auto_detect_mplab_dir
+        raise "MPLABX directory does not exist: #{dir}" if !File.directory?(dir)
         Pathname(dir)
       end
+    end
+    
+    def self.auto_detect_mplab_dir
+      candidates = [
+        "C:/Program Files (x86)/Microchip/MPLABX/",
+        "C:/Program Files/Microchip/MPLABX/",
+        "/opt/microchip/mplabx/",
+        # TODO: add entries here for MPLAB X folders in Mac OS X
+      ]
+      dir = candidates.detect { |d| File.directory?(d) }
+      raise cannot_find_mplab_error if !dir
+      dir
+    end
+
+    def cannot_find_mplab_error
+      "Cannot find MPLABX.  Install it in the standard location or " +
+      "set the RPICSIM_MPLABX environment variable to its full path."
     end
 
     # Adds all the needed MPLAB X jar files to the classpath so we can use the
