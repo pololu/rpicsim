@@ -52,20 +52,9 @@ module RPicSim
       @operands = mplab_instruction.operands
       @string = mplab_instruction.instruction_string
 
-      # Convert the increment, which is the number of bytes, into 'size',
-      # which is the same units as the flash address space.
-      if @address_increment == 1
-        # Non-PIC18 architectures: flash addresses are in terms of words
-        # so we devide by two to convert from bytes to words.
-        @size = mplab_instruction.inc / 2
-      elsif @address_increment == 2
-        # PIC18 architecture: No change necessary because both are in terms
-        # of bytes.
-        @size = mplab_instruction.inc
-      else
-        raise "Cannot handle address increment value of #{@address_increment}."
-      end
-
+      @size = mplab_instruction.compute_size(address_increment)
+      raise "Invalid size #{@size} for #{inspect}" if ![1, 2, 4].include?(@size)
+      
       properties = Array case mplab_instruction.opcode
       when 'ADDFSR'
       when 'ADDLW'
@@ -237,6 +226,7 @@ module RPicSim
     end
     
     private
+    
     # Returns the address indicated by the operand 'k'.
     # k is assumed to be a word address and it is assumed to be absolute
     # k=0 is word 0 of memory, k=1 is word one.

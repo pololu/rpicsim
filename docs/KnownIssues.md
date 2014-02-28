@@ -4,14 +4,8 @@ Known issues
 This page documents all the known issues RPicSim has that could affect its users.
 Some issues are caused by the MPLAB X simulator and would need to be addressed by Microchip.
 
-RPicSim has only been tested with the following versions of MPLAB X:
-
-  * 1.85
-  * 1.90
-  * 1.95
-  * 2.00
-
-If you are using a different version of MPLAB X, some of the issues might not apply to you.
+RPicSim has only been tested with the versions of MPLAB X that are listed on the {file:Introduction.md} page.
+If you are using a different version of MPLAB X, you might have different issues.
 
 Many of these issues have only been reproduced on a single model of PIC microcontroller and they may or may not affect other models.
 
@@ -153,7 +147,7 @@ RAM watcher is useless because all of RAM seems to change on every step
 ----
 _Type: MPLAB X bug_
 
-_MPLAB X versions affected: 1.95, 2.00_
+_MPLAB X versions affected: 1.95, 2.00, 2.05_
 
 This issue is tested in `spec/mplab_x/memory_attach_spec.rb`.
 If you want to use the {file:RamWatcher.md RAM watcher}, you should use MPLAB X version 1.85 or 1.90.
