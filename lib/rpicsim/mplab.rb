@@ -1,154 +1,70 @@
 require 'java'
 require 'pathname'
+require_relative 'mplab/mplab_loader'
 
-module RPicSim
-  module Mplab
-    # Returns a Pathname object representing the directory of the MPLAB X we are using.
-    # This can either come from the +RPICSIM_MPLABX+ environment variable or it can
-    # be auto-detected by looking in the standard places that MPLAB X is installed.
-    # @return [Pathname]
-    def self.dir
-      @dir ||= begin
-        dir = ENV['RPICSIM_MPLABX'] || auto_detect_mplab_dir
-        raise "MPLABX directory does not exist: #{dir}" if !File.directory?(dir)
-        Pathname(dir)
-      end
-    end
-    
-    def self.auto_detect_mplab_dir
-      # Default installation directories for MPLAB X:
-      candidates = [
-        'C:/Program Files (x86)/Microchip/MPLABX/',  # 64-bit Windows
-        'C:/Program Files/Microchip/MPLABX/',        # 32-bit Windows
-        '/opt/microchip/mplabx/',                    # Linux
-        '/Applications/microchip/mplabx/',           # Mac OS X
-      ]
-      dir = candidates.detect { |d| File.directory?(d) }
-      raise cannot_find_mplab_error if !dir
-      dir
-    end
-
-    def cannot_find_mplab_error
-      "Cannot find MPLABX.  Install it in the standard location or " +
-      "set the RPICSIM_MPLABX environment variable to its full path."
-    end
-
-    def self.jar_dir
-      @jar_dir ||= if (dir + 'mplab_ide.app').exist?
-        dir + 'mplab_ide.app/Contents/Resources/mplab_ide'  # Mac OS X
-      else
-        dir + 'mplab_ide'
-      end
-    end
-
-    # Adds all the needed MPLAB X jar files to the classpath so we can use the
-    # classes.
-    def self.load_dependencies
-      %w{ mdbcore/modules/*.jar
-          mplablibs/modules/*.jar
-          mplablibs/modules/ext/*.jar
-          platform/lib/org-openide-util*.jar
-          platform/lib/org-openide-util.jar
-          mdbcore/modules/ext/org-openide-filesystems.jar
-      }.each do |pattern|
-        Dir.glob(jar_dir + pattern).each do |jar_file|
-          $CLASSPATH << jar_file
-        end
-      end
-
-      # Do a quick test to make sure we can load some MPLAB X classes.
-      # In case MPLAB X was uninstalled and its directory remains, this can provide
-      # a useful error message to the user.
-      begin
-        org.openide.util.Lookup
-        com.microchip.mplab.mdbcore.simulator.Simulator
-      rescue NameError
-        $stderr.puts "Failed to load MPLAB X classes.\n" +
-          "MPLAB X dir: #{dir}\nMPLAB X jar dir: #{jar_dir}\nClass path:\n" + $CLASSPATH.to_a.join("\n") + "\n\n"
-        raise
-      end
-    end
-
-    load_dependencies
-
-
-    # JRuby makes it hard to access packages with capital letters in their names.
-    # This is a workaround to let us access those packages.
-    module CapitalizedPackages
-      include_package "com.microchip.mplab.libs.MPLABDocumentLocator"
-    end
-
-    # The com.microchip.mplab.libs.MPLABDocumentLocator.MPLABDocumentLocator class from MPLAB X.
-    DocumentLocator = CapitalizedPackages::MPLABDocumentLocator
-
-    # Returns a string like "1.95" representing the version of MPLAB X we are using.
-    # NOTE: You should probably NOT be calling this to work around flaws in MPLAB X.
-    # Instead, you should add a new entry in flaws.rb and then use
-    # RPicSim::Flaws[:FLAWNAME] to see if the flaw exists and choose the appropriate workaround.
-    def self.version
-      # This implementation is not pretty; I would prefer to just find the right function
-      # to call.
-      @mplabx_version ||= begin
-        glob_pattern = 'Uninstall_MPLAB_X_IDE_v*'
-        paths = Dir.glob(dir + glob_pattern)
-        if paths.empty?
-          raise "Cannot detect MPLAB X version.  No file matching #{glob_pattern} found in #{dir}."
-        end
-        matches = paths.map { |p| p.match(/IDE_v([0-9][0-9\.]*[0-9]+)\./) }.compact
-        match_data = matches.first
-        if !match_data
-          raise "Failed to get version number from #{paths.inspect}."
-        end
-        match_data[1]
-      end
-    end
-
-    # Mutes the standard output, calls the given block, and then unmutes it.
-    def self.mute_stdout
-      begin
-        orig = java.lang.System.out
-        java.lang.System.setOut(java.io.PrintStream.new(NullOutputStream.new))
-        yield
-      ensure
-        java.lang.System.setOut(orig)
-      end
-    end
-
-    # Mutes a particular type of exception printed by NetBeans,
-    # calls the given block, then unmutes it.
-    def self.mute_exceptions
-      log = java.util.logging.Logger.getLogger('org.openide.util.Exceptions')
-      level = log.getLevel
-      begin
-        log.setLevel(java.util.logging.Level::OFF)
-        yield
-      ensure
-        log.setLevel(level)
-      end
-    end
-
-    # The MCDisAsm class is the disassembly provided by MPLAB X.
-    # We added this part so we could get access to its strategy object, but
-    # we are not currently using that feature.
-    class Java::ComMicrochipMplabMdbcoreDisasm::MCDisAsm
-      field_accessor :strategy
-    end
-
-    # This class helps us suppress the standard output temporarily.
-    class NullOutputStream < Java::JavaIo::OutputStream
-      def write(b)
-      end
-    end
-    
-    Lookup = org.openide.util.Lookup
-    Mdbcore = com.microchip.mplab.mdbcore
+module RPicSim::Mplab
+  @loader = MplabLoader.new
+  @loader.load
+  
+  def self.version
+    @loader.mplab_version
+  end
+  
+  # JRuby makes it hard to access packages with capital letters in their names.
+  # This is a workaround to let us access those packages.
+  capitalized_packages = Module.new
+  capitalized_packages.instance_eval do
+    include_package "com.microchip.mplab.libs.MPLABDocumentLocator"
   end
 
+  # The com.microchip.mplab.libs.MPLABDocumentLocator.MPLABDocumentLocator class from MPLAB X.
+  DocumentLocator = capitalized_packages::MPLABDocumentLocator
+
+  # Mutes the standard output, calls the given block, and then unmutes it.
+  def self.mute_stdout
+    begin
+      orig = java.lang.System.out
+      java.lang.System.setOut(java.io.PrintStream.new(NullOutputStream.new))
+      yield
+    ensure
+      java.lang.System.setOut(orig)
+    end
+  end
+
+  # Mutes a particular type of exception printed by NetBeans,
+  # calls the given block, then unmutes it.
+  def self.mute_exceptions
+    log = java.util.logging.Logger.getLogger('org.openide.util.Exceptions')
+    level = log.getLevel
+    begin
+      log.setLevel(java.util.logging.Level::OFF)
+      yield
+    ensure
+      log.setLevel(level)
+    end
+  end
+
+  # The MCDisAsm class is the disassembly provided by MPLAB X.
+  # We added this part so we could get access to its strategy object, but
+  # we are not currently using that feature.
+  #class Java::ComMicrochipMplabMdbcoreDisasm::MCDisAsm
+  #  field_accessor :strategy
+  #end
+
+  # This class helps us suppress the standard output temporarily.
+  class NullOutputStream < Java::JavaIo::OutputStream
+    def write(b)
+    end
+  end
+  
+  Lookup = org.openide.util.Lookup
+  Mdbcore = com.microchip.mplab.mdbcore
 end
 
 # We want as much awareness as possible; if it becomes a problem we can change this.
 com.microchip.mplab.logger.MPLABLogger.mplog.setLevel(java.util.logging.Level::ALL)
 
+# Require the rest of the RPicSim::Mplab Ruby classes now that MPLAB X has been loaded.
 require_relative 'mplab/mplab_pin'
 require_relative 'mplab/mplab_assembly'
 require_relative 'mplab/mplab_program_file'
