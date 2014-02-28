@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem "rspec"
-  gem "rake"
-  gem "simplecov"
-  gem "deg-yard"  # my little fork of the yard gem that fixes some bugs with the legacy parse
-  gem "guard"
-  gem "guard-rspec"
+  gem 'rspec'
+  gem 'rake'
+  gem 'simplecov'
+  gem 'deg-yard'  # My little fork of the yard gem that has some bug fixes.
+  gem 'guard'
+  gem 'guard-rspec'
 end

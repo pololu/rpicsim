@@ -3,7 +3,7 @@ Contributing
 
 RPicSim is hosted on the [pololu/rpicsim github page](https://github.com/pololu/rpicsim).
 
-To report a bug, go to a github page and create a new issue.
+To report a bug, go to the github page and create a new issue.
 
 If you want to contribute code, these are the general steps:
 
