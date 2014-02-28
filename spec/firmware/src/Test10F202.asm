@@ -1,4 +1,4 @@
-  #include p10F202.inc
+  #include p10f202.inc
   __config (_MCLRE_OFF & _CP_OFF & _WDT_OFF)
 
 rst code 0

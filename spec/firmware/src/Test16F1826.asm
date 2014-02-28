@@ -1,4 +1,4 @@
-  #include p16F1826.inc
+  #include p16f1826.inc
 
 rst code 0
     goto start

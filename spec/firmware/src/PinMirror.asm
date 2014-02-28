@@ -1,5 +1,4 @@
-  ;#include p10F322_and_config.inc
-  #include p10F322.inc
+  #include p10f322.inc
   __config(0x3E06)
   code 0
   clrf  ANSELA

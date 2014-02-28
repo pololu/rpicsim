@@ -1,4 +1,4 @@
-    #include p18F25K50.inc
+    #include p18f25k50.inc
     config PLLSEL = PLL4X
     config CFGPLLEN = ON
     config LS48MHZ = SYS48X8
