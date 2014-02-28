@@ -6,13 +6,11 @@ describe "PathRetrieval" do
     retrieval = com.microchip.mplab.open.util.pathretrieval.PathRetrieval 
     path = retrieval.getPath(RPicSim::Mplab::DocumentLocator.java_class)
     
-    path.should start_with "/"   # bad
+    path.should start_with "/"   # This is bad if we are in Windows.
 
     # Even though the path is messed up, java.io.File can handle it.
     # I think that it considers "/" to be "C:/".
+    # JRuby does not like the path though, if you are in Windows.
     java.io.File.new(path).exists().should == true
-    
-    # Ruby does not like the path though
-    File.exist?(path).should == false
   end
 end
