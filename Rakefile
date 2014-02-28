@@ -103,6 +103,7 @@ def mpasm_path
       ('mpasm' if which('mpasm')),
       'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mpasmx.exe',
       'C:\Program Files\Microchip\MPLABX\mpasmx\mpasmx.exe',
+      '/opt/microchip/mplabx/mpasmx/mpasmx',
     ].find do |mpasm|
       mpasm && File.exist?(mpasm)
     end
@@ -127,6 +128,7 @@ def mplink_path
       ('mplink' if which('mplink')),
       'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mplink.exe',
       'C:\Program Files\Microchip\MPLABX\mpasmx\mplink.exe',
+      '/opt/microchip/mplabx/mpasmx/mplink',
     ].find do |mplink|
       mplink && File.exist?(mplink)
     end
@@ -186,9 +188,10 @@ asm_files.each do |asm_file|
     o_file = cof_file.sub_ext('.o')
     err_file = cof_file.sub_ext('.err')
     lst_file = cof_file.sub_ext('.lst')
+    o_file.parent.mkpath
+    command = %Q{#{mpasm_path} -p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}
     begin
-      o_file.parent.mkpath
-      sh %Q{#{mpasm_path} -p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}
+      sh command
     rescue RuntimeError
       err_file = o_file.sub_ext(".err")
       if err_file.exist?
