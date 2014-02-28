@@ -33,17 +33,25 @@ module RPicSim
       "set the RPICSIM_MPLABX environment variable to its full path."
     end
 
+    def self.jar_dir
+      @jar_dir ||= if (dir + 'mplab_ide.app').exist?
+        dir + 'mplab_ide.app/Contents/Resources/mplab_ide'  # Mac OS X
+      else
+        dir + 'mplab_ide'
+      end
+    end
+
     # Adds all the needed MPLAB X jar files to the classpath so we can use the
     # classes.
     def self.load_dependencies
-      %w{ mplab_ide/mdbcore/modules/*.jar
-          mplab_ide/mplablibs/modules/*.jar
-          mplab_ide/mplablibs/modules/ext/*.jar
-          mplab_ide/platform/lib/org-openide-util*.jar
-          mplab_ide/platform/lib/org-openide-util.jar
-          mplab_ide/mdbcore/modules/ext/org-openide-filesystems.jar
+      %w{ mdbcore/modules/*.jar
+          mplablibs/modules/*.jar
+          mplablibs/modules/ext/*.jar
+          platform/lib/org-openide-util*.jar
+          platform/lib/org-openide-util.jar
+          mdbcore/modules/ext/org-openide-filesystems.jar
       }.each do |pattern|
-        Dir.glob(dir + pattern).each do |jar_file|
+        Dir.glob(jar_dir + pattern).each do |jar_file|
           $CLASSPATH << jar_file
         end
       end
@@ -56,7 +64,7 @@ module RPicSim
         com.microchip.mplab.mdbcore.simulator.Simulator
       rescue NameError
         $stderr.puts "Failed to load MPLAB X classes.\n" +
-          "MPLAB X dir: #{dir}\nClass path:\n" + $CLASSPATH.to_a.join("\n") + "\n\n"
+          "MPLAB X dir: #{dir}\nMPLAB X jar dir: #{jar_dir}\nClass path:\n" + $CLASSPATH.to_a.join("\n") + "\n\n"
         raise
       end
     end
