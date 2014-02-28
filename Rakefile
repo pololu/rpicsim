@@ -49,7 +49,7 @@ end
 
 desc 'Print TODO items from the source code'
 task 'todo' do
-  sh 'grep -ni todo -r lib spec docs'
+  sh 'grep -ni todo -r lib spec docs Rakefile'
 end
 
 task "spec" => "firmware"
