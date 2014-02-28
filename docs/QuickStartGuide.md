@@ -8,7 +8,7 @@ By the end of this guide, you will have a suite of automated simulator-based tes
 Installing prerequisites
 ----
 
-First, on a computer running Windows, install RPicSim and the software it requires:
+First, on a computer running Windows, Linux, or Mac OS X, install RPicSim and the software it requires:
 
 1. Install [MPLAB X](http://www.microchip.com/pagehandler/en-us/family/mplabx/).  RPicSim uses the Microchip Java classes from MPLAB X.
 2. Install the latest version of [JRuby](http://jruby.org/).

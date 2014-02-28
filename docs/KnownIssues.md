@@ -81,13 +81,6 @@ The MPLAB X code might allow RPicSim to detect the PIC device name from the COF 
 Currently RPicSim requires the user to always specify the PIC device name.
 
 
-Not tested on Linux and Mac OS X
-----
-_Type: RPicSim missing feature_
-
-RPicSim has not been tested on Linux and Mac OS X.  See {file:SupportedOperatingSystems.md Supported operating systems} for more information.
-
-
 Variables defined in user ID space are not read from the COF file
 ----
 _Type: MPLAB X bug_
