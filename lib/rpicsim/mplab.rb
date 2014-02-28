@@ -9,7 +9,7 @@ module RPicSim
     # @return [Pathname]
     def self.dir
       @dir ||= begin
-        dir = ENV['RPICSIM_MPLABX'] or auto_detect_mplab_dir
+        dir = ENV['RPICSIM_MPLABX'] || auto_detect_mplab_dir
         raise "MPLABX directory does not exist: #{dir}" if !File.directory?(dir)
         Pathname(dir)
       end
@@ -73,18 +73,23 @@ module RPicSim
     DocumentLocator = CapitalizedPackages::MPLABDocumentLocator
 
     # Returns a string like "1.95" representing the version of MPLAB X we are using.
-    # NOTE: You should probably NOT be doing this to work around flaws in MPLAB X.
+    # NOTE: You should probably NOT be calling this to work around flaws in MPLAB X.
     # Instead, you should add a new entry in flaws.rb and then use
     # RPicSim::Flaws[:FLAWNAME] to see if the flaw exists and choose the appropriate workaround.
     def self.version
       # This implementation is not pretty; I would prefer to just find the right function
       # to call.
       @mplabx_version ||= begin
-        paths = Dir.glob(dir + "Uninstall_MPLAB_X_IDE_v*.dat")
+        glob_pattern = 'Uninstall_MPLAB_X_IDE_v*'
+        paths = Dir.glob(dir + glob_pattern)
         if paths.empty?
-          raise "Cannot detect MPLAB X version.  The Uninstall_MPLAB_X_IDE_v*.dat file was not found in #{mplabx_dir}."
+          raise "Cannot detect MPLAB X version.  No file matching #{glob_pattern} found in #{dir}."
         end
-        match_data = paths.first.match(/v([0-9][0-9\.]*[0-9]+)\./)
+        matches = paths.map { |p| p.match(/IDE_v([0-9][0-9\.]*[0-9]+)\./) }.compact
+        match_data = matches.first
+        if !match_data
+          raise "Failed to get version number from #{paths.inspect}."
+        end
         match_data[1]
       end
     end
