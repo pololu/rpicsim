@@ -3,11 +3,10 @@ require 'pathname'
 require_relative 'mplab/mplab_loader'
 
 module RPicSim::Mplab
-  @loader = MplabLoader.new
-  @loader.load
+  MplabLoader.instance.load
   
   def self.version
-    @loader.mplab_version
+    MplabLoader.instance.mplab_version
   end
   
   # JRuby makes it hard to access packages with capital letters in their names.

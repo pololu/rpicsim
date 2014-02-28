@@ -1,4 +1,6 @@
 module RPicSim::Mplab
+  # This class wraps a com.microchip.mplab.mdbcore.disasm.Instruction, which
+  # represents a disassembled instruction from Microchip's disassembler.
   class MplabInstruction
     # @param instruction [com.microchip.mplab.mdbcore.disasm.Instruction]
     def initialize(instruction)

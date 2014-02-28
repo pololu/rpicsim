@@ -1,5 +1,14 @@
+require 'singleton'
+
 module RPicSim::Mplab
+  # This class helps find MPLAB X on the disk, add it to the Java class path
+  # so we can use it from JRuby, and figure out what version of MPLAB X we
+  # are using.
+  #
+  # It should not be confused with com.microchip.mplab.mdbcore.loader.Loader,
+  # which is used for loading program files.
   class MplabLoader
+    include Singleton
    
     # Adds all the needed MPLAB X jar files to the classpath so we can use the
     # classes.

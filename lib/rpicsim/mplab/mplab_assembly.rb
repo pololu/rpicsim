@@ -3,6 +3,9 @@ require_relative 'mplab_simulator'
 require_relative 'mplab_disassembler'
 
 module RPicSim::Mplab
+  # This class wraps objects belonging to the abstract Java class
+  # com.microchip.mplab.mdbcore.assemblies.Assembly,
+  # which represent a collection of objects being used together.
   class MplabAssembly
     attr_reader :device
   
