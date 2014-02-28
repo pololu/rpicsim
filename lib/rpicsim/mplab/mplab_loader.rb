@@ -1,3 +1,5 @@
+require 'java'
+require 'pathname'
 require 'singleton'
 
 module RPicSim::Mplab

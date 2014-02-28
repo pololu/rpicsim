@@ -1,5 +1,3 @@
-require 'java'
-require 'pathname'
 require_relative 'mplab/mplab_loader'
 
 module RPicSim::Mplab
