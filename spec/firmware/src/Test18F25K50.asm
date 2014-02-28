@@ -32,6 +32,10 @@ invalidInstruction:
 testCall:
   call emptyRoutine
   return
+  
+testRCall:
+  rcall emptyRoutine
+  return
 
 readFlashVar1:
   movlw     low(flashVar1)

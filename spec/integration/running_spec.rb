@@ -140,3 +140,16 @@ describe RPicSim::Sim do
 
 end
 
+describe 'Running on an enhanced midrange device' do
+  before do
+    start_sim Firmware::Test16F1826
+  end
+  
+  describe 'run_subroutine' do
+    it 'works' do
+      expect(sim.stack_contents).to eq []
+      run_subroutine :emptyRoutine, cycle_limit: 10
+      expect(sim.stack_contents).to eq []
+    end
+  end
+end

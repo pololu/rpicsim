@@ -1,9 +1,6 @@
 # TODO: for performance, consider making people explicitly enable (or construct?) the ram_watcher
 # before they can use it.  See if this would affect the run time of rcs03a specs before committing to it.
 
-# TODO: deal with the bugs caused by the STKPTR being all ones at reset on the PIC16F1826.
-# The breaks all the methods using the stack, including run_subroutine.
-
 require 'forwardable'
 
 require_relative 'mplab'
@@ -17,6 +14,7 @@ require_relative 'program_counter'
 require_relative 'label'
 require_relative 'memory_watcher'
 require_relative 'program_file'
+require_relative 'stack_pointer'
 require_relative 'stack_trace'
 
 module RPicSim
@@ -253,6 +251,7 @@ module RPicSim
         :step,
         :var,
         :wreg,
+        :stack_pointer,
         :stkptr,
       ]
 
@@ -276,10 +275,17 @@ module RPicSim
     # @return [Register]
     attr_reader :wreg
 
-    # Returns a {Variable} object corresponding to the stack pointer.  You can use
-    # this to read and write the value of the stack pointer.
+    # Returns a {Variable} object corresponding to the stack pointer register.
+    # You can use this to read and write the value of the stack pointer.
     # @return [Register]
     attr_reader :stkptr
+
+    # Returns a {StackPointer} object that is like {#stkptr} but it works
+    # consistently across all PIC devices.  The initial value is always 0
+    # when the stack is empty and it points to the first unused space in
+    # the stack.
+    # @return [Register]
+    attr_reader :stack_pointer
 
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
@@ -313,6 +319,8 @@ module RPicSim
       initialize_vars
       initialize_flash_vars
 
+      @stack_pointer = StackPointer.new(stkptr)
+      
       @ram_watcher = MemoryWatcher.new(self, @simulator.fr_memory, @vars.values + @sfrs.values)
     end
 
@@ -584,13 +592,13 @@ module RPicSim
     # This can be useful for speeding up your tests when you have a very slow function
     # and just want to skip it.
     def return
-      if stkptr.value == 0
-        raise "Cannot return because stack pointer is 0."
+      if stack_pointer.value == 0
+        raise "Cannot return because stack is empty."
       end
 
       # Simulate popping the stack.
-      stkptr.value -= 1
-      pc.value = @stack_memory.read_word(stkptr.value)
+      stack_pointer.value -= 1
+      pc.value = @stack_memory.read_word(stack_pointer.value)
     end
 
     # Generates a friendly human-readable string description of where the
@@ -601,18 +609,18 @@ module RPicSim
 
     # Pushes the given address onto the simulated call stack.
     def stack_push(value)
-      if !@stack_memory.is_valid_address?(stkptr.value)
-        raise "Simulated stack is full (stack pointer = #{stkptr.value})."
+      if !@stack_memory.is_valid_address?(stack_pointer.value)
+        raise "Simulated stack is full (stack pointer = #{stack_pointer.value})."
       end
 
-      @stack_memory.write_word(stkptr.value, value)
-      stkptr.value += 1
+      @stack_memory.write_word(stack_pointer.value, value)
+      stack_pointer.value += 1
     end
 
     # Gets the contents of the stack as an array of integers.
     # @return [Array(Integer)] An array of integers.
     def stack_contents
-      (0...stkptr.value).collect do |n|
+      (0...stack_pointer.value).collect do |n|
         @stack_memory.read_word(n)
       end
     end
@@ -636,7 +644,7 @@ module RPicSim
     end
 
     def inspect
-      "#<#{self.class}:0x%x, #{pc_description}, stkptr = #{stkptr.value}>" % object_id
+      "#<#{self.class}:0x%x, #{pc_description}, stack_pointer = #{stack_pointer.value}>" % object_id
     end
 
     # Converts the specified condition into a Proc that, when called, will return a
@@ -664,13 +672,13 @@ module RPicSim
         Proc.new { pc.value == c }
 
       when :return
-        current_val = stkptr.value
+        current_val = stack_pointer.value
         if current_val == 0
           raise "The stack pointer is 0; waiting for a return would be strange and might not work."
         else
           target_val = current_val - 1
         end
-        Proc.new { stkptr.value == target_val }
+        Proc.new { stack_pointer.value == target_val }
 
       when Label
         convert_condition_to_proc c.address

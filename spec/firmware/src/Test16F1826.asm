@@ -7,6 +7,9 @@ main code 0x40
 start
     goto $
 
+emptyRoutine
+    return
+    
 testNops
     nop
     nop

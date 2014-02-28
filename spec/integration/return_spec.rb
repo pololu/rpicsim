@@ -15,8 +15,25 @@ describe "#return" do
     pc.value.should == 0x61
   end
 
-  it "gives an error if the stack is empty" do
-    expect { sim.return }.to raise_error "Cannot return because stack pointer is 0."
+  it 'raises an error if the stack is empty' do
+    expect { sim.return }.to raise_error 'Cannot return because stack is empty.'
   end
   
 end
+
+describe '#return for an enhanced midrange device' do
+  before do
+    start_sim Firmware::Test16F1826
+  end
+  
+  it 'removes a value from the stack' do
+    sim.stack_push 1
+    sim.return
+    expect(sim.stack_contents).to eq []
+  end
+  
+  it 'raises an error if the stack is empty' do
+    expect { sim.return }.to raise_error 'Cannot return because stack is empty.'
+  end
+end
+    
