@@ -104,6 +104,7 @@ def mpasm_path
       'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mpasmx.exe',
       'C:\Program Files\Microchip\MPLABX\mpasmx\mpasmx.exe',
       '/opt/microchip/mplabx/mpasmx/mpasmx',
+      '/Applications/microchip/mplabx/mpasmx/mpasmx',
     ].find do |mpasm|
       mpasm && File.exist?(mpasm)
     end
@@ -129,6 +130,7 @@ def mplink_path
       'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mplink.exe',
       'C:\Program Files\Microchip\MPLABX\mpasmx\mplink.exe',
       '/opt/microchip/mplabx/mpasmx/mplink',
+      '/Applications/microchip/mplabx/mpasmx/mplink',
     ].find do |mplink|
       mplink && File.exist?(mplink)
     end

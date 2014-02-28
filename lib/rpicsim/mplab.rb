@@ -16,11 +16,12 @@ module RPicSim
     end
     
     def self.auto_detect_mplab_dir
+      # Default installation directories for MPLAB X:
       candidates = [
-        "C:/Program Files (x86)/Microchip/MPLABX/",
-        "C:/Program Files/Microchip/MPLABX/",
-        "/opt/microchip/mplabx/",
-        # TODO: add entries here for MPLAB X folders in Mac OS X
+        'C:/Program Files (x86)/Microchip/MPLABX/',  # 64-bit Windows
+        'C:/Program Files/Microchip/MPLABX/',        # 32-bit Windows
+        '/opt/microchip/mplabx/',                    # Linux
+        '/Applications/microchip/mplabx/',           # Mac OS X
       ]
       dir = candidates.detect { |d| File.directory?(d) }
       raise cannot_find_mplab_error if !dir
