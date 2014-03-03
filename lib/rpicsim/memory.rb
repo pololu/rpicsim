@@ -23,7 +23,16 @@ class Memory
     @mplab_memory.read_word(address)
   end
   
+  def []=(address, value)
+    write_word address, value
+  end
+
+  def [](address)
+    read_word address
+  end 
+  
   def is_valid_address?(address)
     @mplab_memory.is_valid_address?(address)
   end
+
 end

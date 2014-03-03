@@ -239,7 +239,8 @@ module RPicSim
         :pc,
         :pc_description,
         :pin,
-        :ram_watcher,
+        :program_file,
+        :ram,
         :run_cycles,
         :run_steps,
         :run_subroutine,
@@ -278,9 +279,14 @@ module RPicSim
     # consistently across all PIC devices.  The initial value is always 0
     # when the stack is empty and it points to the first unused space in
     # the stack.
-    # @return [Register]
+    # @return [StackPointer]
     attr_reader :stack_pointer
 
+    # Returns a {Memory} object that allows direct reading and writing of the
+    # bytes in the simulated RAM.
+    # @return [Memory]
+    attr_reader :ram
+    
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
     def device; self.class.device; end
@@ -297,7 +303,7 @@ module RPicSim
       @processor = @simulator.processor
 
       # Set up our stores and helper objects.
-      @fr_memory = Memory.new @simulator.fr_memory
+      @ram = Memory.new @simulator.fr_memory
       @sfr_memory = Memory.new @simulator.sfr_memory
       @nmmr_memory = Memory.new @simulator.nmmr_memory
       @program_memory = Memory.new @simulator.program_memory
@@ -339,7 +345,7 @@ module RPicSim
     def initialize_vars
       @vars = {}
       self.class.vars.each do |name, unbound_var|
-        @vars[name] = Variable.new(unbound_var.bind(@fr_memory))
+        @vars[name] = Variable.new(unbound_var.bind(@ram))
       end
     end
 
@@ -412,7 +418,7 @@ module RPicSim
     # you will probably need to prefix the name with an underscore.
     # @return [Label]
     def label(name)
-      self.class.program_file.label(name)
+      program_file.label(name)
     end
 
     # Returns the number of instruction cycles simulated in this simulation.
@@ -596,7 +602,7 @@ module RPicSim
     # Generates a friendly human-readable string description of where the
     # program counter is currently using the symbol table.
     def pc_description
-      self.class.program_file.address_description(pc.value)
+      program_file.address_description(pc.value)
     end
 
     # Pushes the given address onto the simulated call stack.
@@ -630,7 +636,7 @@ module RPicSim
       end
       addresses << pc.value
       entries = addresses.collect do |address|
-        StackTraceEntry.new address, self.class.program_file.address_description(address)
+        StackTraceEntry.new address, program_file.address_description(address)
       end
       StackTrace.new(entries)
     end
@@ -692,6 +698,12 @@ module RPicSim
     
     def shortcuts
       self.class::Shortcuts
+    end
+    
+    # Returns the {RPicSim::ProgramFile} representing the firmware being simulated.
+    # @return [ProgramFile]
+    def program_file
+      self.class.program_file
     end
     
     private
