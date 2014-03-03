@@ -11,11 +11,11 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
     it "sees RAM variables written by the test" do
       start_sim Firmware::Addition
       step
-      sim.ram_watcher.clear
+      ram_watcher = new_ram_watcher
       x.value = 255
       y.value = 20
       step
-      sim.ram_watcher.writes.should == { x: 255, y: 20 }
+      ram_watcher.writes.should == { x: 255, y: 20 }
     end
 
     it "sees when the firmware writes to RAM variables" do
@@ -23,32 +23,33 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
       x.value = 255
       y.value = 20
       step
-      sim.ram_watcher.clear
+      ram_watcher = new_ram_watcher
       run_subroutine :addition, cycle_limit: 100
-      sim.ram_watcher.writes.should == { z: 275 }
+      ram_watcher.writes.should == { z: 275 }
     end
 
     it "sees when the firmware writes to an unnamed part of RAM" do
       start_sim Firmware::WriteTo5F
       step
-      sim.ram_watcher.clear
+      ram_watcher = new_ram_watcher
       run_subroutine :WriteTo5F, cycle_limit: 100
-      sim.ram_watcher.writes.should == { 0x5F => 44 }
+      ram_watcher.writes.should == { 0x5F => 44 }
     end
     
     it "sees when the firmware writes to an SFR" do
       start_sim Firmware::DrivePinHigh
+      ram_watcher = new_ram_watcher
       run_subroutine :ClearAClearTSetL, cycle_limit: 100
-      sim.ram_watcher.writes[:TRISA].should == 14
+      ram_watcher.writes[:TRISA].should == 14
     end
     
     it "confuses writes to LATA with writes to PORTA when ANSELA bits are 1 and TRISA bits are 1", flaw: true do
       start_sim Firmware::DrivePinHigh
       step
-      sim.ram_watcher.clear
+      ram_watcher = new_ram_watcher
       run_subroutine :SetLClearT, cycle_limit: 100
-      sim.ram_watcher.writes[:PORTA].should == 0
-      sim.ram_watcher.writes[:LATA].should == 1
+      ram_watcher.writes[:PORTA].should == 0
+      ram_watcher.writes[:LATA].should == 1
     end
     
     it 'reports a write for each address of PCL whenever it changes', flaw: true do
@@ -57,7 +58,7 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
       start_sim Firmware::Test16F1826
       goto :testNops
       step
-      ram_watcher.clear
+      ram_watcher = new_ram_watcher
       step
       ram_watcher.writes.keys.should eq 130.step(3970, 128).to_a
     end

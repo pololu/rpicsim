@@ -8,8 +8,9 @@ describe "addition" do
   it "adds x to y and stores the result in z" do
     x.value = 70
     y.value = 22
-    step; sim.ram_watcher.clear
+    step
+    ram_watcher = new_ram_watcher
     run_subroutine :addition, cycle_limit: 100
-    expect(sim.ram_watcher.writes).to eq({z: 92})
+    expect(ram_watcher.writes).to eq({z: 92})
   end unless RPicSim::Flaws[:fr_memory_attach_useless]
 end

@@ -232,6 +232,7 @@ module RPicSim
       # For example, these shortcuts allow you to just write +cycle_count+
       # instead of +sim.cycle_count+.
       ForwardedMethods = [
+        :new_ram_watcher,
         :cycle_count,
         :every_step,
         :flash_var,
@@ -265,10 +266,6 @@ module RPicSim
     # current address in program space that is being executed.
     # @return [RPicSim::ProgramCounter]
     attr_reader :pc
-
-    # Returns a {MemoryWatcher} object configured to watch for changes to RAM.
-    # @return [MemoryWatcher]
-    attr_reader :ram_watcher
 
     # Returns a {Variable} object corresponding to WREG.  You can use this
     # to read and write the value of the W register.
@@ -320,8 +317,6 @@ module RPicSim
       initialize_flash_vars
 
       @stack_pointer = StackPointer.new(stkptr)
-      
-      @ram_watcher = MemoryWatcher.new(self, @simulator.fr_memory, @vars.values + @sfrs.values)
     end
 
     private
@@ -691,6 +686,13 @@ module RPicSim
       end
     end
 
+    # Creates and returns a {MemoryWatcher} object configured to watch for
+    # changes to RAM.  For more information, see {file:RamWatcher.md}.
+    # @return [MemoryWatcher]
+    def new_ram_watcher
+      MemoryWatcher.new(self, @simulator.fr_memory, @vars.values + @sfrs.values)
+    end
+    
     def shortcuts
       self.class::Shortcuts
     end

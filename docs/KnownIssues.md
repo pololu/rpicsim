@@ -178,6 +178,20 @@ This issue is tested in `spec/integration/ram_watcher_spec.rb`.
 This issue could not be tested on MPLAB X versions affected by the "RAM watcher is useless" issue above.
 
 
+RAM watchers cannot be garbage collected until the end of the simulation
+----
+_Type: RPicSim missing feature_
+
+_MPLAB X versions affected: all_
+
+Any instance of {RPicSim::MemoryWatcher}, including RAM watchers, cannot be garbage collected until the associated {RPicSim::Sim} object gets garbage collected.
+This is because some internal objects managed by the Sim class need to hold on to a reference to the RAM watcher in order to send updates to it.
+
+Therefore, creating a large number of RAM watcher objects for a single simulation could cause performance problems.
+
+This problem could be fixed in the future by using Ruby's WeakRef class to make weak references.
+
+
 Midrange ADC gives incorrect readings
 ----
 _Type: MPLAB X bug_
