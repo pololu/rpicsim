@@ -19,6 +19,12 @@ module Firmware
     filename_is Dir + "DrivePinHigh.cof"
   end
 
+  class EepromVariables < RPicSim::Sim
+    device_is "PIC18F25K50"
+    filename_is Dir + "EepromVariables.cof"
+    # TODO: add EEPROM variable here and test it
+  end
+  
   class FlashVariables < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "FlashVariables.cof"

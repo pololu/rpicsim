@@ -230,13 +230,14 @@ module RPicSim
       # For example, these shortcuts allow you to just write +cycle_count+
       # instead of +sim.cycle_count+.
       ForwardedMethods = [
-        :new_ram_watcher,
         :cycle_count,
+        :eeprom,
         :every_step,
         :flash_var,
         :goto,
         :label,
         :location_address,
+        :new_ram_watcher,
         :pc,
         :pc_description,
         :pin,
@@ -299,6 +300,11 @@ module RPicSim
     # @return [Memory]
     attr_reader :program_memory
     
+    # Returns a {Memory} object that allows direct reading and writing of the
+    # bytes in the simulated EEPROM.
+    # @return [Memory]
+    attr_reader :eeprom
+    
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
     def device; self.class.device; end
@@ -314,17 +320,17 @@ module RPicSim
       @simulator = @assembly.simulator
       @processor = @simulator.processor
       
-      @pc = ProgramCounter.new @simulator.processor
-      
-      @stack_pointer = StackPointer.new(stkptr)
-      
-      @step_callbacks = []
-
       initialize_memories
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
       initialize_flash_vars
+
+      @pc = ProgramCounter.new @simulator.processor
+      
+      @step_callbacks = []
+      
+      @stack_pointer = StackPointer.new(stkptr)
     end
 
     private
@@ -332,6 +338,7 @@ module RPicSim
     def initialize_memories
       # Set up our stores and helper objects.
       @ram = Memory.new @simulator.fr_memory
+      @eeprom = Memory.new @simulator.eeprom_memory
       @sfr_memory = Memory.new @simulator.sfr_memory
       @nmmr_memory = Memory.new @simulator.nmmr_memory
       @stack_memory = Memory.new @simulator.stack_memory

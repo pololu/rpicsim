@@ -43,6 +43,10 @@ module RPicSim::Mplab
       @config_memory ||= MplabMemory.new data_store.getCFGMemory
     end
     
+    def eeprom_memory
+      @eeprom_memory ||= MplabMemory.new data_store.getEEDataMemory
+    end
+    
     def processor
       @processor ||= MplabProcessor.new data_store.getProcessor
     end
