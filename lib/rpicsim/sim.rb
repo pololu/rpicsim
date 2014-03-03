@@ -4,6 +4,7 @@ require_relative 'mplab'
 require_relative 'flaws'
 require_relative 'pin'
 require_relative 'memory'
+require_relative 'composite_memory'
 require_relative 'storage/memory_integer'
 require_relative 'storage/register'
 require_relative 'variable'
@@ -240,6 +241,7 @@ module RPicSim
         :pc_description,
         :pin,
         :program_file,
+        :program_memory,
         :ram,
         :run_cycles,
         :run_steps,
@@ -290,6 +292,13 @@ module RPicSim
     # @return [Memory]
     attr_reader :ram
     
+    # Returns a {Memory} object that allows direct reading and writing of the
+    # words in the program memory.
+    # Besides the main program, the program memory also contains the
+    # configuration words, the revision ID, and the user IDs.
+    # @return [Memory]
+    attr_reader :program_memory
+    
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
     def device; self.class.device; end
@@ -304,28 +313,37 @@ module RPicSim
       @assembly.start_simulator_and_debugger(filename)
       @simulator = @assembly.simulator
       @processor = @simulator.processor
-
-      # Set up our stores and helper objects.
-      @ram = Memory.new @simulator.fr_memory
-      @sfr_memory = Memory.new @simulator.sfr_memory
-      @nmmr_memory = Memory.new @simulator.nmmr_memory
-      @program_memory = Memory.new @simulator.program_memory
-      @stack_memory = Memory.new @simulator.stack_memory
-      @test_memory = Memory.new @simulator.test_memory
-
-      @pc = ProgramCounter.new(@simulator.processor)
-
+      
+      @pc = ProgramCounter.new @simulator.processor
+      
+      @stack_pointer = StackPointer.new(stkptr)
+      
       @step_callbacks = []
 
+      initialize_memories
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
       initialize_flash_vars
-
-      @stack_pointer = StackPointer.new(stkptr)
     end
 
     private
+    
+    def initialize_memories
+      # Set up our stores and helper objects.
+      @ram = Memory.new @simulator.fr_memory
+      @sfr_memory = Memory.new @simulator.sfr_memory
+      @nmmr_memory = Memory.new @simulator.nmmr_memory
+      @stack_memory = Memory.new @simulator.stack_memory
+
+      # config_memory must be before test_memory, because test_memory provides
+      # bad values for the configuration words.
+      @program_memory = Memory.new CompositeMemory.new [
+        @simulator.program_memory,
+        @simulator.config_memory,
+        @simulator.test_memory,
+      ]
+    end
 
     def initialize_pins
       pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
@@ -354,16 +372,8 @@ module RPicSim
 
     def initialize_flash_vars
       @flash_vars = {}
-      memories = [@program_memory, @test_memory]
       self.class.flash_vars.each do |name, unbound_var|
-        possible_memories = memories.select { |m| m.is_valid_address?(unbound_var.address) }
-        if possible_memories.empty?
-          raise "Flash variable has an invalid address: #{unbound_var.inspect}"
-        elsif possible_memories.size > 1
-          raise "Flash variable's address is valid in both program memory and test memory.  Not sure which memory to use: #{unbound_var.inspect}."
-        end
-
-        @flash_vars[name] = Variable.new(unbound_var.bind(possible_memories.first))
+        @flash_vars[name] = Variable.new(unbound_var.bind(@program_memory))
       end
     end
 
