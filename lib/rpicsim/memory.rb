@@ -29,7 +29,7 @@ class Memory
 
   def [](address)
     read_word address
-  end 
+  end
   
   def is_valid_address?(address)
     @mplab_memory.is_valid_address?(address)

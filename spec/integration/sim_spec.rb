@@ -12,4 +12,27 @@ describe RPicSim::Sim do
       expect(str.size).to be < 160
     end
   end
+  
+  describe 'shortcuts' do
+    let(:forwarded_methods) { RPicSim::Sim::BasicShortcuts::ForwardedMethods }
+  
+    it 'only has shortcuts for methods that are actually defined' do
+      forwarded_methods.each do |name|
+        expect(RPicSim::Sim.instance_method(name)).to be
+      end
+    end
+    
+    it 'has shortcuts for all the methods we want' do
+      undesired_shortcuts = [
+        :convert_condition_to_proc,
+        :device,
+        :filename,
+        :inspect,
+        :return,
+        :shortcuts,
+      ]
+      missing_shortcuts = RPicSim::Sim.instance_methods(false) - forwarded_methods - undesired_shortcuts
+      expect(missing_shortcuts).to be_empty
+    end
+  end
 end
