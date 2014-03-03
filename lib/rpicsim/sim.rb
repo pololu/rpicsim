@@ -1,6 +1,3 @@
-# TODO: for performance, consider making people explicitly enable (or construct?) the ram_watcher
-# before they can use it.  See if this would affect the run time of rcs03a specs before committing to it.
-
 require 'forwardable'
 
 require_relative 'mplab'
