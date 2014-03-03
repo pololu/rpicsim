@@ -52,5 +52,5 @@ The RAM watcher is an instance of {RPicSim::MemoryWatcher}.
 Filters
 ----
 
-The  {RPicSim::MemoryWatcher} class contains some special code to filter out reports about registers that very frequently change, like `PCL` and `STATUS`.
+The {RPicSim::MemoryWatcher} class contains some special code to filter out reports about registers that very frequently change, like `PCL` and `STATUS`.
 
