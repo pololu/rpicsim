@@ -15,7 +15,7 @@ isr
 
 flashVars code 0x20
 flashVar1
-  dw 0x5544
+  dw 0xCC33
 flashVar2
   db 0x11, 0x22
   

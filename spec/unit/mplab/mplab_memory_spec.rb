@@ -4,6 +4,8 @@ describe RPicSim::Mplab::MplabMemory do
   let(:memory) { double('memory') }
   subject(:mplab_memory) { described_class.new(memory) }
   
+  # TODO: test all the new methods here
+  
   describe '#write_word' do
     it 'writes to memory and returns the value written' do
       expect(memory).to receive(:WriteWord).with(12, 40).and_return { nil }
