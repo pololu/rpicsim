@@ -7,8 +7,6 @@ module RPicSim
     # Creates a new instance.
     # The memory objects given must support the following methods:
     #
-    # * +read_bytes+
-    # * +write_bytes+
     # * +read_byte+
     # * +write_byte+
     # * +read_word+
@@ -18,14 +16,6 @@ module RPicSim
     # @param memories [Array]
     def initialize(memories)
       @memories = memories
-    end
-    
-    def read_bytes(address, size)
-      memory(address).read_bytes(address, size)
-    end
-
-    def write_bytes(address, bytes)
-      memory(address).write_bytes(address, bytes)
     end
     
     def read_byte(address)

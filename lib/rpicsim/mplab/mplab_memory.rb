@@ -7,19 +7,6 @@ module RPicSim::Mplab
       @memory = memory
     end
     
-    def read_bytes(address, size)
-      array = Java::byte[size].new
-      @memory.Read(address, size, array)
-      (0...size).collect &array.method(:ubyte_get)
-    end
-    
-    def write_bytes(address, bytes)
-      array = Java::byte[bytes.size].new
-      bytes.each_with_index { |b, i| array.ubyte_set(i, b) }
-      @memory.Write(address, array.size, array)
-      bytes
-    end
-    
     def read_byte(address)
       array = [0].to_java(:byte)
       @memory.Read(address, 1, array)
@@ -27,7 +14,9 @@ module RPicSim::Mplab
     end
 
     def write_byte(address, byte)
-      write_bytes(address, [byte])
+      array = Java::byte[1].new
+      array.ubyte_set(0, byte)
+      @memory.Write(address, 1, array)
       byte
     end
     

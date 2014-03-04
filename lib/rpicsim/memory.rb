@@ -15,14 +15,6 @@ class Memory
     @mplab_memory = mplab_memory
   end
   
-  def read_bytes(address, size)
-    @mplab_memory.read_bytes(address, size)
-  end
-  
-  def write_bytes(address, bytes)
-    @mplab_memory.write_bytes(address, bytes)
-  end
-  
   def read_byte(address)
     @mplab_memory.read_byte(address)
   end

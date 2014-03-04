@@ -34,24 +34,6 @@ describe 'RPicSim::Sim#program_memory' do
       end
     end
     
-    describe '#read_bytes' do
-      it 'works (can read default values)' do
-        expect(program_memory.read_bytes(address, 4)).to eq [0x01, 0x08, 0xFF, 0x3F]
-      end
-    end
-    
-    describe '#write_bytes' do
-      it 'works (affects read_bytes)' do
-        program_memory.write_bytes(address, [0xE1, 0x32, 0xE3, 0x33])
-        expect(program_memory.read_bytes(address, 4)).to eq [0xE1, 0x32, 0xE3, 0x33]        
-      end
-      
-      it 'lets you set words to impossible values', flaw: true do
-        program_memory.write_bytes(address, [0xFF, 0xFF])
-        expect(program_memory.read_word(address)).to eq 0xFFFF
-      end
-    end
-    
     describe '#read_word' do
       it 'can read the default value' do
         expect(program_memory.read_word(address)).to eq 0x801
@@ -152,21 +134,6 @@ describe 'RPicSim::Sim#program_memory for a PIC18' do
     it 'allows unaligned reads' do
       expect(program_memory.read_word(0x21)).to eq 0x11CC  # read part of flashVar1 and flashVar2 
     end
-  end
-  
-  describe '#read_bytes' do
-    it 'can read bytes in chunks' do
-      expect(program_memory.read_bytes(0x20, 3)).to eq [0x33, 0xCC, 0x11]
-    end
-  end
-
-  describe '#write_bytes' do
-    it 'can write bytes in chunks' do
-      program_memory.write_bytes(0x20, [0x00, 0x81, 0xFF])
-      # Read one extra byte to make sure that last byte didn't change, even though it is
-      # in the same word as a byte that did change.
-      expect(program_memory.read_bytes(0x20, 4)).to eq [0x00, 0x81, 0xFF, 0x22]
-    end    
   end
   
   describe '#read_byte' do
