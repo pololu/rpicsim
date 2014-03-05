@@ -54,7 +54,7 @@ Since these methods take word addresses instead of byte addresses, they cannot a
 
 On PIC18 devices, the program memory is divided into 16-bit words.
 Since each word can hold exactly two bytes, the program memory is often treated as a series of bytes in development tools.
-In RPicSim, non-PIC18 program memory addresses are always specified as _byte addresses_.
+In RPicSim, PIC18 program memory addresses are always specified as _byte addresses_.
 
 The {RPicSim::Memory Memory} object provides two methods for reading and writing words from program memory:
 
