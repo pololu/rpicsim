@@ -5,10 +5,8 @@ require_relative 'flaws'
 require_relative 'pin'
 require_relative 'memory'
 require_relative 'composite_memory'
-require_relative 'storage/memory_integer'
 require_relative 'storage/register'
 require_relative 'variable_set'
-require_relative 'variable'
 require_relative 'program_counter'
 require_relative 'label'
 require_relative 'memory_watcher'
@@ -38,9 +36,9 @@ module RPicSim
       # COF is recommended so that you can access label addresses and other debugging information.
       # You must call {#device_is} before calling this.
       def filename_is(filename)
-        raise "Must specify device before filename (e.g. 'device_is \"PIC10F322\"')" unless @device
+        raise "The device needs to be specified before filename (e.g. 'device_is \"PIC10F322\"')" unless @device
         @filename = filename
-        initialize_symbols
+        load_program_file
       end
 
       # Define a pin alias.
@@ -64,7 +62,7 @@ module RPicSim
       #   The method will return a {Variable} object that you can use to read or write the
       #   value of the actual variable in the simulation.
       # @param type [Symbol] Specifies how to interpret the data in the variable and its size.
-      #   For integers, it should be one of +:u8+, +:s8+, +:u16+, +:s16+, +:u24+, +:s24+, +:u32+, or +:s32+.
+      #   For integers, it should be one of +:u8+, +:s8+, +:u16+, +:s16+, +:u24+, +:s24+, +:u32+, +:s32+, or +:word+.
       #   The +s+ stands for signed and the +u+ stands for unsigned, and the number stands for the number
       #   of bits.  All multi-byte integers are considered to be little Endian.
       # @param opts [Hash] Specifies additional options.  The options are:
@@ -77,62 +75,12 @@ module RPicSim
       #     This option is ignored if +:address is specified.
       #   * +:address+: An integer to use as the address of the variable.
       def def_var(name, type, opts={})
-        allowed_keys = [:memory, :symbol, :address]
-        invalid_keys = opts.keys - allowed_keys
-        if !invalid_keys.empty?
-          raise ArgumentError, "Unrecognized options: #{invalid_keys.join(", ")}"
-        end
-
-        name = name.to_sym
-
-        memory_type = opts.fetch(:memory, :ram)
-        symbol_addresses = case memory_type
-          when :ram then program_file.var_addresses
-          when :program_memory then program_file.label_addresses
-          when :eeprom then {}  # TODO: figure out if EEPROM symbols exist and how they work
-          else raise ArgumentError, "Invalid memory type '#{memory_type.inspect}'."
+        if @variable_set.nil?
+          raise "The device and filename need to be specified before defining variables."
         end
         
-        if opts[:address]
-          address = opts[:address].to_i
-        else
-          symbol = (opts[:symbol] || name).to_sym
-          if symbol.to_s.include?('@')
-            raise "Limitations in Microchip's code prevent us from accessing " +
-              "variables with '@' in the name like '#{symbol}'"
-          end
-          address = symbol_addresses[symbol] or raise ArgumentError, "Cannot find variable in #{memory_type} named '#{symbol}'."
-        end
+        @variable_set.def_var(name, type, opts)
         
-        klass = case type
-                  when Class then type
-                  when :word then Storage::MemoryWord
-                  when :u8 then Storage::MemoryUInt8
-                  when :s8 then Storage::MemoryInt8
-                  when :u16 then Storage::MemoryUInt16
-                  when :s16 then Storage::MemoryInt16
-                  when :u24 then Storage::MemoryUInt24
-                  when :s24 then Storage::MemoryInt24
-                  when :u32 then Storage::MemoryUInt32
-                  when :s32 then Storage::MemoryInt32
-                  else raise ArgumentError, "Unknown type '#{type}'."
-                end
-
-        variable = klass.new(name, address)
-        
-        if memory_type == :program_memory
-          @flash_vars[name] = variable
-        elsif memory_type == :ram
-          @ram_vars[name] = variable
-          
-          variable.addresses.each do |address|
-          if @vars_by_address[address]
-            raise "Variable %s overlaps with %s at 0x%x" %
-              [variable, @vars_by_address[address], address]
-          end
-            @vars_by_address[address] = variable
-          end
-        end
         self::Shortcuts.send(:define_method, name) { var name }
       end
 
@@ -168,9 +116,9 @@ module RPicSim
       # pin names (like :RB3).  These aliases are defined by {ClassDefinitionMethods#def_pin}.
       attr_reader :pin_aliases
 
-      attr_reader :flash_vars
-      
-      attr_reader :ram_vars
+      # A {VariableSet} that holds information about all the variables that were defined
+      # with {ClassDefinitionMethods#def_var def_var}.
+      attr_reader :variable_set
       
       # A hash that associates label names as symbols to {Label} objects.
       attr_reader :labels
@@ -183,18 +131,19 @@ module RPicSim
       def inherited(subclass)
         subclass.instance_eval do
           @pin_aliases = {}
-          @ram_vars = {}
-          @vars_by_address = {}
-          @flash_vars = {}
           const_set :Shortcuts, Module.new
           include self::Shortcuts
         end
-
       end
 
-      def initialize_symbols
+      def load_program_file
         @program_file = ProgramFile.new(@filename, @device)
         @labels = program_file.labels
+        
+        @variable_set = VariableSet.new
+        @variable_set.def_memory_type :ram, program_file.var_addresses
+        @variable_set.def_memory_type :program_memory, program_file.label_addresses
+        @variable_set.def_memory_type :eeprom, {}   # TODO: figure out the deal with labels in EEPROM
       end
 
     end
@@ -213,7 +162,6 @@ module RPicSim
         :cycle_count,
         :eeprom,
         :every_step,
-        :flash_var,
         :goto,
         :label,
         :location_address,
@@ -350,13 +298,12 @@ module RPicSim
     end
 
     def initialize_vars
-      @all_vars = {}
-      self.class.ram_vars.each do |name, unbound_var|
-        @all_vars[name] = Variable.new(unbound_var.bind(ram))
-      end
-      self.class.flash_vars.each do |name, unbound_var|
-        @all_vars[name] = Variable.new(unbound_var.bind(program_memory))
-      end
+      memories = {
+        ram: ram,
+        program_memory: program_memory,
+        eeprom: eeprom
+      }
+      @vars = self.class.variable_set.bind(memories)
     end
 
     def initialize_sfrs_and_nmmrs
@@ -394,18 +341,11 @@ module RPicSim
       @sfrs[name] || @nmmrs[name] or raise ArgumentError, "Cannot find SFR or NMMR named '#{name}'."
     end
 
-    # Returns a {Variable} object if a RAM variable by that name is found.
+    # Returns a {Variable} object if a variable by that name is found.
     # If the variable cannot be found, this method raises an exception.
     # @return [Variable]
     def var(name)
-      @all_vars[name.to_sym] or raise ArgumentError, "Cannot find var named '#{name}'."
-    end
-
-    # Returns a {Variable} object if a flash (program memory) variable by that name is found,
-    # or raises an exception.
-    # @return [Variable]
-    def flash_var(name)
-      @flash_vars[name.to_sym] or raise ArgumentError, "Cannot find flash var named '#{name}'."
+      @vars[name.to_sym] or raise ArgumentError, "Cannot find var named '#{name}'."
     end
 
     # Returns a {Label} object if a program label by that name is found.
