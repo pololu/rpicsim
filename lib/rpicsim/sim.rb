@@ -7,6 +7,7 @@ require_relative 'memory'
 require_relative 'composite_memory'
 require_relative 'storage/memory_integer'
 require_relative 'storage/register'
+require_relative 'variable_set'
 require_relative 'variable'
 require_relative 'program_counter'
 require_relative 'label'
@@ -19,7 +20,6 @@ module RPicSim
   # This class represents a PIC microcontroller simulation.
   # This class keeps track of the state of the simulation and provides methods for
   # running the simulation, reading the state, and changing the state.
-  # This the main class of RPicSim.
   class Sim
 
     # These methods should be called while defining a subclass of {Sim}.
@@ -32,7 +32,6 @@ module RPicSim
       def device_is(device)
         @device = device
         @assembly = Mplab::MplabAssembly.new(device)
-        @code_word_max_value = @assembly.device_info.code_word_max_value
       end
 
       # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
