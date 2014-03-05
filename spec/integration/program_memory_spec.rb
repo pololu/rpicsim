@@ -149,6 +149,11 @@ describe 'RPicSim::Sim#program_memory for a PIC18' do
       program_memory.write_byte(0x22, 0x90)
       expect(program_memory.read_byte(0x22)).to eq 0x90
     end
+    
+    it 'does not change the other upper byte of the word' do
+      program_memory.write_byte(0x22, 0x90)
+      expect(program_memory.read_byte(0x23)).to eq 0x22  # doesn't change the other byte in the word      
+    end
   end
   
 end
