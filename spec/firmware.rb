@@ -29,12 +29,12 @@ module Firmware
     device_is "PIC10F322"
     filename_is Dir + "FlashVariables.cof"
     def_var :x, :u16
-    def_flash_var :normalFlashVar, :word
-    def_flash_var :userId0, :word, address: 0x2000
-    def_flash_var :userId1, :word, address: 0x2001
-    def_flash_var :userId2, :word, address: 0x2002
-    def_flash_var :userId3, :word, address: 0x2003
-    def_flash_var :flashu16, :u16
+    def_var :normalFlashVar, :word, memory: :program_memory
+    def_var :userId0, :word, address: 0x2000, memory: :program_memory
+    def_var :userId1, :word, address: 0x2001, memory: :program_memory
+    def_var :userId2, :word, address: 0x2002, memory: :program_memory
+    def_var :userId3, :word, address: 0x2003, memory: :program_memory
+    def_var :flashu16, :u16, memory: :program_memory
   end
 
   class LongDelay < RPicSim::Sim
@@ -95,9 +95,9 @@ module Firmware
     def_var :var1, :u8
     def_var :var2, :u16
     def_var :resultVar, :u16
-    def_flash_var :flashVar1, :word
-    def_flash_var :flashVar2, :word
-    def_flash_var :flashVar3, :u24
+    def_var :flashVar1, :word, memory: :program_memory
+    def_var :flashVar2, :word, memory: :program_memory
+    def_var :flashVar3, :u24, memory: :program_memory
   end
 
   class Variables < RPicSim::Sim

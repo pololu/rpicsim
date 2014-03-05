@@ -2,6 +2,7 @@ require_relative 'storage/memory_integer'
 require_relative 'variable'
 
 module RPicSim
+  # This class is used internally by {Sim} to manage user-defined variables.
   class VariableSet
     def initialize
       @memory_types = []

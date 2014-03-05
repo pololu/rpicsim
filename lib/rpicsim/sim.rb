@@ -83,24 +83,7 @@ module RPicSim
         
         self::Shortcuts.send(:define_method, name) { var name }
       end
-
-      # Define a flash (program memory or user ID) variable.
-      # @param name [Symbol] Specifies what you would like to call the variable.
-      #   A method with this name will be added to your class's +Shortcuts+ module so it
-      #   is available as a method on instances of your class and also in your RSpec tests.
-      #   The method will return a {Variable} object that you can use to read or write the
-      #   value of the actual variable in the simulation.
-      # @param type [Symbol] Specifies how to interpret the data in the variable and its size.
-      #   The only supported option current is +:word+, which represents a full word of flash.
-      # @param opts [Hash] Specifies additional options.  The options are:
-      #   * +:symbol+: By default, we look for a symbol with the same name as the variable and
-      #     use that as the location of the variable.  This option lets you specify a different
-      #     symbol to look for in the firmware.
-      #   * +:address+: An integer to use as the address of the variable.
-      def def_flash_var(name, type, opts={})
-        def_var name, type, opts.merge(memory: :program_memory)
-      end
-
+      
     end
 
     # These are class methods that you can call on subclasses of {Sim}.
