@@ -58,7 +58,7 @@ module RPicSim
         self::Shortcuts.send(:define_method, our_name) { pin our_name }
       end
 
-      # Define a RAM variable.
+      # Define a variable.
       # @param name [Symbol] Specifies what you would like to call the variable.
       #   A method with this name will be added to your class's +Shortcuts+ module so it
       #   is available as a method on instances of your class and also in your RSpec tests.
@@ -69,6 +69,8 @@ module RPicSim
       #   The +s+ stands for signed and the +u+ stands for unsigned, and the number stands for the number
       #   of bits.  All multi-byte integers are considered to be little Endian.
       # @param opts [Hash] Specifies additional options.  The options are:
+      #   * +:memory+: Specifies the memory that the variable lives in.
+      #     Valid values are +:ram+ (default), +:eeprom+, and +:program_memory+.
       #   * +:symbol+: By default, we look for a symbol with the same name as the variable and
       #     use that as the location of the variable.  This option lets you specify a different
       #     symbol to look for in the firmware, so you could call the variable one thing in your
@@ -132,7 +134,6 @@ module RPicSim
             @vars_by_address[address] = variable
           end
         end
-        
         self::Shortcuts.send(:define_method, name) { var name }
       end
 
