@@ -5,7 +5,7 @@ RPicSim automatically processes the symbol table in your firmware's COF file.
 Any symbol in program space is called a _label_ and RPicSim stores a {RPicSim::Label} object to represent it.
 
 For an assembly program, RPicSim labels correspond to any assembly label defined in code space.
-These will usually correspond to subroutines and goto targets but could also be variables stored in flash.
+These will usually correspond to subroutines and goto targets but could also be variables stored in program memory.
 In firmware assembled by MPASM, all labels are exported publicly by default, so they will all be available to RPicSim.
 
 For a C program, RPicSim labels usually correspond to functions.

@@ -30,7 +30,8 @@ You can use {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin} to define an 
 Variables
 ----
 
-You can use {RPicSim::Sim::ClassDefinitionMethods#def_var def_var} to define a variable in RAM, and {RPicSim::Sim::ClassDefinitionMethods#def_flash_var def_flash_var} to define a variable in flash.  For more information, see {file:Variables.md}.
+You can use {RPicSim::Sim::ClassDefinitionMethods#def_var def_var} to define a variable in RAM, program memory, or EEPROM.
+For more information, see {file:Variables.md}.
 
 
 Methods

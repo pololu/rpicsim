@@ -27,7 +27,7 @@ module RPicSim
     # report.  Returns the reports in a hash.
     #
     # @param program_file (ProgramFile)
-    # @param root_instruction_addresses Array(Integer)  The flash
+    # @param root_instruction_addresses Array(Integer)  The program memory
     #   addresses of the entry vectors for your program.  On a midrange device, these
     #   are typically 0 for the main-line code and 4 for the interrupt.
     # @return [Hash(address => CallStackInfo)]

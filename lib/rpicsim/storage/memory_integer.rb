@@ -5,10 +5,8 @@ module RPicSim::Storage
       # @return (Integer) The size of this type of variable in memory words.
       attr_reader :size
 
-      # Specifies the size of this class of variables in memory words.
-      # The units for this are usually bytes for RAM and more than a byte
-      # for flash.  This should be called inside the definition of a subclass of
-      # {Variable}, not from anywhere else.
+      # Specifies the size of this class of variable in terms of the
+      # address units of the memory it is in.
       def size_is(size)
         @size = size
       end

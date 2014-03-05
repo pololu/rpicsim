@@ -57,15 +57,6 @@ _MPLAB X versions affected: all tested versions_
 This issue is tested in `spec/mplab_x/program_file_spec.rb`.
 
 
-Limited number of variable types supported
-----
-_Type: RPicSim missing feature_
-
-There is no support for variables larger than 32 bits.
-There is no support for arrays or structs of variables.
-There is also no support for reading and writing directly from the simulated device's RAM, Flash, EEPROM, and stack memories from Ruby.
-
-
 No EEPROM support
 ----
 _Type: RPicSim missing feature_
@@ -88,7 +79,7 @@ _Type: MPLAB X bug_
 _MPLAB X version affected: all tested versions_
 
 The workaround is to simply set any variables defined in user ID space to the correct values from Ruby before running the simulation.
-This issue is tested in `spec/integration/flash_variable_spec.rb`.
+This issue is tested in `spec/integration/program_memory_variable_spec.rb`.
 
 
 Simulated firmware cannot write to the first user ID location
@@ -97,7 +88,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: 1.85, 1.90_
 
-This issue is tested in `spec/integration/flash_variable_spec.rb`.
+This issue is tested in `spec/integration/program_memory_variable_spec.rb`.
 It has been {http://www.microchip.com/forums/m743214.aspx reported to Microchip} and was fixed in later versions.
 
 

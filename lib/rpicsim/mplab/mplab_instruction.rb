@@ -30,15 +30,15 @@ module RPicSim::Mplab
     end
     
     # Returns the size of the instruction in the same units that are used
-    # for code space addresses.  (Bytes for the PIC18, otherwise words.)
-    # @param address_increment The number of address units per word of flash
-    #   in this architecture.  See {MplabDeviceInfo#code_address_increment}.
+    # for program memory addresses.  (Bytes for the PIC18, otherwise words.)
+    # @param address_increment The number of address units per word of
+    #   program memory in this architecture.  See {MplabDeviceInfo#code_address_increment}.
     def compute_size(address_increment)
       if RPicSim::Flaws[:instruction_inc_is_in_byte_units]
         # Convert the increment, which is the number of bytes, into 'size',
-        # which is the same units as the flash address space.
+        # which is the same units as the program memory address space.
         if address_increment == 1
-          # Non-PIC18 architectures: flash addresses are in terms of words
+          # Non-PIC18 architectures: program memory addresses are in terms of words
           # so we divide by two to convert from bytes to words.
           @instruction.inc / 2
         elsif address_increment == 2

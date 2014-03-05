@@ -10,7 +10,7 @@ module RPicSim
   class Instruction
     include Comparable
     
-    # The flash address of the instruction.
+    # The program memory address of the instruction.
     # For PIC18s this will be the byte address.
     # For other PIC architectures, it will be the word address.
     # @return (Integer)
@@ -24,7 +24,7 @@ module RPicSim
     # @return (Hash)
     attr_reader :operands
     
-    # The number of flash address units that this instruction takes.
+    # The number of program memory address units that this instruction takes.
     # The units of this are the same as the units of {#address}.
     # @return (Integer)
     attr_reader :size
@@ -184,7 +184,7 @@ module RPicSim
     
     # Returns info about all the instructions that this instruction could directly lead to
     # (not counting interrupts, returns, and not accounting
-    # at all for what happens after the last word in flash is executed).
+    # at all for what happens after the last word in the main program memory is executed).
     # For instructions that pop from the call stack like RETURN and RETFIE, this will be
     # the empty array.
     # @return [Array(Transition)]
@@ -231,7 +231,7 @@ module RPicSim
     # k is assumed to be a word address and it is assumed to be absolute
     # k=0 is word 0 of memory, k=1 is word one.
     # We need to multiply by the address increment because on PIC18
-    # flash addresses are actually byte-based instead of word-based.
+    # program memory addresses are actually byte-based instead of word-based.
     def k_address
       operands[:k] * @address_increment
     end

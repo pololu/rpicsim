@@ -43,12 +43,12 @@ The program memory on a non-PIC18 device can also be thought of as a series of b
 Each word can be thought of as two consecutive bytes, with the lower 8 bits residing in the first byte and upper 4 bits or 6 bits residing in the second byte.
 The valid range of values for the second byte, therefore, is limited.
 
-The {RPicSim::Memory Memory} object provides two methods for reading and writing the least-significant bytes of the words in flash:
+The {RPicSim::Memory Memory} object provides two methods for reading and writing the least-significant bytes of the words in program memory:
 
 * `read_byte(address)`: This method takes a _word_ address and returns the lower 8 bits of that word, ignoring the upper bits.
 * `write_byte(address)`: This method takes a _word_ address and a value between 0 and 255 and writes the value to the lower 8 bits of that word, leaving the upper bits unchanged.
 
-Since these methods take word addresses instead of byte addresses, they cannot access the upper bits of a flash word.
+Since these methods take word addresses instead of byte addresses, they cannot access the upper bits of a program memory word.
 
 
 ### Program memory on PIC18 devices

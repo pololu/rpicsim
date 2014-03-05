@@ -1,14 +1,14 @@
 Variables
 ====
 
-RPicSim uses the {RPicSim::Variable} class to let you access simulated program variables stored in RAM or flash as well as Special Function Registers, which can be useful for {file:UnitTesting.md unit testing}.
+RPicSim uses the {RPicSim::Variable} class to let you access simulated program variables stored in RAM or program memory, as well as Special Function Registers, which can be useful for {file:UnitTesting.md unit testing}.
 
-To access a variable, RPicSim needs to know the name it will be called in your Ruby code, what data type it is (e.g. 16-bit unsigned integer), and its address in memory.
+To access a variable, RPicSim needs to know the name it will be called in your Ruby code, what type of memory it is stored in, what data type it is (e.g. 16-bit unsigned integer), and its address in memory.
 This information is deduced in different ways for the different types of variables described below.
 
-Defining a RAM variable
+User-defined
 ----
-For RAM variables defined in your code, RPicSim can usually deduce the address by looking at the symbol table in your COF file, so you will not need to type the address.
+For variables defined in your firmware, RPicSim can usually deduce the address by looking at the symbol table in your COF file, so you will not need to type the address.
 However, RPicSim cannot deduce the data type of a variable, so any variables used need to be explicitly defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}.
 For example:
 
@@ -25,12 +25,13 @@ The first argument to `def_var` specifies what to call the variable in Ruby code
     !!!ruby
     sim.var(:counter)
 
-Each variable also has a "shortcut" method by the same name.  This means that you can access the variable like this:
+Each variable also has a method on the simulation object by the same name.
+This means that you can access the variable like this:
 
     !!!ruby
     sim.counter
 
-The shortcuts are also available in RSpec thanks to RPicsim's {file:RSpecIntegration.md RSpec integration}, so you can simply write `counter` in any of your RSpec examples:
+A shortcut is also available in RSpec thanks to RPicsim's {file:RSpecIntegration.md RSpec integration}, so you can simply write `counter` in any of your RSpec examples:
 
     !!!ruby
     it "drives the main output high" do
@@ -58,16 +59,24 @@ You can use the `address` option to specify an arbitrary address instead of usin
 
     !!!ruby
     def_var :counter, :u8, address: 0x63
+    
+Variables are assumed to be in RAM by default, but you can specify that they are in program memory using the `memory` option.
+
+    !!!ruby
+    def_var :settings, :word, memory: :program_memory
 
 
-Defining a flash variable
-----
+### Program memory on non-PIC18 devices
 
-Flash (program space) variables work the same way as RAM variables except:
+On non-PIC18 devices, program memory is made up into words that are 12 bits or 14 bits wide.
 
-* They are defined with {RPicSim::Sim::ClassDefinitionMethods#def_flash_var def_flash_var}.
-* The set of allowed data types for the second argument of `def_flash_var` is different, and you can see the documentation by clicking the link above.
-* Flash variables cannot be accessed with {RPicSim::Sim#var}, but can be accessed with {RPicSim::Sim#flash_var}
+The type of address used for program memory of these devices is called a _word address_ because it specifies the number of a word instead of the number of a byte.  For example, a word address of `1` would correspond to the second word in program memory.
+
+To access all the bits of a particular word, you can define your variable to be of the +:word+ type as shown in the example above.
+If you specify any of the integer types like :u8 or :s16, the bytes that comprise that variable will live in the least-significant 8 bits of one or more words in program memory.
+The upper bits of the words will not be changed when writing to the variable.
+
+This behavior is useful because if you store an integer in program memory as 1 to 4 consecutive RETLW instructions, you can read and write from it in Ruby without changing the bits that make those words be RETLW instructions.
 
 
 Accessing special function registers

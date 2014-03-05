@@ -548,7 +548,7 @@ module RPicSim
     def stack_trace
       # The stack stores return addresses, not call addresses.
       # We get the call addresses by subtracting the address increment,
-      # which is the number of address units that each word of flash takes up.
+      # which is the number of address units that each word of program memory takes up.
       addresses = stack_contents.collect do |return_address|
         return_address - address_increment
       end

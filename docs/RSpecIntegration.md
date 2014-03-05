@@ -38,7 +38,7 @@ You can call these by simply typing a method name in an RSpec example:
 ### Firmware-specific shortcuts
 
 Unless you disable them, you will get access to firmware-specific shortcuts defined by the simulation.
-These shortcuts correspond to items defined with {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}, {RPicSim::Sim::ClassDefinitionMethods#def_flash_var def_flash_var} and {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin}.
+These shortcuts correspond to items defined with {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}, and {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin}.
 
 For example, if your {file:DefiningSimulationClass.md simulation class} defines a pin named `main_output`, then you can just write code like this in your RSpec examples:
 
