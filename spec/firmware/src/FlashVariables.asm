@@ -62,6 +62,7 @@ flashRequiredSequence
 normalFlashBlock code 0x100
 normalFlashVar
   dw 0x801
+  dw 0x3FFF
   
 idSection code 0x2000
 userId0

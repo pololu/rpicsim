@@ -294,9 +294,9 @@ module RPicSim
     attr_reader :ram
     
     # Returns a {Memory} object that allows direct reading and writing of the
-    # words in the program memory.
+    # data in the program memory.
     # Besides the main program, the program memory also contains the
-    # configuration words, the revision ID, and the user IDs.
+    # configuration words and the user IDs.
     # @return [Memory]
     attr_reader :program_memory
     

@@ -81,12 +81,12 @@ module RPicSim::Storage
     size_is 1
 
     def value
-      @memory.read_word(@address)
+      @memory.read_byte(@address)
     end
 
     def value=(val)
       check_value val, 0..255
-      @memory.write_word(@address, val)
+      @memory.write_byte(@address, val)
     end
 
   end
@@ -96,15 +96,15 @@ module RPicSim::Storage
     size_is 1
 
     def value
-      val = @memory.read_word(@address)
+      val = @memory.read_byte(@address)
       val -= 0x100 if val >= 0x80
       val
     end
 
     def value=(val)
       check_value val, -0x80...0x80
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
     end
   end
 
@@ -113,13 +113,13 @@ module RPicSim::Storage
     size_is 2
 
     def value
-      @memory.read_word(@address) + 256 * @memory.read_word(@address + 1)
+      @memory.read_byte(@address) + 256 * @memory.read_byte(@address + 1)
     end
 
     def value=(val)
       check_value val, 0...0x10000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
     end
   end
 
@@ -128,15 +128,15 @@ module RPicSim::Storage
     size_is 2
 
     def value
-      val = @memory.read_word(@address) + 256 * @memory.read_word(@address + 1)
+      val = @memory.read_byte(@address) + 256 * @memory.read_byte(@address + 1)
       val -= 0x10000 if val >= 0x8000
       val
     end
 
     def value=(val)
       check_value val, -0x8000...0x8000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
     end
   end
 
@@ -145,15 +145,15 @@ module RPicSim::Storage
     size_is 3
 
     def value
-      @memory.read_word(@address) + 0x100 * @memory.read_word(@address + 1) +
-        0x10000 * @memory.read_word(@address + 2)
+      @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
+        0x10000 * @memory.read_byte(@address + 2)
     end
 
     def value=(val)
       check_value val, 0...0x1000000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
-      @memory.write_word(@address + 2, (val >> 16) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address + 2, (val >> 16) & 0xFF)
     end
   end
 
@@ -162,17 +162,17 @@ module RPicSim::Storage
     size_is 3
 
     def value
-      val = @memory.read_word(@address) + 0x100 * @memory.read_word(@address + 1) +
-        0x10000 * @memory.read_word(@address + 2)
+      val = @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
+        0x10000 * @memory.read_byte(@address + 2)
       val -= 0x1000000 if val >= 0x800000
       val
     end
 
     def value=(val)
       check_value val, -0x800000..0x800000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
-      @memory.write_word(@address + 2, (val >> 16) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address + 2, (val >> 16) & 0xFF)
     end
   end
 
@@ -181,17 +181,17 @@ module RPicSim::Storage
     size_is 4
 
     def value
-      @memory.read_word(@address) + 0x100 * @memory.read_word(@address + 1) +
-        0x10000 * @memory.read_word(@address + 2) +
-        0x1000000 * @memory.read_word(@address + 3)
+      @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
+        0x10000 * @memory.read_byte(@address + 2) +
+        0x1000000 * @memory.read_byte(@address + 3)
     end
 
     def value=(val)
       check_value val, 0...0x100000000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
-      @memory.write_word(@address + 2, (val >> 16) & 0xFF)
-      @memory.write_word(@address + 3, (val >> 24) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address + 2, (val >> 16) & 0xFF)
+      @memory.write_byte(@address + 3, (val >> 24) & 0xFF)
     end
   end
 
@@ -200,20 +200,20 @@ module RPicSim::Storage
     size_is 4
 
     def value
-      val = @memory.read_word(@address) + 0x100 * @memory.read_word(@address + 1) +
-        0x10000 * @memory.read_word(@address + 2) +
-        0x1000000 * @memory.read_word(@address + 3) +
-        0x100000000 * @memory.read_word(@address + 4)
+      val = @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
+        0x10000 * @memory.read_byte(@address + 2) +
+        0x1000000 * @memory.read_byte(@address + 3) +
+        0x100000000 * @memory.read_byte(@address + 4)
       val -= 0x100000000 if val >= 0x80000000
       val
     end
 
     def value=(val)
       check_value val, -0x80000000..0x80000000
-      @memory.write_word(@address, val & 0xFF)
-      @memory.write_word(@address + 1, (val >> 8) & 0xFF)
-      @memory.write_word(@address + 2, (val >> 16) & 0xFF)
-      @memory.write_word(@address + 3, (val >> 24) & 0xFF)
+      @memory.write_byte(@address, val & 0xFF)
+      @memory.write_byte(@address + 1, (val >> 8) & 0xFF)
+      @memory.write_byte(@address + 2, (val >> 16) & 0xFF)
+      @memory.write_byte(@address + 3, (val >> 24) & 0xFF)
     end
   end
 

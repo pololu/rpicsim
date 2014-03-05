@@ -7,6 +7,19 @@ module RPicSim::Mplab
       @memory = memory
     end
     
+    def read_byte(address)
+      array = [0].to_java(:byte)
+      @memory.Read(address, 1, array)
+      array.ubyte_get(0)
+    end
+
+    def write_byte(address, byte)
+      array = Java::byte[1].new
+      array.ubyte_set(0, byte)
+      @memory.Write(address, 1, array)
+      byte
+    end
+    
     def write_word(address, value)
       @memory.WriteWord(address, value)
       value

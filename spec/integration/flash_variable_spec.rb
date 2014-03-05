@@ -69,12 +69,12 @@ describe 'Flash variables (PIC18)' do
     end
     
     it 'can be read by Ruby' do
-      expect(subject.value).to eq 0x5544
+      expect(subject.value).to eq 0xCC33
     end
     
     it 'can be read by the firmware' do
       run_subroutine :readFlashVar1, cycle_limit: 100
-      expect(resultVar.value).to eq 0x5544
+      expect(resultVar.value).to eq 0xCC33
     end
     
     it 'can be written by Ruby' do
