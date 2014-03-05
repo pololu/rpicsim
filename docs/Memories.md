@@ -25,8 +25,9 @@ Program memory
 
 To get the {RPicSim::Memory Memory} object that represents program memory, call {RPicSim::Sim#program_memory}.
 In addition to letting you access the main part of program memory which contains the program, this object also allows access to the configuration words and user ID words.
+The program memory is also known as flash, ROM, and code space.
 
-Because of the different architectures, this object behaves differently depending on whether your are simulating a PIC18 device or a non-PIC18 device, as described below.
+Because of the different architectures, the program memory object behaves differently depending on whether your are simulating a PIC18 device or a non-PIC18 device, as described below.
 
 ### Program memory on a non-PIC18 devices
 
