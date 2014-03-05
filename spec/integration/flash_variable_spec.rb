@@ -5,7 +5,7 @@ describe "Flash variables (midrange)" do
     start_sim Firmware::FlashVariables
   end
   
-  context "in normal space (not user id space)" do
+  context 'word in normal space (not user id space)' do
     before do
       run_subroutine :setupNormalFlash, cycle_limit: 100
     end
@@ -36,8 +36,22 @@ describe "Flash variables (midrange)" do
       normalFlashVar.value.should == 0xE23
     end
   end
+  
+  context '16-bit integer in normal space' do
+    it 'can be read by Ruby' do
+      expect(flashu16.value).to eq 0xABCD
+    end
+    
+    it 'when written, only modifies the lower bits' do
+      # The program still contains RETLW instructions, which is nice.
+      flashu16.value = 0x01FE
+      expect(flashu16.value).to eq 0x01FE
+      expect(program_memory.read_word(flashu16.address)).to eq 0x34FE
+      expect(program_memory.read_word(flashu16.address + 1)).to eq 0x3401
+    end
+  end
 
-  context "in user id space" do
+  context 'word in user id space' do
     before do
       run_subroutine :setupUserId0, cycle_limit: 100
     end
@@ -61,7 +75,7 @@ describe 'Flash variables (PIC18)' do
     start_sim Firmware::Test18F25K50
   end
 
-  context "in normal space (not user id space)" do
+  context "word in normal space (not user id space)" do
     subject { flashVar1 }
     
     it 'has the right address (bytes, not words)' do
@@ -87,8 +101,17 @@ describe 'Flash variables (PIC18)' do
       run_subroutine :readFlashVar1, cycle_limit: 100
       expect(resultVar.value).to eq 0x0A0E
     end
+  end
+  
+  context '24-bit integer in normal space' do
+    it 'can be read by Ruby' do
+      expect(flashVar3.value).to eq 0x12CC03
+    end
     
-    # TODO: test that flash writes on the PIC18F25K50 can be simulated
+    it 'can be written' do
+      flashVar3.value = 0x012345
+      expect(flashVar3.value).to eq 0x012345
+    end
   end
   
 end

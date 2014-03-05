@@ -63,6 +63,9 @@ normalFlashBlock code 0x100
 normalFlashVar
   dw 0x801
   dw 0x3FFF
+flashu16
+  retlw 0xCD
+  retlw 0xAB
   
 idSection code 0x2000
 userId0

@@ -34,6 +34,7 @@ module Firmware
     def_flash_var :userId1, :word, address: 0x2001
     def_flash_var :userId2, :word, address: 0x2002
     def_flash_var :userId3, :word, address: 0x2003
+    def_flash_var :flashu16, :u16
   end
 
   class LongDelay < RPicSim::Sim
@@ -96,6 +97,7 @@ module Firmware
     def_var :resultVar, :u16
     def_flash_var :flashVar1, :word
     def_flash_var :flashVar2, :word
+    def_flash_var :flashVar3, :u24
   end
 
   class Variables < RPicSim::Sim

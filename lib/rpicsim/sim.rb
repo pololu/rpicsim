@@ -158,11 +158,19 @@ module RPicSim
         klass = case type
                   when Class then type
                   when :word then Storage::MemoryWord
+                  when :u8 then Storage::MemoryUInt8
+                  when :s8 then Storage::MemoryInt8
+                  when :u16 then Storage::MemoryUInt16
+                  when :s16 then Storage::MemoryInt16
+                  when :u24 then Storage::MemoryUInt24
+                  when :s24 then Storage::MemoryInt24
+                  when :u32 then Storage::MemoryUInt32
+                  when :s32 then Storage::MemoryInt32
                   else raise "Unknown type '#{type}'."
                 end
 
         variable = klass.new(name, address)
-        variable.max_value = @code_word_max_value
+        
         @flash_vars[name] = variable
 
         self::Shortcuts.send(:define_method, name) { flash_var name }
