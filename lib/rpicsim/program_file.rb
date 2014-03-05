@@ -29,12 +29,19 @@ module RPicSim
       @var_addresses ||= @mplab_program_file.symbols_in_ram
     end
     
+    # Returns a hash associating program memory symbol names (as Ruby symbols)
+    # to their addresses.
+    # @return (Hash)
+    def label_addresses
+      @label_addresses ||= @mplab_program_file.symbols_in_code_space
+    end
+    
     # Returns a hash associating program memory label names (as symbols) to their addresses.
     # @return (Hash)
     def labels
       @labels ||= begin
         hash = {}
-        @mplab_program_file.symbols_in_code_space.each do |name, address|
+        label_addresses.each do |name, address|
           hash[name] = Label.new(name, address)
         end
         hash

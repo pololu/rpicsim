@@ -76,7 +76,7 @@ module RPicSim
       #     This option is ignored if +:address is specified.
       #   * +:address+: An integer to use as the address of the variable.
       def def_var(name, type, opts={})
-        allowed_keys = [:symbol]
+        allowed_keys = [:memory, :symbol, :address]
         invalid_keys = opts.keys - allowed_keys
         if !invalid_keys.empty?
           raise ArgumentError, "Unrecognized options: #{invalid_keys.join(", ")}"
@@ -84,6 +84,14 @@ module RPicSim
 
         name = name.to_sym
 
+        memory_type = opts.fetch(:memory, :ram)
+        symbol_addresses = case memory_type
+          when :ram then program_file.var_addresses
+          when :program_memory then program_file.label_addresses
+          when :eeprom then {}  # TODO: figure out if EEPROM symbols exist and how they work
+          else raise ArgumentError, "Invalid memory type '#{memory_type.inspect}'."
+        end
+        
         if opts[:address]
           address = opts[:address].to_i
         else
@@ -92,11 +100,12 @@ module RPicSim
             raise "Limitations in Microchip's code prevent us from accessing " +
               "variables with '@' in the name like '#{symbol}'"
           end
-          address = @var_address[symbol] or raise "Cannot find variable named '#{symbol}'."
+          address = symbol_addresses[symbol] or raise ArgumentError, "Cannot find variable in #{memory_type} named '#{symbol}'."
         end
-
+        
         klass = case type
                   when Class then type
+                  when :word then Storage::MemoryWord
                   when :u8 then Storage::MemoryUInt8
                   when :s8 then Storage::MemoryInt8
                   when :u16 then Storage::MemoryUInt16
@@ -105,19 +114,25 @@ module RPicSim
                   when :s24 then Storage::MemoryInt24
                   when :u32 then Storage::MemoryUInt32
                   when :s32 then Storage::MemoryInt32
-                  else raise "Unknown type '#{type}'."
+                  else raise ArgumentError, "Unknown type '#{type}'."
                 end
 
         variable = klass.new(name, address)
-        variable.addresses.each do |address|
+        
+        if memory_type == :program_memory
+          @flash_vars[name] = variable
+        elsif memory_type == :ram
+          @ram_vars[name] = variable
+          
+          variable.addresses.each do |address|
           if @vars_by_address[address]
             raise "Variable %s overlaps with %s at 0x%x" %
               [variable, @vars_by_address[address], address]
           end
-          @vars_by_address[address] = variable
+            @vars_by_address[address] = variable
+          end
         end
-        @vars[name] = variable
-
+        
         self::Shortcuts.send(:define_method, name) { var name }
       end
 
@@ -135,45 +150,7 @@ module RPicSim
       #     symbol to look for in the firmware.
       #   * +:address+: An integer to use as the address of the variable.
       def def_flash_var(name, type, opts={})
-        allowed_keys = [:symbol, :address]
-        invalid_keys = opts.keys - allowed_keys
-        if !invalid_keys.empty?
-          raise ArgumentError, "Unrecognized options: #{invalid_keys.join(", ")}"
-        end
-
-        name = name.to_sym
-
-        if opts[:address]
-          address = opts[:address].to_i
-        else
-          symbol = (opts[:symbol] || name).to_sym
-          if symbol.to_s.include?('@')
-            raise "Limitations in Microchip's code prevent us from accessing " +
-              "variables with '@' in the name like '#{symbol}'"
-          end
-          label = labels[symbol] or raise "Could not find label named '#{symbol}'."
-          address = label.address
-        end
-
-        klass = case type
-                  when Class then type
-                  when :word then Storage::MemoryWord
-                  when :u8 then Storage::MemoryUInt8
-                  when :s8 then Storage::MemoryInt8
-                  when :u16 then Storage::MemoryUInt16
-                  when :s16 then Storage::MemoryInt16
-                  when :u24 then Storage::MemoryUInt24
-                  when :s24 then Storage::MemoryInt24
-                  when :u32 then Storage::MemoryUInt32
-                  when :s32 then Storage::MemoryInt32
-                  else raise "Unknown type '#{type}'."
-                end
-
-        variable = klass.new(name, address)
-        
-        @flash_vars[name] = variable
-
-        self::Shortcuts.send(:define_method, name) { flash_var name }
+        def_var name, type, opts.merge(memory: :program_memory)
       end
 
     end
@@ -191,14 +168,10 @@ module RPicSim
       # pin names (like :RB3).  These aliases are defined by {ClassDefinitionMethods#def_pin}.
       attr_reader :pin_aliases
 
-      # A hash that associates RAM variable names to (unbound) {Variable} objects.
-      # The variables are defined by {ClassDefinitionMethods#def_var}.
-      attr_reader :vars
-
-      # A hash that associates flash variable names to (unbound) {Variable} objects.
-      # The variables are defined by {ClassDefinitionMethods#def_flash_var}.
       attr_reader :flash_vars
-
+      
+      attr_reader :ram_vars
+      
       # A hash that associates label names as symbols to {Label} objects.
       attr_reader :labels
 
@@ -210,7 +183,7 @@ module RPicSim
       def inherited(subclass)
         subclass.instance_eval do
           @pin_aliases = {}
-          @vars = {}
+          @ram_vars = {}
           @vars_by_address = {}
           @flash_vars = {}
           const_set :Shortcuts, Module.new
@@ -221,7 +194,6 @@ module RPicSim
 
       def initialize_symbols
         @program_file = ProgramFile.new(@filename, @device)
-        @var_address = program_file.var_addresses
         @labels = program_file.labels
       end
 
@@ -332,7 +304,6 @@ module RPicSim
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
-      initialize_flash_vars
 
       @pc = ProgramCounter.new @simulator.processor
       
@@ -379,16 +350,12 @@ module RPicSim
     end
 
     def initialize_vars
-      @vars = {}
-      self.class.vars.each do |name, unbound_var|
-        @vars[name] = Variable.new(unbound_var.bind(@ram))
+      @all_vars = {}
+      self.class.ram_vars.each do |name, unbound_var|
+        @all_vars[name] = Variable.new(unbound_var.bind(ram))
       end
-    end
-
-    def initialize_flash_vars
-      @flash_vars = {}
       self.class.flash_vars.each do |name, unbound_var|
-        @flash_vars[name] = Variable.new(unbound_var.bind(@program_memory))
+        @all_vars[name] = Variable.new(unbound_var.bind(program_memory))
       end
     end
 
@@ -431,7 +398,7 @@ module RPicSim
     # If the variable cannot be found, this method raises an exception.
     # @return [Variable]
     def var(name)
-      @vars[name.to_sym] or raise ArgumentError, "Cannot find var named '#{name}'."
+      @all_vars[name.to_sym] or raise ArgumentError, "Cannot find var named '#{name}'."
     end
 
     # Returns a {Variable} object if a flash (program memory) variable by that name is found,
@@ -721,7 +688,7 @@ module RPicSim
     # changes to RAM.  For more information, see {file:RamWatcher.md}.
     # @return [MemoryWatcher]
     def new_ram_watcher
-      MemoryWatcher.new(self, @simulator.fr_memory, @vars.values + @sfrs.values)
+      MemoryWatcher.new(self, @simulator.fr_memory, @ram_vars.values + @sfrs.values)
     end
     
     def shortcuts
