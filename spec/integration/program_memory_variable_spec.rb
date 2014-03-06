@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe "Flash variables (midrange)" do
+describe 'Program memory variables (midrange)' do
   before do
     start_sim Firmware::FlashVariables
   end
@@ -8,6 +8,10 @@ describe "Flash variables (midrange)" do
   context 'word in normal space (not user id space)' do
     before do
       run_subroutine :setupNormalFlash, cycle_limit: 100
+    end
+    
+    it 'has one address' do
+      expect(normalFlashVar.addresses.count).to eq 1
     end
   
     it "can be read by Ruby" do
@@ -70,13 +74,17 @@ describe "Flash variables (midrange)" do
 
 end
 
-describe 'Flash variables (PIC18)' do
+describe 'Program memory variables (PIC18)' do
   before do
     start_sim Firmware::Test18F25K50
   end
 
   context "word in normal space (not user id space)" do
     subject { flashVar1 }
+    
+    it 'has two address' do
+      expect(subject.addresses.count).to eq 2
+    end
     
     it 'has the right address (bytes, not words)' do
       expect(subject.address).to eq 0x0020

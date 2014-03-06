@@ -1,19 +1,6 @@
 module RPicSim::Storage
   # This class and its subclasses represent integers stored in RAM.
   class MemoryInteger
-    module ClassMethods
-      # @return (Integer) The size of this type of variable in memory words.
-      attr_reader :size
-
-      # Specifies the size of this class of variable in terms of the
-      # address units of the memory it is in.
-      def size_is(size)
-        @size = size
-      end
-    end
-
-    extend ClassMethods
-
     attr_reader :name, :address
     attr_writer :memory
 
@@ -35,7 +22,7 @@ module RPicSim::Storage
 
     # @return [Range] The addresses of each byte that is part of this variable.
     def addresses
-      address ... (address + self.class.size)
+      address ... (address + size)
     end
 
     # Reads the value of the variable from memory.
@@ -76,7 +63,9 @@ module RPicSim::Storage
 
   # Represents an unsigned 8-bit variable.
   class MemoryUInt8 < MemoryInteger
-    size_is 1
+    def size
+      1
+    end
 
     def value
       @memory.read_byte(@address)
@@ -91,7 +80,9 @@ module RPicSim::Storage
 
   # Represents a signed 8-bit variable.
   class MemoryInt8 < MemoryInteger
-    size_is 1
+    def size
+      1
+    end
 
     def value
       val = @memory.read_byte(@address)
@@ -108,7 +99,9 @@ module RPicSim::Storage
 
   # Represents an unsigned 16-bit variable.
   class MemoryUInt16 < MemoryInteger
-    size_is 2
+    def size
+      2
+    end
 
     def value
       @memory.read_byte(@address) + 256 * @memory.read_byte(@address + 1)
@@ -123,7 +116,9 @@ module RPicSim::Storage
 
   # Represents a signed 16-bit variable.
   class MemoryInt16 < MemoryInteger
-    size_is 2
+    def size
+      2
+    end
 
     def value
       val = @memory.read_byte(@address) + 256 * @memory.read_byte(@address + 1)
@@ -140,7 +135,9 @@ module RPicSim::Storage
 
   # Represents an unsigned 24-bit variable.
   class MemoryUInt24 < MemoryInteger
-    size_is 3
+    def size
+      3
+    end
 
     def value
       @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
@@ -157,7 +154,9 @@ module RPicSim::Storage
 
   # Represents a signed 24-bit variable.
   class MemoryInt24 < MemoryInteger
-    size_is 3
+    def size
+      3
+    end
 
     def value
       val = @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
@@ -176,7 +175,9 @@ module RPicSim::Storage
 
   # Represents an unsigned 32-bit variable.
   class MemoryUInt32 < MemoryInteger
-    size_is 4
+    def size
+      4
+    end
 
     def value
       @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
@@ -195,7 +196,9 @@ module RPicSim::Storage
 
   # Represents a signed 32-bit variable.
   class MemoryInt32 < MemoryInteger
-    size_is 4
+    def size
+      4
+    end
 
     def value
       val = @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
@@ -218,19 +221,15 @@ module RPicSim::Storage
   # Represents a word-sized variable.
   # The size of the word will depend on the memory the variable lives in.
   class MemoryWord < MemoryInteger
-    size_is 1
-
-    attr_writer :max_value
+    attr_accessor :size
 
     def value
       @memory.read_word(@address)
     end
 
     def value=(val)
-      if @max_value
-        check_value val, 0..@max_value
-      end
       @memory.write_word(@address, val)
     end
   end
+  
 end

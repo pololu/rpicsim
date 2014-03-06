@@ -4,6 +4,8 @@ require_relative 'variable'
 module RPicSim
   # This class is used internally by {Sim} to manage user-defined variables.
   class VariableSet
+    attr_writer :address_increment
+    
     def initialize
       @memory_types = []
       @symbols_for_memory = {}
@@ -61,6 +63,10 @@ module RPicSim
               end
 
       variable = klass.new(name, address)
+      
+      if variable.is_a?(Storage::MemoryWord) && memory_type == :program_memory
+        variable.size = @address_increment
+      end
 
       vars_by_address = @vars_for_memory_by_address[memory_type]
       variable.addresses.each do |address|

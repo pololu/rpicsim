@@ -7,6 +7,8 @@ module RPicSim
   class ProgramFile
     attr_reader :filename
     attr_reader :device
+    
+    attr_reader :address_increment
   
     # @param filename [String] The path to the program file.
     # @param device [String] The name of the device the file is for (e.g. "PIC10F322").
