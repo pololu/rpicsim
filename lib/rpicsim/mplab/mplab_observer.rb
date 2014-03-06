@@ -9,7 +9,7 @@ module RPicSim::Mplab
       @callback = callback
       subject.Attach(self, nil)
     end
-    
+
     def Update(event)
       @callback.call(event)
     end

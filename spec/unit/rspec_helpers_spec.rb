@@ -48,11 +48,11 @@ describe 'rspec helpers' do
       example = double('example', metadata: info)
       btf.should_receive(:dump_backtrace_without_sim_diagnostics) # avoid running the real thing
       btf.dump_backtrace(example)
-      
+
       sio.string.should == <<-END
-     
+
      Simulation cycle count: 111
-     
+
      Simulation stack trace:
      StackTrace
       END

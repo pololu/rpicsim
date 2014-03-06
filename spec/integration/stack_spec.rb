@@ -12,7 +12,7 @@ describe 'Stack methods' do
         stkptr.value.should == 3
       end
     end
-    
+
     describe '#stack_pointer' do
       it 'lets us access the stack pointer in a more consistent way across architectures' do
         run_to :ioo, cycle_limit: 100
@@ -57,12 +57,12 @@ END
     end
 
   end
-  
+
   context 'for PIC18 architecture' do
     before do
       start_sim Firmware::Test18F25K50
     end
-    
+
     describe '#stack_contents' do
       specify 'holds the address of the next instruction after a CALL is executed' do
         goto :testCall
@@ -76,7 +76,7 @@ END
         expect(sim.stack_contents).to eq [label(:testRCall).address + 2]
       end
     end
-    
+
     describe '#stack_trace' do
       it 'decrements stack contents by 2' do
         goto :testCall
@@ -87,18 +87,18 @@ END
       end
     end
   end
-  
+
   context 'for enhanced-midrange architecture' do
     before do
       start_sim Firmware::Test16F1826
     end
-    
+
     describe '#stack_contents' do
       it 'initially returns an empty array' do
         expect(sim.stack_contents).to be_empty
       end
     end
-    
+
     describe '#stack_push' do
       it 'pushes a value on to the stack' do
         sim.stack_push 0x100
@@ -108,5 +108,5 @@ END
       end
     end
   end
-  
+
 end

@@ -2,23 +2,23 @@ require_relative 'mplab/mplab_loader'
 
 module RPicSim::Mplab
   MplabLoader.instance.load
-  
+
   def self.version
     MplabLoader.instance.mplab_version
   end
-  
+
   # JRuby makes it hard to access packages with capital letters in their names.
   # This is a workaround to let us access those packages.
   capitalized_packages = Module.new do
     include_package 'com.microchip.mplab.libs.MPLABDocumentLocator'
   end
-  
+
   # The com.microchip.mplab.libs.MPLABDocumentLocator.MPLABDocumentLocator class from MPLAB X.
   DocumentLocator = capitalized_packages::MPLABDocumentLocator
 
   Lookup = org.openide.util.Lookup
   Mdbcore = com.microchip.mplab.mdbcore
-  
+
   # Mutes the standard output, calls the given block, and then unmutes it.
   def self.mute_stdout
     begin

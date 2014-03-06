@@ -17,35 +17,35 @@ module RPicSim
     def initialize(memories)
       @memories = memories
     end
-    
+
     def read_byte(address)
       memory(address).read_byte(address)
     end
-    
+
     def write_byte(address, value)
       memory(address).write_byte(address, value)
     end
-    
+
     def read_word(address)
       memory(address).read_word(address)
     end
-    
+
     def write_word(address, value)
       memory(address).write_word(address, value)
     end
-    
+
     def valid_address?(address)
       find_memory(address) != nil
     end
-    
+
     private
-    
+
     def find_memory(address)
       @memories.find do |memory|
         memory.valid_address?(address)
       end
     end
-    
+
     def memory(address)
       find_memory(address) or raise 'Invalid memory address %#x.' % address
     end

@@ -57,7 +57,7 @@ File.open('output.txt', 'w') do |output|
       filename_is 'spec/firmware/dist/Zeros.hex'
     end
     sim = klass.new
-    
+
     ram_watcher = sim.ram_watcher
     sim.step
     #output.puts ram_watcher.writes.inspect

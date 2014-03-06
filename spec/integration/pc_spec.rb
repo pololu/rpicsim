@@ -4,7 +4,7 @@ describe '#pc (program counter)' do
   before do
     start_sim Firmware::NestedSubroutines
   end
-  
+
   specify '#value tells us the address of the current instruction' do
     pc.value.should == 0
     step
@@ -12,7 +12,7 @@ describe '#pc (program counter)' do
     step
     pc.value.should == 0x22
   end
-  
+
   specify '#value= lets us make a different part of the program run' do
     pc.value = 4
     pc.value.should == 4

@@ -26,12 +26,12 @@ module RPicSim
     def output?
       @mplab_pin.output?
     end
-    
+
     # Returns true if the pin is currently configured to be an input.
     def input?
       !@mplab_pin.output?
     end
-    
+
     # Returns true if the pin is currently configured to be an output and
     # it is driving high.
     def driving_high?
@@ -49,10 +49,10 @@ module RPicSim
     def names
       @mplab_pin.names
     end
-    
+
     def to_s
       @mplab_pin.name
-    end    
+    end
 
     def inspect
       '#<%s %s>' % [self.class, to_s]

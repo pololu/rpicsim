@@ -18,22 +18,22 @@ describe 'Pic#pin' do
     run_subroutine :ClearAnselAndReadPin
     x.value.should == 1
   end
-  
+
   it 'cannot set pin value if ANSELA bit is 1' do
     # If ANSELA is 1, the digital input buffer is disabled.
     start_sim Firmware::ReadPin
     pin(:RA0).set(true)
     run_subroutine :ReadPin
-    x.value.should == 0    
+    x.value.should == 0
   end
-  
+
   it 'does not get messed up if we write to TRISA (like the output state does)' do
     start_sim Firmware::ReadPin
     pin(:RA0).set(true)
     run_subroutine :ClearASetTReadPin
-    x.value.should == 1   
+    x.value.should == 1
   end
-  
+
   it 'reports the wrong output state if the ANSELx bit is 1', flaw: true do
     start_sim Firmware::DrivePinHigh
     run_subroutine :ClearTSetL, cycle_limit: 100
@@ -60,17 +60,17 @@ describe 'Pic#pin' do
     reg(:LATA).value.should == 1      # good
     pin(:RA0).should be_driving_low   # bad
   end
-  
+
   it 'knows its names' do
     start_sim Firmware::DrivePinHigh
     pin(:RA0).names.sort.should == %w{RA0 PWM1 CLC1IN1 CWG1A AN0 ICSPDAT}.sort
   end
-  
+
   specify '#inspect shows the class name and pin names' do
     start_sim Firmware::DrivePinHigh
     pin(:RA0).inspect.should == '#<RPicSim::Pin RA0/PWM1/CLC1IN1/CWG1A/AN0/ICSPDAT>'
   end
-  
+
   it 'can be defined in the class definition with def_pin' do
     start_sim Firmware::ReadPin
     main_pin.should == pin(:RA0)

@@ -4,20 +4,20 @@ module RPicSim::Mplab
     def initialize(register)
       @register = register
     end
-    
+
     def write(value)
       @register.write(value)
       value
     end
-    
+
     def read
       @register.read
     end
-    
+
     def name
       @register.getName
     end
-    
+
     def address
       @register.getAddress
     end

@@ -25,11 +25,11 @@ describe RPicSim::StackTraceEntry do
   it 'stores the address' do
     entry.address.should == 6
   end
-  
+
   it 'stores the description' do
     entry.description.should == 'six'
   end
-  
+
   it 'returns the description in response to to_s' do
     entry.to_s.should == 'six'
   end

@@ -11,7 +11,7 @@ module RPicSim::Mplab
   # which is used for loading program files.
   class MplabLoader
     include Singleton
-   
+
     # Adds all the needed MPLAB X jar files to the classpath so we can use the
     # classes.
     def load
@@ -39,7 +39,7 @@ module RPicSim::Mplab
         raise
       end
     end
-        
+
     # Returns a string like "1.95" representing the version of MPLAB X we are using.
     # NOTE: You should probably NOT be calling this to work around flaws in MPLAB X.
     # Instead, you should add a new entry in flaws.rb and then use
@@ -61,9 +61,9 @@ module RPicSim::Mplab
         match_data[1]
       end
     end
-  
+
     private
-  
+
     # Returns a Pathname object representing the directory of the MPLAB X we are using.
     # This can either come from the +RPICSIM_MPLABX+ environment variable or it can
     # be auto-detected by looking in the standard places that MPLAB X is installed.
@@ -75,7 +75,7 @@ module RPicSim::Mplab
         Pathname(dir)
       end
     end
-    
+
     def auto_detect_mplab_dir
       # Default installation directories for MPLAB X:
       candidates = [

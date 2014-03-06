@@ -4,7 +4,7 @@ describe RPicSim::Mplab::MplabProgramFile do
   let(:device) { 'PIC10F322' }
   let(:filename) { Firmware::NestedSubroutines.filename }
   subject(:mplab_program_file) { described_class.new(filename, device) }
-  
+
   describe '#symbols_in_code_space' do
     it 'returns the labels from the assembly source' do
       expect(mplab_program_file.symbols_in_program_memory).to eq({
@@ -19,5 +19,5 @@ describe RPicSim::Mplab::MplabProgramFile do
       expect(mplab_program_file.symbols_in_ram).to eq({ :var1 => 64, :var2 => 65 })
     end
   end
-  
+
 end

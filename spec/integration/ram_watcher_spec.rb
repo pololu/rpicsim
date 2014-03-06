@@ -35,14 +35,14 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
       run_subroutine :WriteTo5F, cycle_limit: 100
       ram_watcher.writes.should == { 0x5F => 44 }
     end
-    
+
     it 'sees when the firmware writes to an SFR' do
       start_sim Firmware::DrivePinHigh
       ram_watcher = new_ram_watcher
       run_subroutine :ClearAClearTSetL, cycle_limit: 100
       ram_watcher.writes[:TRISA].should == 14
     end
-    
+
     it 'confuses writes to LATA with writes to PORTA when ANSELA bits are 1 and TRISA bits are 1', flaw: true do
       start_sim Firmware::DrivePinHigh
       step
@@ -51,7 +51,7 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
       ram_watcher.writes[:PORTA].should == 0
       ram_watcher.writes[:LATA].should == 1
     end
-    
+
     it 'reports a write for each address of PCL whenever it changes', flaw: true do
       # The same is presumably true for the other core registers with multiple addresses,
       # like WREG.

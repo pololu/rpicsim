@@ -24,7 +24,7 @@ module Firmware
     filename_is Dir + 'EepromVariables.cof'
     def_var :eepromVar1, :uint8, memory: :eeprom
   end
-  
+
   class FlashVariables < RPicSim::Sim
     device_is 'PIC10F322'
     filename_is Dir + 'FlashVariables.cof'
@@ -78,12 +78,12 @@ module Firmware
     device_is 'PIC10F202'
     filename_is Dir + 'Test10F202.cof'
   end
-  
+
   class Test10F322 < RPicSim::Sim
     device_is 'PIC10F322'
     filename_is Dir + 'Test10F322.cof'
   end
-  
+
   class Test16F1826 < RPicSim::Sim
     device_is 'PIC16F1826'
     filename_is Dir + 'Test16F1826.cof'

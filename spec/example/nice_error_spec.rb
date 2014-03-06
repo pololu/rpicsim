@@ -7,7 +7,7 @@ describe 'my firmware' do
   before do
     start_sim Firmware::NestedSubroutines
   end
-  
+
   it 'crashes' do
     expecting stkptr => satisfy { |s| s.value < 5 }
     run_cycles 1000

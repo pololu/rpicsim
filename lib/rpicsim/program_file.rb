@@ -7,44 +7,44 @@ module RPicSim
   class ProgramFile
     attr_reader :filename
     attr_reader :device
-    
+
     attr_reader :address_increment
-  
+
     # @param filename [String] The path to the program file.
     # @param device [String] The name of the device the file is for (e.g. "PIC10F322").
     def initialize(filename, device)
       @filename = filename
       @device = device
-      
+
       @mplab_program_file = Mplab::MplabProgramFile.new(filename, device)
-      
+
       @assembly = Mplab::MplabAssembly.new(device)
       @assembly.load_file(filename)
       @address_increment = @assembly.device_info.code_address_increment
-      
+
       @instructions = []
     end
-    
+
     # Returns a hash associating RAM variable names (as symbols) to their addresses.
     # @return (Hash)
     def symbols_in_ram
       @mplab_program_file.symbols_in_ram
     end
-    
+
     # Returns a hash associating program memory symbol names (as Ruby symbols)
     # to their addresses.
     # @return (Hash)
     def symbols_in_program_memory
       @mplab_program_file.symbols_in_program_memory
     end
-    
+
     # Returns a hash associating EEPROM memory symbol names (as Ruby symbols)
     # to their addresses.
     # @return (Hash)
     def symbols_in_eeprom
       @mplab_program_file.symbols_in_eeprom
     end
-    
+
     # Returns a hash associating program memory label names (as symbols) to their addresses.
     # @return (Hash)
     def labels
@@ -78,16 +78,16 @@ module RPicSim
       desc = address < 0 ? address.to_s : ('0x%04x' % [address])
       reference_points = labels.values.reject { |label| label.address > address }
       label = reference_points.max_by &:address
-      
+
       if label
         offset = address - label.address
         desc << ' = ' + label.name.to_s
         desc << '+%#x' % [offset] if offset != 0
       end
-      
+
       return desc
     end
-    
+
     # Gets an {Instruction} object representing the PIC instruction at the given
     # address in program memory.
     # @param address [Integer]
@@ -95,7 +95,7 @@ module RPicSim
     def instruction(address)
       @instructions[address] ||= make_instruction(address)
     end
-    
+
     private
     def message_for_label_not_found(name)
       message = "Cannot find label named '#{name}'."

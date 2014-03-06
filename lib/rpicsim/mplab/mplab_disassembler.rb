@@ -6,7 +6,7 @@ module RPicSim::Mplab
     def initialize(disasm)
       @disasm = disasm
     end
-    
+
     def disassemble(address)
       # To avoid showing a large, difficult to understand Java trace, we
       # catch the InvalidInstructionException here.

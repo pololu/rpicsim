@@ -37,26 +37,26 @@ describe RPicSim::Mplab::MplabInstruction do
         @assembly.load_file(filename)
         @disassembler = @assembly.disassembler
       end
-      
+
       let(:opcode) { example.metadata[:opcode] }
       let(:address) { @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym] }
-      
+
       def n_value(address)
         inst = @disassembler.disassemble(address)
         raise "wrong opcode #{inst.opcode}" if inst.opcode != opcode
         inst.operands[:n]
       end
-      
+
       instructions.each do |opcode, bits|
         describe opcode, opcode: opcode do
           it 'can decode 0' do
             expect(n_value(address + 4)). to eq 0
           end
-          
+
           it 'can decode the maximum value' do
             expect(n_value(address + 6)). to eq (1 << (bits - 1)) - 1
           end
-          
+
           it 'can decode the minimum value' do
             expect(n_value(address + 8)). to eq -(1 << (bits - 1))
           end
@@ -64,7 +64,7 @@ describe RPicSim::Mplab::MplabInstruction do
       end
 
     end
-    
+
     describe 'for enhanced midrange architecture' do
       before(:all) do
         filename = Firmware::Test16F1826.filename
@@ -74,13 +74,13 @@ describe RPicSim::Mplab::MplabInstruction do
         @assembly.load_file(filename)
         @disassembler = @assembly.disassembler
       end
-    
+
       def k_value(address)
         inst = @disassembler.disassemble(address)
         raise "wrong opcode #{inst.opcode}" if inst.opcode != opcode
         inst.operands[:k]
       end
-      
+
       instructions = [
         ['BRA',    9],
         ['ADDFSR', 6],
@@ -91,25 +91,25 @@ describe RPicSim::Mplab::MplabInstruction do
 
       instructions.each do |opcode, bits|
         describe opcode, opcode: opcode do
-        
+
           it 'can decode 0' do
             expect(k_value(address + 2)). to eq 0
           end
-        
+
           it 'can decode the maximum value' do
             expect(k_value(address + 3)). to eq (1 << (bits - 1)) - 1
           end
-        
+
           it 'can decode the minimum value' do
             expect(k_value(address + 4)). to eq -(1 << (bits - 1))
           end
-        
+
         end
       end
-    
+
     end
   end
-  
+
   describe 'unrecognized instruction for enhanced midrange devices', flaw: true do
     before(:all) do
       filename = Firmware::Test16F1826.filename
@@ -119,7 +119,7 @@ describe RPicSim::Mplab::MplabInstruction do
       @assembly.load_file(filename)
       @disassembler = @assembly.disassembler
     end
-    
+
     ['TRIS', 'OPTION'].each do |opcode|
       specify "does not recognize #{opcode}" do
         address = @mplab_program_file.symbols_in_program_memory[:ins_option]
@@ -127,7 +127,7 @@ describe RPicSim::Mplab::MplabInstruction do
         expect(mplab_instruction).to eq :invalid
       end
   end
-  
+
   end
-  
+
 end

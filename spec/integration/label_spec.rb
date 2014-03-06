@@ -12,11 +12,11 @@ describe 'Labels' do
       it 'is a RPicSim::Label' do
         subject.should be_a_kind_of RPicSim::Label
       end
-      
+
       it 'had the right name' do
         subject.name.should == :addition
       end
-      
+
       it 'has the right address' do
         subject.address.should == 0
       end
@@ -31,7 +31,7 @@ describe 'Labels' do
         expect { label(:additional) }.to raise_error "Cannot find label named 'additional'.  MPASM truncates labels.  You might have meant: addition."
       end
     end
-    
+
   end
-  
+
 end

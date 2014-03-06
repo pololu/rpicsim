@@ -7,11 +7,11 @@ module RPicSim
     def initialize(processor)
       @processor = processor
     end
-    
+
     def value
       @processor.get_pc
     end
-    
+
     def value=(val)
       @processor.set_pc(val)
     end

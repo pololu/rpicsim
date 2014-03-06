@@ -18,7 +18,7 @@ module RPicSim::Mplab
     def fr_memory
       @fr_memory ||= MplabMemory.new data_store.getFileMemory
     end
-    
+
     def sfr_memory
       @sfr_memory ||= MplabMemory.new data_store.getSFRMemory
     end
@@ -26,31 +26,31 @@ module RPicSim::Mplab
     def nmmr_memory
       @nmmr_memory ||= MplabMemory.new data_store.getNMMRMemory
     end
-    
+
     def program_memory
       @program_memory ||= MplabMemory.new data_store.getProgMemory
     end
-    
+
     def stack_memory
       @stack_memory ||= MplabMemory.new data_store.getStackMemory
     end
-    
+
     def test_memory
       @test_memory ||= MplabMemory.new data_store.getTestMemory
     end
-    
+
     def config_memory
       @config_memory ||= MplabMemory.new data_store.getCFGMemory
     end
-    
+
     def eeprom_memory
       @eeprom_memory ||= MplabMemory.new data_store.getEEDataMemory
     end
-    
+
     def processor
       @processor ||= MplabProcessor.new data_store.getProcessor
     end
-    
+
     def pins
       pin_descs = (0...data_store.getNumPins).collect { |i| data_store.getPinDesc(i) }
 
@@ -68,7 +68,7 @@ module RPicSim::Mplab
         MplabPin.new pin_set.getPin(i)
       end
     end
-    
+
     def check_peripherals
       check_peripherals_in_data_store
       check_peripheral_set
@@ -79,7 +79,7 @@ module RPicSim::Mplab
     def data_store
       @simulator.getDataStore
     end
-    
+
     def check_peripherals_in_data_store
       if data_store.getNumPeriphs == 0
         raise 'MPLAB X failed to load any peripheral descriptions into the data store.'
@@ -92,7 +92,7 @@ module RPicSim::Mplab
         raise 'MPLAB X failed to load any peripherals into the PeripheralSet.'
       end
     end
-    
+
     # This is commented out because MPLAB X v2.00 with the PIC18F25K50
     # reports three missing peripherals:
     #  PBADEN_PCFG
@@ -105,6 +105,6 @@ module RPicSim::Mplab
     #    raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
     #  end
     #end
-    
+
   end
 end

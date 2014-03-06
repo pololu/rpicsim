@@ -12,7 +12,7 @@ module RPicSim
       @stkptr = stkptr
       @stkptr_initial_value = @stkptr.value
     end
-    
+
     def value
       if @stkptr_initial_value > 0
         raw_value = @stkptr.value
@@ -25,7 +25,7 @@ module RPicSim
         @stkptr.value
       end
     end
-    
+
     def value=(value)
       @stkptr.value = if @stkptr_initial_value > 0
                         if value == 0

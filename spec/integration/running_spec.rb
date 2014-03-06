@@ -127,7 +127,7 @@ describe RPicSim::Sim do
       expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error
       expect(sim.stack_contents).to eq [1, 9, 13]
     end
-    
+
     it "doesn't change the state of the stack and PC if it completes successfully" do
       sim.stack_push 1
       sim.stack_push 9
@@ -144,7 +144,7 @@ describe 'Running on an enhanced midrange device' do
   before do
     start_sim Firmware::Test16F1826
   end
-  
+
   describe 'run_subroutine' do
     it 'works' do
       expect(sim.stack_contents).to eq []

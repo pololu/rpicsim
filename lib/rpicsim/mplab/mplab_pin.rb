@@ -52,7 +52,7 @@ module RPicSim::Mplab
 
     def name
       @pin_physical.pinName
-    end    
+    end
 
     PinState = Mdbcore.simulator.Pin::PinState   # HIGH or LOW
     IoState = Mdbcore.simulator.Pin::IOState     # INPUT or OUTPUT

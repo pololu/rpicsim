@@ -6,7 +6,7 @@ module RPicSim::Mplab
     def initialize(memory)
       @memory = memory
     end
-    
+
     def read_byte(address)
       array = [0].to_java(:byte)
       @memory.Read(address, 1, array)
@@ -19,20 +19,20 @@ module RPicSim::Mplab
       @memory.Write(address, 1, array)
       byte
     end
-    
+
     def write_word(address, value)
       @memory.WriteWord(address, value)
       value
     end
-    
+
     def read_word(address)
       @memory.ReadWord(address)
     end
-    
+
     def valid_address?(address)
       @memory.IsValidAddress(address)
     end
-    
+
     def on_change(&callback)
       MplabObserver.new(@memory) do |event|
         next if event.EventType != Mdbcore.memory::MemoryEvent::EVENTS::MEMORY_CHANGED

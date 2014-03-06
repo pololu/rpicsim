@@ -78,12 +78,12 @@ module RPicSim
         if @variable_set.nil?
           raise 'The device and filename need to be specified before defining variables.'
         end
-        
+
         @variable_set.def_var(name, type, opts)
-        
+
         self::Shortcuts.send(:define_method, name) { var name }
       end
-      
+
     end
 
     # These are class methods that you can call on subclasses of {Sim}.
@@ -102,7 +102,7 @@ module RPicSim
       # A {VariableSet} that holds information about all the variables that were defined
       # with {ClassDefinitionMethods#def_var def_var}.
       attr_reader :variable_set
-      
+
       # A hash that associates label names as symbols to {Label} objects.
       attr_reader :labels
 
@@ -122,7 +122,7 @@ module RPicSim
       def load_program_file
         @program_file = ProgramFile.new(@filename, @device)
         @labels = program_file.labels
-        
+
         @variable_set = VariableSet.new
         @variable_set.address_increment = program_file.address_increment
         @variable_set.def_memory_type :ram, program_file.symbols_in_ram
@@ -204,19 +204,19 @@ module RPicSim
     # bytes in the simulated RAM.
     # @return [Memory]
     attr_reader :ram
-    
+
     # Returns a {Memory} object that allows direct reading and writing of the
     # data in the program memory.
     # Besides the main program, the program memory also contains the
     # configuration words and the user IDs.
     # @return [Memory]
     attr_reader :program_memory
-    
+
     # Returns a {Memory} object that allows direct reading and writing of the
     # bytes in the simulated EEPROM.
     # @return [Memory]
     attr_reader :eeprom
-    
+
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
     def device; self.class.device; end
@@ -231,21 +231,21 @@ module RPicSim
       @assembly.start_simulator_and_debugger(filename)
       @simulator = @assembly.simulator
       @processor = @simulator.processor
-      
+
       initialize_memories
       initialize_pins
       initialize_sfrs_and_nmmrs
       initialize_vars
 
       @pc = ProgramCounter.new @simulator.processor
-      
+
       @step_callbacks = []
-      
+
       @stack_pointer = StackPointer.new(stkptr)
     end
 
     private
-    
+
     def initialize_memories
       # Set up our stores and helper objects.
       @ram = Memory.new @simulator.fr_memory
@@ -265,7 +265,7 @@ module RPicSim
 
     def initialize_pins
       pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
-      
+
       #pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
       #pins.reject! { |p| p.to_s == "VSS" } or raise "Failed to filter out VSS pin."
 
@@ -295,7 +295,7 @@ module RPicSim
       @assembly.device_info.sfrs.each do |sfr|
         @sfrs[sfr.name.to_sym] = Variable.new Storage::Register.new @processor.get_sfr(sfr.name), @sfr_memory, sfr.width
       end
-      
+
       @nmmrs = {}
       @assembly.device_info.nmmrs.each do |nmmr|
         @nmmrs[nmmr.name.to_sym] = Variable.new Storage::Register.new @processor.get_nmmr(nmmr.name), @nmmr_memory, nmmr.width
@@ -612,17 +612,17 @@ module RPicSim
     def new_ram_watcher
       MemoryWatcher.new(self, @simulator.fr_memory, @ram_vars.values + @sfrs.values)
     end
-    
+
     def shortcuts
       self.class::Shortcuts
     end
-    
+
     # Returns the {RPicSim::ProgramFile} representing the firmware being simulated.
     # @return [ProgramFile]
     def program_file
       self.class.program_file
     end
-    
+
     private
     def address_increment
       @assembly.device_info.code_address_increment

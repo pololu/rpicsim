@@ -12,7 +12,7 @@ module RPicSim
   class MemoryWatcher
     attr_accessor :var_names_ignored
     attr_accessor :var_names_ignored_on_first_step
-    
+
     # Creates a new instance.
     # @param sim [Sim]
     # @param memory [Mplab::MplabMemory] The memory to watch
@@ -29,11 +29,11 @@ module RPicSim
           @vars_by_address[address] = var
         end
       end
-    
+
       @sim = sim
       @memory = memory
       @memory.on_change { |ar| handle_change(ar) }
-      
+
       @vars_written = Set.new
       @var_names_ignored = default_var_names_ignored(sim.device)
     end
@@ -60,17 +60,17 @@ module RPicSim
     def clear
       @vars_written.clear
     end
-    
+
     def handle_change(address_ranges)
       addresses = address_ranges.flat_map(&:to_a)
       vars = addresses.map { |a| @vars_by_address[a] || a }
 
       remove_vars(vars, @var_names_ignored)
-      
+
       # The line below works because @vars_written is a Set, not a Hash.
       @vars_written.merge vars
     end
-    
+
     private
     def remove_vars(vars, var_names_to_remove)
       vars.reject! do |key, val|
@@ -78,13 +78,13 @@ module RPicSim
         var_names_to_remove.include?(name)
       end
     end
-    
+
     def default_var_names_ignored(device_name)
       # The datasheet says the PCLATH is not affected by pushing or popping the stack, but
       # we still get spurious events for it when a return instruction is executed.
 
       [:PCL, :PCLATH, :STATUS]
     end
-    
+
   end
 end

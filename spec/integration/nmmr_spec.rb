@@ -9,7 +9,7 @@ describe 'NMMRs' do
     it 'can get WREG on a PIC10F322' do
       expect(reg(:WREG)).to be
     end
-    
+
     it 'can get STATUS on a PIC10F322' do
       expect(reg(:STATUS)).to be
     end

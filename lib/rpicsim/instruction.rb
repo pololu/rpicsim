@@ -9,26 +9,26 @@ module RPicSim
   # classes like {CallStackInfo} to get useful information about the firmware.
   class Instruction
     include Comparable
-    
+
     # The program memory address of the instruction.
     # For PIC18s this will be the byte address.
     # For other PIC architectures, it will be the word address.
     # @return (Integer)
     attr_reader :address
-    
+
     # The opcode as a capitalized string (e.g. "MOVLW").
     # @return (String)
     attr_reader :opcode
-    
+
     # The operands of the instruction as a hash like { "k" => 92 }.
     # @return (Hash)
     attr_reader :operands
-    
+
     # The number of program memory address units that this instruction takes.
     # The units of this are the same as the units of {#address}.
     # @return (Integer)
     attr_reader :size
-    
+
     # A line of assembly language that would represent this instruction.
     # For example "GOTO 0x2".
     # @return (String)
@@ -46,7 +46,7 @@ module RPicSim
         @string = '[INVALID]'
         return
       end
-      
+
       @valid = true
       @opcode = mplab_instruction.opcode
       @operands = mplab_instruction.operands
@@ -54,7 +54,7 @@ module RPicSim
 
       @size = mplab_instruction.compute_size(address_increment)
       raise "Invalid size #{@size} for #{inspect}" if ![1, 2, 4].include?(@size)
-      
+
       properties = Array case mplab_instruction.opcode
       when 'ADDFSR'
       when 'ADDLW'
@@ -147,7 +147,7 @@ module RPicSim
         raise "Unrecognized opcode #{mplab_instruction.opcode} " +
           "(#{address_description(address)}, operands #{mplab_instruction.operands.inspect})."
       end
-    
+
       modules = {
         conditional_skip: ConditionalSkip,
         conditional_relative_branch: ConditionalRelativeBranch,
@@ -157,7 +157,7 @@ module RPicSim
         control_ender: ControlEnder,
         call: Call,
       }
-      
+
       properties.each do |p|
         mod = modules[p]
         if !mod
@@ -166,7 +166,7 @@ module RPicSim
         extend mod
       end
     end
-    
+
     # Compares this instruction to another using the addresses.  This means you can
     # call +.sort+ on an array of instructions to put them in order by address.
     def <=>(other)
@@ -177,11 +177,11 @@ module RPicSim
     def to_s
       "Instruction(#{@instruction_store.address_description(address)}, #{@string})"
     end
-    
+
     def inspect
       "#<#{self.class}:#{@instruction_store.address_description(address)}, #{@string}>"
     end
-    
+
     # Returns info about all the instructions that this instruction could directly lead to
     # (not counting interrupts, returns, and not accounting
     # at all for what happens after the last word in the main program memory is executed).
@@ -191,7 +191,7 @@ module RPicSim
     def transitions
       @transitions ||= generate_transitions
     end
-    
+
     # Returns the transition from this instruction to the specified instruction
     # or nil if no such transition exists.
     # @return Transition
@@ -210,23 +210,23 @@ module RPicSim
     def generate_transitions
       [ advance(1) ]
     end
-    
+
     # Makes a transition representing the default behavior: the microcontroller
     # will increment the program counter and execute the next instruction in memory.
     def advance(num)
       transition(address + num * size)
     end
-    
+
     def transition(addr, attrs={})
       Transition.new(self, addr, @instruction_store, attrs)
     end
-    
+
     def valid?
       @valid
     end
-    
+
     private
-    
+
     # Returns the address indicated by the operand 'k'.
     # k is assumed to be a word address and it is assumed to be absolute
     # k=0 is word 0 of memory, k=1 is word one.
@@ -235,15 +235,15 @@ module RPicSim
     def k_address
       operands[:k] * @address_increment
     end
-    
+
     def n_address
       address + @address_increment * (operands[:n] + 1)
     end
-    
+
     def relative_k_address
       address + @address_increment * (operands[:k] + 1)
     end
-    
+
     def relative_target_address
       if operands[:k]
         relative_k_address
@@ -253,10 +253,10 @@ module RPicSim
         raise 'This instruction does not have fields k or n.'
       end
     end
-    
+
     ### Modules that modify the behavior of the instruction. ###
-    
-    
+
+
     # This module is mixed into any {Instruction} that represents a goto or branch.
     module Goto
       def generate_transitions
@@ -264,7 +264,7 @@ module RPicSim
         [ transition(k_address, non_local: true) ]
       end
     end
-    
+
     # This module is mixed into any {Instruction} that represents a conditional skip
     # A conditional skip is an instruction that might cause the next instruction to be
     # skipped depending on some condition.
@@ -273,7 +273,7 @@ module RPicSim
         [ advance(1), advance(2) ]
       end
     end
-    
+
     # This module is mixed into any {Instruction} that represents a return from a subroutine
     # or a RESET instruction.
     module ControlEnder
@@ -281,20 +281,20 @@ module RPicSim
         []
       end
     end
-    
+
     # This module is mixed into any {Instruction} that represents a subroutine call.
     module Call
       def generate_transitions
         [ transition(k_address, call_depth_change: 1), advance(1) ]
       end
     end
-    
+
     module RelativeCall
       def generate_transitions
         [ transition(n_address, call_depth_change: 1), advance(1) ]
       end
     end
-    
+
     module ConditionalRelativeBranch
       def generate_transitions
         [ transition(n_address, non_local: true), advance(1) ]
@@ -306,30 +306,30 @@ module RPicSim
         [ transition(relative_target_address, non_local: true) ]
       end
     end
-    
+
     class Transition
       attr_reader :previous_instruction
       attr_reader :next_address
-    
+
       def initialize(previous_instruction, next_address, instruction_store, attrs)
         @previous_instruction = previous_instruction
         @next_address = next_address
         @instruction_store = instruction_store
         @attrs = attrs
       end
-      
+
       def next_instruction
         @next_instruction ||= @instruction_store.instruction(next_address)
       end
-      
+
       def non_local?
         @attrs.fetch(:non_local, false)
       end
-      
+
       def call_depth_change
         @attrs.fetch(:call_depth_change, 0)
       end
-      
+
     end
   end
 end

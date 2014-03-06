@@ -233,11 +233,6 @@ SpaceInsideBrackets:
 SpaceInsideHashLiteralBraces:
   Enabled: false
 
-# Offence count: 593
-# Cop supports --auto-correct.
-TrailingWhitespace:
-  Enabled: false
-
 # Offence count: 29
 Void:
   Enabled: false

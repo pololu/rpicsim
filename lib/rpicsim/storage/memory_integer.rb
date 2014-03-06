@@ -52,7 +52,7 @@ module RPicSim::Storage
     def inspect
       '<%s %s 0x%x>' % [self.class, name, address]
     end
-    
+
     private
     def check_value(value, allowed_values)
       if !allowed_values.include?(value)
@@ -231,5 +231,5 @@ module RPicSim::Storage
       @memory.write_word(@address, val)
     end
   end
-  
+
 end

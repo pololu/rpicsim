@@ -4,7 +4,7 @@ describe 'Variables' do
   before do
     start_sim Firmware::Variables
   end
-  
+
   it 'can store and retrieve values from an unsigned 8-bit variable' do
     xu8.value = 254
     xu8.value.should == 254
@@ -34,7 +34,7 @@ describe 'Variables' do
     xs24.value = -8388608
     xs24.value.should == -8_388_608
   end
-  
+
   it 'can store and retrieve values from an unsigned 32-bit variable' do
     xu32.value = 4_294_967_295
     xu32.value.should == 4_294_967_295

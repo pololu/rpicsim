@@ -5,14 +5,14 @@ module RPicSim
   # This class is used internally by {Sim} to manage user-defined variables.
   class VariableSet
     attr_writer :address_increment
-    
+
     def initialize
       @memory_types = []
       @symbols_for_memory = {}
       @vars_for_memory = {}
       @vars_for_memory_by_address = {}
     end
-    
+
     def def_memory_type(name, symbols)
       name = name.to_sym
       @memory_types << name
@@ -20,7 +20,7 @@ module RPicSim
       @vars_for_memory[name] = {}
       @vars_for_memory_by_address[name] = {}
     end
-    
+
     def def_var(name, type, opts={})
       allowed_keys = [:memory, :symbol, :address]
       invalid_keys = opts.keys - allowed_keys
@@ -34,7 +34,7 @@ module RPicSim
       if !@memory_types.include?(memory_type)
         raise "Invalid memory type '#{memory_type.inspect}'."
       end
-      
+
       symbol_addresses = @symbols_for_memory[memory_type]
 
       if opts[:address]
@@ -47,7 +47,7 @@ module RPicSim
         end
         address = symbol_addresses[symbol] or raise ArgumentError, "Cannot find variable in #{memory_type} named '#{symbol}'."
       end
-      
+
       klass = case type
                 when Class then type
                 when :word then Storage::MemoryWord
@@ -63,7 +63,7 @@ module RPicSim
               end
 
       variable = klass.new(name, address)
-      
+
       if variable.is_a?(Storage::MemoryWord) && memory_type == :program_memory
         variable.size = @address_increment
       end
@@ -76,10 +76,10 @@ module RPicSim
         end
         vars_by_address[address] = variable
       end
-      
-      @vars_for_memory[memory_type][name] = variable      
+
+      @vars_for_memory[memory_type][name] = variable
     end
-    
+
     def bind(memories)
       vars = {}
       memories.each do |memory_type, memory|

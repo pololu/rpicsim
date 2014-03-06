@@ -13,7 +13,7 @@ module RPicSim
     # integration with RSpec.
     module Helpers
       include RPicSim::RSpec::PersistentExpectations
-      
+
       # This attribute allows you to type +sim+ in your specs instead of +@sim+ to
       # get access to the {RPicSim::Sim} instance which represents the simulation.
       # You must call {#start_sim} before using +sim+.

@@ -3,14 +3,14 @@ module RPicSim::Mplab
   # represents a disassembled instruction from Microchip's disassembler.
   class MplabInstruction
     attr_reader :opcode
-    
+
     # @param instruction [com.microchip.mplab.mdbcore.disasm.Instruction]
     def initialize(instruction)
       @instruction = instruction
-      
+
       @opcode = @instruction.opcode
       @string = @instruction.instruction
-      
+
       # Fix a typo in MPLAB X.
       if @opcode == 'RBLRD+*'
         @opcode = 'TBLRD+*'
@@ -18,15 +18,15 @@ module RPicSim::Mplab
       end
       @opcode.freeze
     end
-    
+
     def instruction_string
       @string
     end
-    
+
     def operands
       @operands ||= operands_hash(@instruction.operands)
     end
-    
+
     # Returns the size of the instruction in the same units that are used
     # for program memory addresses.  (Bytes for the PIC18, otherwise words.)
     # @param address_increment The number of address units per word of
@@ -51,18 +51,18 @@ module RPicSim::Mplab
         @instruction.inc
       end
     end
-    
+
     private
-    
+
     def operands_hash(map)
       operands = convert_map_to_hash(map)
       fix_signed_fields(operands)
       operands
     end
-    
+
     def convert_map_to_hash(map)
       # Convert from Map<String, Integer> to a Ruby hash
-      # with symbols as keys instead of strings.    
+      # with symbols as keys instead of strings.
       operands = {}
       map.each do |operand_name, value|
         operands[operand_name.to_sym] = value
@@ -83,14 +83,14 @@ module RPicSim::Mplab
       when 'ADDFSR'
         convert_if_present(operands, :k, 6)   # enhanced midrange
       end
-      
+
       operands
     end
 
     def convert_if_present(operands, name, bits)
       operands[name] = convert_unsigned_to_signed(operands[name], bits) if operands[name]
     end
-    
+
     def convert_unsigned_to_signed(unsigned, bits)
       if unsigned >= (1 << (bits - 1))
         unsigned - (1 << bits)

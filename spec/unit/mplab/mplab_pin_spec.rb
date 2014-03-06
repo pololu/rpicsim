@@ -5,7 +5,7 @@ describe RPicSim::Mplab::MplabPin do
   subject(:mplab_pin) { described_class.new(pin_physical) }
   let(:pin_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::PinState }
   let(:io_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::IOState }
-  
+
   before do
     allow(pin_physical).to receive(:getIOState).and_return { io_state }
     allow(pin_physical).to receive(:get).and_return { pin_state }
@@ -25,7 +25,7 @@ describe RPicSim::Mplab::MplabPin do
       mplab_pin.set_high
     end
   end
-    
+
   describe '#set_analog' do
     [2.3, 2].each do |value|
       context "given #{value}" do
@@ -106,11 +106,11 @@ end
 
 describe 'assumptions about MPLAB X used to build MplabPin' do
   let(:pin) { com.microchip.mplab.mdbcore.simulator.Pin }
-  
+
   specify 'the two PinStates are HIGH and LOW' do
     pin::PinState.constants.sort.should == [:HIGH, :LOW]
   end
-  
+
   specify 'the two IOStates are INPUT and OUTPUT' do
     pin::IOState.constants.sort.should == [:INPUT, :OUTPUT]
   end

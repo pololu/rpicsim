@@ -4,7 +4,7 @@ module RPicSim
     # The name of the label from the firmware.
     # @return (Symbol)
     attr_reader :name
-    
+
     # The address/value of the label from the firmware.
     # @return (Integer)
     attr_reader :address
@@ -19,7 +19,7 @@ module RPicSim
     def to_i
       address
     end
-    
+
     # Returns a nice string representation of the label.
     def to_s
       '<Label %s address=0x%x>' % [name, address]
