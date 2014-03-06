@@ -181,8 +181,3 @@ SpaceInsideBrackets:
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
 SpaceInsideHashLiteralBraces:
   Enabled: false
-
-# Offence count: 29
-Void:
-  Enabled: false
-

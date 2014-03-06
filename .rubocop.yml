@@ -48,3 +48,9 @@ TrivialAccessors:
 WordArray:
   Enabled: false
 
+# The Void cop is not compatible with RSpec's "should" syntax.
+Void:
+  Exclude:
+    - spec/**
+    - lib/rpicsim/rspec/sim_diagnostics.rb
+
