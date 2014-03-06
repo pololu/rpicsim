@@ -4,8 +4,6 @@ require_relative '../spec_helper'
 #  DS33014J - the MPASM/MPLINK/MPLIB manual
 #  Midrange: http://ww1.microchip.com/downloads/en/DeviceDoc/41375A.pdf
 
-# TODO: test support for the PIC18 extended instruction set
-
 describe RPicSim::Instruction do
   subject(:instruction) { Firmware::FlashVariables.program_file.instruction(0) }
 

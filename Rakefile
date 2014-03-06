@@ -17,9 +17,12 @@ RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
   t.pattern = nil
   
   if ENV["COVERAGE"] == 'Y'
-    # TODO: figure out why adding -rspec/spec_helper to the ruby_opts here makes create_assembly fail
     t.ruby_opts = "--debug"
   end
+
+  # It would be nice to add the following line here, but somehow it
+  # makes MPLAB X assembly code fail:
+  # t.ruby_opts = '-rspec/spec_helper'
 end
 
 desc "Run the specs and generate a code coverage report."
@@ -49,7 +52,7 @@ end
 
 desc 'Print TODO items from the source code'
 task 'todo' do
-  sh 'grep -ni todo -r lib spec docs Rakefile'
+  sh 'grep -ni todo -r lib spec docs || echo none', verbose: false
 end
 
 task "spec" => "firmware"
