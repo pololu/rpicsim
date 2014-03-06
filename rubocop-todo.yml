@@ -277,10 +277,6 @@ TrailingWhitespace:
 TrivialAccessors:
   Enabled: false
 
-# Offence count: 2
-UselessAssignment:
-  Enabled: false
-
 # Offence count: 29
 Void:
   Enabled: false

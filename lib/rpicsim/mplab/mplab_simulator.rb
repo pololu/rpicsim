@@ -64,7 +64,7 @@ module RPicSim::Mplab
         pin_set.getPin name                # Trigger the lazy loading.
       end
 
-      pins = (0...pin_set.getNumPins).collect do |i|
+      (0...pin_set.getNumPins).collect do |i|
         MplabPin.new pin_set.getPin(i)
       end
     end

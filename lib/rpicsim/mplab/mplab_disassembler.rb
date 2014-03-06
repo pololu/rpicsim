@@ -12,7 +12,7 @@ module RPicSim::Mplab
       # catch the InvalidInstructionException here.
       begin
         instr = @disasm.Disassemble(address, nil, nil)
-      rescue Java::ComMicrochipMplabMdbcoreDisasm::InvalidInstructionException => e
+      rescue Java::ComMicrochipMplabMdbcoreDisasm::InvalidInstructionException
         # The instruction is invalid.
         return :invalid
       end
