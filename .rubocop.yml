@@ -1,22 +1,14 @@
 inherit_from: rubocop-todo.yml
 
-# Rubocop thinks we should always be using %w for arrays of words.
-WordArray:
-  Enabled: false
+# Rubocop complains about names that begin with set_ and get_.
+AccessorMethodName:
+  Exclude:
+    - lib/rpicsim/mplab/**
 
-# Rubcop was complaining about accessors being trivial even if they had a
-# different name than the instance variable they access.
-TrivialAccessors:
-  ExactNameMatch: true
-
-# We disable the TrailingComma cop because depending on how we configure it,
-# it will do one of the following undesirable things:
-# - Require us to put commas at the end of parameter lists for multi-line
-#   method calls.
-# - Require us to remove commas at the end of multi-line arrays and hashes.
-TrailingComma:
+# Rubocop disagrees with lines like:
+#   @sfrs[name] or raise 'SFR not found.'
+AndOr:
   Enabled: false
-  EnforcedStyleForMultiline: comma
 
 # Rubocop wants to us to specify the encoding at the top of
 # every single source file if RUBY_VERSION < '2.0.0'.
@@ -29,7 +21,21 @@ Encoding:
 FavorSprintf:
   Enabled: false
 
-# Rubocop complains about names that begin with set_ and get_.
-AccessorMethodName:
-  Exclude:
-    - lib/rpicsim/mplab/**
+# We disable the TrailingComma cop because depending on how we configure it,
+# it will do one of the following undesirable things:
+# - Require us to put commas at the end of parameter lists for multi-line
+#   method calls.
+# - Require us to remove commas at the end of multi-line arrays and hashes.
+TrailingComma:
+  Enabled: false
+  EnforcedStyleForMultiline: comma
+
+# Rubcop was complaining about accessors being trivial even if they had a
+# different name than the instance variable they access.
+TrivialAccessors:
+  ExactNameMatch: true
+
+# Rubocop thinks we should always be using %w for arrays of words.
+WordArray:
+  Enabled: false
+
