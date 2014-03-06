@@ -5,10 +5,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offence count: 3
-AccessorMethodName:
-  Enabled: false
-
 # Offence count: 6
 AmbiguousOperator:
   Enabled: false

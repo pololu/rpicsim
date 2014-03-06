@@ -28,3 +28,8 @@ Encoding:
 # configure to say that we prefer using the String#% operator.
 FavorSprintf:
   Enabled: false
+
+# Rubocop complains about names that begin with set_ and get_.
+AccessorMethodName:
+  Exclude:
+    - lib/rpicsim/mplab/**
