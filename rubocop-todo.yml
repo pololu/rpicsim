@@ -113,10 +113,6 @@ LineEndConcatenation:
 LineLength:
   Max: 140
 
-# Offence count: 1
-LiteralInCondition:
-  Enabled: false
-
 # Offence count: 3
 # Cop supports --auto-correct.
 MethodCallParentheses:
