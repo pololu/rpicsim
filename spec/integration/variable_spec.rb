@@ -32,17 +32,17 @@ describe "Variables" do
 
   it "can store and retrieve values from a signed 24-bit variable" do
     xs24.value = -8388608
-    xs24.value.should == -8388608
+    xs24.value.should == -8_388_608
   end
   
   it "can store and retrieve values from an unsigned 32-bit variable" do
-    xu32.value = 4294967295
-    xu32.value.should == 4294967295
+    xu32.value = 4_294_967_295
+    xu32.value.should == 4_294_967_295
   end
 
   it "can store and retrieve values from a signed 32-bit variable" do
-    xs32.value = -2147483648
-    xs32.value.should == -2147483648
+    xs32.value = -2_147_483_648
+    xs32.value.should == -2_147_483_648
   end
 
   it "can be read by the firmware" do
