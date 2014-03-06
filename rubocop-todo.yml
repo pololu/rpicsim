@@ -98,11 +98,6 @@ FavorUnlessOverNegatedIf:
 FavorUntilOverNegatedWhile:
   Enabled: false
 
-# Offence count: 44
-# Cop supports --auto-correct.
-FinalNewline:
-  Enabled: false
-
 # Offence count: 1
 HandleExceptions:
   Enabled: false
