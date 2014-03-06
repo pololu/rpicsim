@@ -35,7 +35,7 @@ class RSpec::Core::Formatters::BaseTextFormatter
 
   def dump_sim_cycle_count(example)
     cycle_count = example.metadata[:sim_cycle_count] or return
-    output.puts long_padding
+    output.puts
     output.printf long_padding + "Simulation cycle count: %d\n", cycle_count
   end
 
@@ -44,7 +44,7 @@ class RSpec::Core::Formatters::BaseTextFormatter
   # appropriate indentation.
   def dump_sim_stack_trace(example)
     sim_stack_trace = example.metadata[:sim_stack_trace] or return
-    output.puts long_padding
+    output.puts
     output.puts long_padding + 'Simulation stack trace:'
     sim_stack_trace.output(output, long_padding)
   end
