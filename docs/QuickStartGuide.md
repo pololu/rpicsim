@@ -71,7 +71,7 @@ We have not yet told RPicSim where to find the firmware file.  To do this, make 
 
 Edit the `device_is` and `filename_is` lines to match your actual device and the path to its COF file.  The file specified here can either be COF or HEX, but COF is recommended because it allows convenient access to the variables, functions, and labels defined in the firmware.
 
-Eventually you should rename the `MySim` class to something more specific.  I like to name the simulation class by concatenating the project name with `Sim`.
+Eventually you should rename the `MySim` class to something more specific, such as the concatenation of the project name with "Sim".
 
 To run the spec, go to your shell and run the command `rspec` from the directory that contains `spec`.  In the example directory structure above, you would need to be inside the `project_dir` directory when you run `rspec`.  If all goes well, the output from `rspec` should look like:
 
