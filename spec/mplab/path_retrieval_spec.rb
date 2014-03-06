@@ -11,6 +11,6 @@ describe 'PathRetrieval' do
     # Even though the path is messed up, java.io.File can handle it.
     # I think that it considers "/" to be "C:/".
     # JRuby does not like the path though, if you are in Windows.
-    java.io.File.new(path).exists().should == true
+    java.io.File.new(path).exists.should == true
   end
 end

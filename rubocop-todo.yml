@@ -113,11 +113,6 @@ LineEndConcatenation:
 LineLength:
   Max: 140
 
-# Offence count: 3
-# Cop supports --auto-correct.
-MethodCallParentheses:
-  Enabled: false
-
 # Offence count: 18
 # Configuration parameters: CountComments.
 MethodLength:

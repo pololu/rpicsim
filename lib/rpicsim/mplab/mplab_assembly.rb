@@ -86,7 +86,7 @@ module RPicSim::Mplab
     def warn_about_5C
       # Detect a problem that once caused peripherals to load incorrectly.
       # More info: http://stackoverflow.com/q/15794170/28128
-      f = DocumentLocator.java_class.resource('MPLABDocumentLocator.class').getFile()
+      f = DocumentLocator.java_class.resource('MPLABDocumentLocator.class').getFile
       if f.include?('%5C')
         $stderr.puts 'warning: A %5C character was detected in the ' \
           'MPLABDocumentLoator.class file location.  ' \
@@ -98,7 +98,7 @@ module RPicSim::Mplab
       # See spec/mplab_x/path_retrieval_spec.rb for more info.
       retrieval = com.microchip.mplab.open.util.pathretrieval.PathRetrieval
       path = retrieval.getPath(DocumentLocator.java_class)
-      if !java.io.File.new(path).exists()
+      if !java.io.File.new(path).exists
         $stderr.puts "warning: MPLAB X will be looking for files at a bad path: #{path}"
       end
     end
