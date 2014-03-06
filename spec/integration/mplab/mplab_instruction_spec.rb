@@ -126,7 +126,7 @@ describe RPicSim::Mplab::MplabInstruction do
         mplab_instruction = @disassembler.disassemble(address)
         expect(mplab_instruction).to eq :invalid
       end
-  end
+    end
 
   end
 
