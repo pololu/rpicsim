@@ -3,4 +3,8 @@ inherit_from: rubocop-todo.yml
 # Rubocop thinks we should always be using %w for arrays of words.
 WordArray:
   Enabled: false
-  
+
+# Rubcop was complaining about accessors being trivial even if they had a
+# different name than the instance variable they access.
+TrivialAccessors:
+  ExactNameMatch: true

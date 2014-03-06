@@ -2,6 +2,8 @@ module RPicSim::Mplab
   # This class wraps a com.microchip.mplab.mdbcore.disasm.Instruction, which
   # represents a disassembled instruction from Microchip's disassembler.
   class MplabInstruction
+    attr_reader :opcode
+    
     # @param instruction [com.microchip.mplab.mdbcore.disasm.Instruction]
     def initialize(instruction)
       @instruction = instruction
@@ -15,10 +17,6 @@ module RPicSim::Mplab
         @string = @string.gsub('RBLRD', 'TBLRD')
       end
       @opcode.freeze
-    end
-    
-    def opcode
-      @opcode
     end
     
     def instruction_string

@@ -309,16 +309,13 @@ module RPicSim
     
     class Transition
       attr_reader :previous_instruction
+      attr_reader :next_address
     
       def initialize(previous_instruction, next_address, instruction_store, attrs)
         @previous_instruction = previous_instruction
         @next_address = next_address
         @instruction_store = instruction_store
         @attrs = attrs
-      end
-      
-      def next_address
-        @next_address
       end
       
       def next_instruction

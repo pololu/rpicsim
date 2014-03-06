@@ -272,11 +272,6 @@ TrailingComma:
 TrailingWhitespace:
   Enabled: false
 
-# Offence count: 5
-# Configuration parameters: ExactNameMatch, AllowPredicates, Whitelist.
-TrivialAccessors:
-  Enabled: false
-
 # Offence count: 29
 Void:
   Enabled: false
