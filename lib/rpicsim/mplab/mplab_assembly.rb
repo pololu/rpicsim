@@ -25,7 +25,7 @@ module RPicSim::Mplab
 
       sim_meta = Mdbcore.platformtool.PlatformToolMetaManager.getTool('Simulator')
       @assembly.SetTool(sim_meta.configuration_object_id, sim_meta.class_name, sim_meta.flavor, '')
-      if !sim_meta.getToolSupportForDevice(device).all? &:isSupported
+      if !sim_meta.getToolSupportForDevice(device).all?(&:isSupported)
         raise "Microchip's simulator does not support " + device + '.'
       end
       @assembly.SetHeader('')  # The Microchip documentation doesn't say what this is.

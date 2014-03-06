@@ -54,11 +54,11 @@ describe RPicSim::Mplab::MplabInstruction do
           end
 
           it 'can decode the maximum value' do
-            expect(n_value(address + 6)). to eq (1 << (bits - 1)) - 1
+            expect(n_value(address + 6)). to eq((1 << (bits - 1)) - 1)
           end
 
           it 'can decode the minimum value' do
-            expect(n_value(address + 8)). to eq -(1 << (bits - 1))
+            expect(n_value(address + 8)). to eq(-(1 << (bits - 1)))
           end
         end
       end
@@ -97,11 +97,11 @@ describe RPicSim::Mplab::MplabInstruction do
           end
 
           it 'can decode the maximum value' do
-            expect(k_value(address + 3)). to eq (1 << (bits - 1)) - 1
+            expect(k_value(address + 3)). to eq((1 << (bits - 1)) - 1)
           end
 
           it 'can decode the minimum value' do
-            expect(k_value(address + 4)). to eq -(1 << (bits - 1))
+            expect(k_value(address + 4)). to eq(-(1 << (bits - 1)))
           end
 
         end

@@ -77,7 +77,7 @@ module RPicSim
     def address_description(address)
       desc = address < 0 ? address.to_s : ('0x%04x' % [address])
       reference_points = labels.values.reject { |label| label.address > address }
-      label = reference_points.max_by &:address
+      label = reference_points.max_by(&:address)
 
       if label
         offset = address - label.address
