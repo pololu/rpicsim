@@ -21,7 +21,7 @@ RSpec::Core::Formatters::BaseTextFormatter
 # different functions so you can easily customize any of them without messing up
 # the other ones.
 class RSpec::Core::Formatters::BaseTextFormatter
-  alias dump_backtrace_without_sim_diagnostics dump_backtrace
+  alias_method :dump_backtrace_without_sim_diagnostics, :dump_backtrace
 
   def dump_backtrace(example)
     dump_backtrace_without_sim_diagnostics(example)
