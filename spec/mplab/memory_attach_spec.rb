@@ -21,7 +21,7 @@ class MemoryObserver < BasicObserver
   def event_data(e)
     {
       type: e.EventType.to_s,
-      affected: e.AffectedAddresses.map { |mr| [mr.Address, mr.Size] }
+      affected: e.AffectedAddresses.map { |mr| [mr.Address, mr.Size] },
     }
   end
 end
@@ -69,7 +69,7 @@ describe "Memory.attach on the RAM memory" do
         step
         events.should == [
           {:type=>"MEMORY_CHANGED", :affected=>[[2, 1], [5, 1], [7, 1], [10, 2], [16, 1], [37, 1]]},
-          boring_out_of_sync
+          boring_out_of_sync,
         ]
         events.clear
         step

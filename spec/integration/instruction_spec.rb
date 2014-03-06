@@ -294,7 +294,7 @@ describe 'Disassembly' do
     it 'leads to the next two instructions after it' do
       expect(instruction0.next_addresses).to eq [
         address + instruction0.size,
-        address + address_increment * 2
+        address + address_increment * 2,
       ]
     end
   end

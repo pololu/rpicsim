@@ -262,11 +262,6 @@ StringLiterals:
 TrailingBlankLines:
   Enabled: false
 
-# Offence count: 9
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-TrailingComma:
-  Enabled: false
-
 # Offence count: 593
 # Cop supports --auto-correct.
 TrailingWhitespace:

@@ -155,7 +155,7 @@ module RPicSim
         relative_call: RelativeCall,
         goto: Goto,
         control_ender: ControlEnder,
-        call: Call
+        call: Call,
       }
       
       properties.each do |p|

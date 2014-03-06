@@ -285,7 +285,7 @@ module RPicSim
       memories = {
         ram: ram,
         program_memory: program_memory,
-        eeprom: eeprom
+        eeprom: eeprom,
       }
       @vars = self.class.variable_set.bind(memories)
     end

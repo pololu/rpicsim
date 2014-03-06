@@ -9,7 +9,7 @@ describe RPicSim::Mplab::MplabProgramFile do
     it 'returns the labels from the assembly source' do
       expect(mplab_program_file.symbols_in_program_memory).to eq({
         :isr => 4, :start => 32, :start2 => 36, :foo => 64,
-        :goo => 65, :hoo=>96, :ioo => 128, :joo => 256
+        :goo => 65, :hoo=>96, :ioo => 128, :joo => 256,
       })
     end
   end

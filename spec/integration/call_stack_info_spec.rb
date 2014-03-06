@@ -44,14 +44,14 @@ describe "rcs03a program structure" do
       [0, 32, 33, 36,     64, 65, 96, 128, 256, 257, 258],
       [0, 32, 34, 35, 36, 64, 65, 96, 128, 256, 257, 258],
       [0, 32, 33, 36,     64, 65, 96, 128, 256, 257, 258],
-      [0, 32, 34, 35, 36, 64, 65, 96, 128, 256, 257, 258]
+      [0, 32, 34, 35, 36, 64, 65, 96, 128, 256, 257, 258],
     ]
   end
 
   it "can report filtered code paths" do
     addrs = call_stack_info[0].worst_case_code_paths_filtered.collect(&:interesting_addresses)
     addrs.should == [
-      [0, 36, 64, 65, 96, 128, 256]
+      [0, 36, 64, 65, 96, 128, 256],
     ]
   end
   
