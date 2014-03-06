@@ -499,9 +499,7 @@ module RPicSim
     # given cycle count.
     # @param count [Integer]
     def run_to_cycle_count(count)
-      while cycle_count < count
-        step
-      end
+      step while cycle_count < count
     end
 
     # Simulates a return instruction being executed by popping the top value off
