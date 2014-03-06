@@ -18,7 +18,7 @@ module RPicSim
       # @param version [String] A version of MPLAB X, e.g. "1.95".
       # @return effect
       def effect(version)
-        if @versions.has_key? version
+        if @versions.key? version
           @versions[version]
         else
           @probable_affect_for_other_versions

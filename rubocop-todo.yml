@@ -114,11 +114,6 @@ FinalNewline:
 HandleExceptions:
   Enabled: false
 
-# Offence count: 1
-# Cop supports --auto-correct.
-HashMethods:
-  Enabled: false
-
 # Offence count: 26
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
