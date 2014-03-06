@@ -281,7 +281,3 @@ TrivialAccessors:
 Void:
   Enabled: false
 
-# Offence count: 2
-# Cop supports --auto-correct.
-WordArray:
-  MinSize: 2
