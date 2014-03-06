@@ -112,7 +112,7 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     class LongDelay < RPicSim::Sim
       device_is "PIC10F322"
       filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
-      def_var :hot, :u8
+      def_var :hot, :uint8
     end
 
 In `spec/cooldown_spec.rb`, we stub the `bigDelay` routine and test `cooldown` to make sure it calls `bigDelay` the right number of times:

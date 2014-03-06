@@ -1,13 +1,12 @@
-puts "Loading firmware..."
 module Firmware
   Dir = File.dirname(__FILE__) + "/firmware/dist/"
 
   class Addition < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "Addition.cof"
-    def_var :x, :u16
-    def_var :y, :u16
-    def_var :z, :u16
+    def_var :x, :uint16
+    def_var :y, :uint16
+    def_var :z, :uint16
   end
 
   class BoringLoop < RPicSim::Sim
@@ -23,25 +22,25 @@ module Firmware
   class EepromVariables < RPicSim::Sim
     device_is 'PIC18F25K50'
     filename_is Dir + 'EepromVariables.cof'
-    def_var :eepromVar1, :u8, memory: :eeprom
+    def_var :eepromVar1, :uint8, memory: :eeprom
   end
   
   class FlashVariables < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "FlashVariables.cof"
-    def_var :x, :u16
+    def_var :x, :uint16
     def_var :normalFlashVar, :word, memory: :program_memory
     def_var :userId0, :word, address: 0x2000, memory: :program_memory
     def_var :userId1, :word, address: 0x2001, memory: :program_memory
     def_var :userId2, :word, address: 0x2002, memory: :program_memory
     def_var :userId3, :word, address: 0x2003, memory: :program_memory
-    def_var :flashu16, :u16, memory: :program_memory
+    def_var :flashu16, :uint16, memory: :program_memory
   end
 
   class LongDelay < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "LongDelay.cof"
-    def_var :hot, :u8
+    def_var :hot, :uint8
   end
 
   class NestedSubroutines < RPicSim::Sim
@@ -65,14 +64,14 @@ module Firmware
   class ReadPin < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "ReadPin.cof"
-    def_var :x, :u8
+    def_var :x, :uint8
     def_pin :main_pin, :RA0
   end
 
   class ReadSFR < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "ReadSFR.cof"
-    def_var :x, :u8
+    def_var :x, :uint8
   end
 
   class Test10F202 < RPicSim::Sim
@@ -93,27 +92,27 @@ module Firmware
   class Test18F25K50 < RPicSim::Sim
     device_is 'PIC18F25K50'
     filename_is Dir + 'Test18F25K50.cof'
-    def_var :var1, :u8
-    def_var :var2, :u16
-    def_var :resultVar, :u16
+    def_var :var1, :uint8
+    def_var :var2, :uint16
+    def_var :resultVar, :uint16
     def_var :flashVar1, :word, memory: :program_memory
     def_var :flashVar2, :word, memory: :program_memory
-    def_var :flashVar3, :u24, memory: :program_memory
+    def_var :flashVar3, :uint24, memory: :program_memory
   end
 
   class Variables < RPicSim::Sim
     device_is "PIC10F322"
     filename_is Dir + "Variables.cof"
-    def_var :xu8, :u8
-    def_var :xs8, :s8
-    def_var :xu16, :u16
-    def_var :yu16, :u16
-    def_var :zu16, :u16
-    def_var :xs16, :s16
-    def_var :xu24, :u24
-    def_var :xs24, :s24
-    def_var :xu32, :u32
-    def_var :xs32, :s32
+    def_var :xu8, :uint8
+    def_var :xs8, :int8
+    def_var :xu16, :uint16
+    def_var :yu16, :uint16
+    def_var :zu16, :uint16
+    def_var :xs16, :int16
+    def_var :xu24, :uint24
+    def_var :xs24, :int24
+    def_var :xu32, :uint32
+    def_var :xs32, :int32
   end
 
   class WriteTo5F < RPicSim::Sim
@@ -122,5 +121,3 @@ module Firmware
   end
 
 end
-
-puts "Done loading firmware..."

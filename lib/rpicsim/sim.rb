@@ -62,7 +62,7 @@ module RPicSim
       #   The method will return a {Variable} object that you can use to read or write the
       #   value of the actual variable in the simulation.
       # @param type [Symbol] Specifies how to interpret the data in the variable and its size.
-      #   For integers, it should be one of +:u8+, +:s8+, +:u16+, +:s16+, +:u24+, +:s24+, +:u32+, +:s32+, or +:word+.
+      #   For integers, it should be one of +:uint8+, +:int8+, +:uint16+, +:int16+, +:uint24+, +:int24+, +:uint32+, +:int32+, or +:word+.
       #   The +s+ stands for signed and the +u+ stands for unsigned, and the number stands for the number
       #   of bits.  All multi-byte integers are considered to be little Endian.
       # @param opts [Hash] Specifies additional options.  The options are:

@@ -16,7 +16,7 @@ For example:
     class MySim < RPicSim::Sim
       #...
 
-      def_var :counter, :u8
+      def_var :counter, :uint8
 
     end
 
@@ -45,7 +45,7 @@ In the example above, RPicSim will look in your firmware's COF file for a RAM sy
 You can use the `symbol` option to specify what symbol in the symbol table marks the location of the variable.  For example:
 
     !!!ruby
-    def_var :counter, :u8, symbol: :_counter
+    def_var :counter, :uint8, symbol: :_counter
 
 The example above shows how you could access a variable from a C compiler (which will generally be prefixed with an underscore) without having to type the underscore in your tests.
 More generally, the `symbol` option allows you to call a variable one thing in your firmware and call it a different thing in your tests.
@@ -58,7 +58,7 @@ RPicSim will raise an exception if it cannot find the specified symbol in the sy
 You can use the `address` option to specify an arbitrary address instead of using the symbol table.  For example:
 
     !!!ruby
-    def_var :counter, :u8, address: 0x63
+    def_var :counter, :uint8, address: 0x63
     
 Variables are assumed to be in RAM by default, but you can specify that they are in program memory using the `memory` option.
 
@@ -73,7 +73,7 @@ On non-PIC18 devices, program memory is made up into words that are 12 bits or 1
 The type of address used for program memory of these devices is called a _word address_ because it specifies the number of a word instead of the number of a byte.  For example, a word address of `1` would correspond to the second word in program memory.
 
 To access all the bits of a particular word, you can define your variable to be of the +:word+ type as shown in the example above.
-If you specify any of the integer types like :u8 or :s16, the bytes that comprise that variable will live in the least-significant 8 bits of one or more words in program memory.
+If you specify any of the integer types like :uint8 or :int16, the bytes that comprise that variable will live in the least-significant 8 bits of one or more words in program memory.
 The upper bits of the words will not be changed when writing to the variable.
 
 This behavior is useful because if you store an integer in program memory as 1 to 4 consecutive RETLW instructions, you can read and write from it in Ruby without changing the bits that make those words be RETLW instructions.
@@ -172,9 +172,9 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     class Addition < RPicSim::Sim
       device_is "PIC10F322"
       filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
-      def_var :x, :u16
-      def_var :y, :u16
-      def_var :z, :u16
+      def_var :x, :uint16
+      def_var :y, :uint16
+      def_var :z, :uint16
     end
 
 In `spec/addition_spec.rb`, we write a simple unit test that writes to `x` and `y`, runs the `addition` subroutine, and checks that the correct result is stored in `z`:
