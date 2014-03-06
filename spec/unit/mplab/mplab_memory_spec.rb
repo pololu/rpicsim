@@ -46,10 +46,10 @@ describe RPicSim::Mplab::MplabMemory do
     end
   end
   
-  describe '#is_valid_address?' do
+  describe '#valid_address?' do
     it 'just defers to IsValidAddress' do
       expect(memory).to receive(:IsValidAddress).with(22).and_return { true }
-      expect(mplab_memory.is_valid_address?(22)).to eq true
+      expect(mplab_memory.valid_address?(22)).to eq true
     end
   end
   

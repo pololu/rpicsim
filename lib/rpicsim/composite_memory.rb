@@ -11,7 +11,7 @@ module RPicSim
     # * +write_byte+
     # * +read_word+
     # * +write_word+
-    # * +is_valid_address?+
+    # * +valid_address?+
     #
     # @param memories [Array]
     def initialize(memories)
@@ -34,7 +34,7 @@ module RPicSim
       memory(address).write_word(address, value)
     end
     
-    def is_valid_address?(address)
+    def valid_address?(address)
       find_memory(address) != nil
     end
     
@@ -42,7 +42,7 @@ module RPicSim
     
     def find_memory(address)
       @memories.find do |memory|
-        memory.is_valid_address?(address)
+        memory.valid_address?(address)
       end
     end
     

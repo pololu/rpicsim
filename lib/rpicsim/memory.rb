@@ -42,8 +42,8 @@ module RPicSim
       @mplab_memory.write_word(address, value)
     end
     
-    def is_valid_address?(address)
-      @mplab_memory.is_valid_address?(address)
+    def valid_address?(address)
+      @mplab_memory.valid_address?(address)
     end
 
   end

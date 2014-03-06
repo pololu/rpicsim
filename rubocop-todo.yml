@@ -180,11 +180,6 @@ ParenthesesAsGroupedExpression:
   Enabled: false
 
 # Offence count: 3
-# Configuration parameters: NamePrefixBlacklist.
-PredicateName:
-  Enabled: false
-
-# Offence count: 3
 # Cop supports --auto-correct.
 Proc:
   Enabled: false

@@ -524,7 +524,7 @@ module RPicSim
 
     # Pushes the given address onto the simulated call stack.
     def stack_push(value)
-      if !@stack_memory.is_valid_address?(stack_pointer.value)
+      if !@stack_memory.valid_address?(stack_pointer.value)
         raise "Simulated stack is full (stack pointer = #{stack_pointer.value})."
       end
 

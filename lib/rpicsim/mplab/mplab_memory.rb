@@ -29,7 +29,7 @@ module RPicSim::Mplab
       @memory.ReadWord(address)
     end
     
-    def is_valid_address?(address)
+    def valid_address?(address)
       @memory.IsValidAddress(address)
     end
     
