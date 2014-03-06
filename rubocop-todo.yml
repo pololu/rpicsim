@@ -257,11 +257,6 @@ SpaceInsideHashLiteralBraces:
 StringLiterals:
   Enabled: false
 
-# Offence count: 3
-# Cop supports --auto-correct.
-TrailingBlankLines:
-  Enabled: false
-
 # Offence count: 593
 # Cop supports --auto-correct.
 TrailingWhitespace:

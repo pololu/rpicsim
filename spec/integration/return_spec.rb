@@ -36,4 +36,3 @@ describe '#return for an enhanced midrange device' do
     expect { sim.return }.to raise_error 'Cannot return because stack is empty.'
   end
 end
-    

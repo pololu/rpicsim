@@ -115,4 +115,3 @@ describe "assumptions about MPLAB X used to build MplabPin" do
     pin::IOState.constants.sort.should == [:INPUT, :OUTPUT]
   end
 end
-
