@@ -1,6 +1,8 @@
 module RPicSim::Mplab
   # This class creates and wraps a com.microchip.mplab.mdbcore.program.interfaces.IProgramFile
   class MplabProgramFile
+    EepromRange = 0xF00000..0xFFFFFF
+  
     def initialize(filename, device)
       raise "File does not exist: #{filename}" if !File.exist?(filename)  # Avoid a Java exception.
       
@@ -14,18 +16,28 @@ module RPicSim::Mplab
       @program_file.Load
     end
     
-    def symbols_in_code_space
-      @symbols_in_code_space ||= Hash[
-        symbols.select { |s| s.m_lType != 0 }.map { |s| [s.m_Symbol.to_sym, s.address] }
-      ]
-    end
-    
     def symbols_in_ram
       @symbols_in_ram ||= Hash[
         symbols.select { |s| s.m_lType == 0 }.map { |s| [s.m_Symbol.to_sym, s.address] }
       ]
     end
     
+    def symbols_in_program_memory
+      @symbols_in_code_space ||= Hash[
+        symbols.
+          select { |s| s.m_lType != 0 && !EepromRange.include?(s.address) }.
+          map { |s| [s.m_Symbol.to_sym, s.address] }
+      ]
+    end
+    
+    def symbols_in_eeprom
+      @symbols_in_eeprom ||= Hash[
+        symbols.
+          select { |s| s.m_lType != 0 && EepromRange.include?(s.address) }.
+          map { |s| [s.m_Symbol.to_sym, s.address - EepromRange.min] }
+      ]    
+    end
+
     private
     
     def symbols

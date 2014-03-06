@@ -27,15 +27,22 @@ module RPicSim
     
     # Returns a hash associating RAM variable names (as symbols) to their addresses.
     # @return (Hash)
-    def var_addresses
-      @var_addresses ||= @mplab_program_file.symbols_in_ram
+    def symbols_in_ram
+      @mplab_program_file.symbols_in_ram
     end
     
     # Returns a hash associating program memory symbol names (as Ruby symbols)
     # to their addresses.
     # @return (Hash)
-    def label_addresses
-      @label_addresses ||= @mplab_program_file.symbols_in_code_space
+    def symbols_in_program_memory
+      @mplab_program_file.symbols_in_program_memory
+    end
+    
+    # Returns a hash associating EEPROM memory symbol names (as Ruby symbols)
+    # to their addresses.
+    # @return (Hash)
+    def symbols_in_eeprom
+      @mplab_program_file.symbols_in_eeprom
     end
     
     # Returns a hash associating program memory label names (as symbols) to their addresses.
@@ -43,7 +50,7 @@ module RPicSim
     def labels
       @labels ||= begin
         hash = {}
-        label_addresses.each do |name, address|
+        symbols_in_program_memory.each do |name, address|
           hash[name] = Label.new(name, address)
         end
         hash

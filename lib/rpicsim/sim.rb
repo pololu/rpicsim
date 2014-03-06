@@ -125,9 +125,9 @@ module RPicSim
         
         @variable_set = VariableSet.new
         @variable_set.address_increment = program_file.address_increment
-        @variable_set.def_memory_type :ram, program_file.var_addresses
-        @variable_set.def_memory_type :program_memory, program_file.label_addresses
-        @variable_set.def_memory_type :eeprom, {}   # TODO: figure out the deal with labels in EEPROM
+        @variable_set.def_memory_type :ram, program_file.symbols_in_ram
+        @variable_set.def_memory_type :program_memory, program_file.symbols_in_program_memory
+        @variable_set.def_memory_type :eeprom, program_file.symbols_in_eeprom
       end
 
     end

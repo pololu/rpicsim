@@ -1,3 +1,4 @@
+puts "Loading firmware..."
 module Firmware
   Dir = File.dirname(__FILE__) + "/firmware/dist/"
 
@@ -20,9 +21,9 @@ module Firmware
   end
 
   class EepromVariables < RPicSim::Sim
-    device_is "PIC18F25K50"
-    filename_is Dir + "EepromVariables.cof"
-    # TODO: add EEPROM variable here and test it
+    device_is 'PIC18F25K50'
+    filename_is Dir + 'EepromVariables.cof'
+    def_var :eepromVar1, :u8, memory: :eeprom
   end
   
   class FlashVariables < RPicSim::Sim
@@ -121,3 +122,5 @@ module Firmware
   end
 
 end
+
+puts "Done loading firmware..."

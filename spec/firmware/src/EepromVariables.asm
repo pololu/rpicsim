@@ -24,6 +24,7 @@ writeCompletionLoop:
     return
   
 eepromBlock code 0xF00010
+eepromVar1
   db 0x84
   
   end

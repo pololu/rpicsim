@@ -39,7 +39,7 @@ describe RPicSim::Mplab::MplabInstruction do
       end
       
       let(:opcode) { example.metadata[:opcode] }
-      let(:address) { @mplab_program_file.symbols_in_code_space[('ins_' + opcode.downcase).to_sym] }
+      let(:address) { @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym] }
       
       def n_value(address)
         inst = @disassembler.disassemble(address)
@@ -87,7 +87,7 @@ describe RPicSim::Mplab::MplabInstruction do
       ]
 
       let(:opcode) { example.metadata[:opcode] }
-      let(:address) { @mplab_program_file.symbols_in_code_space[('ins_' + opcode.downcase).to_sym] }
+      let(:address) { @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym] }
 
       instructions.each do |opcode, bits|
         describe opcode, opcode: opcode do
@@ -122,7 +122,7 @@ describe RPicSim::Mplab::MplabInstruction do
     
     ['TRIS', 'OPTION'].each do |opcode|
       specify "does not recognize #{opcode}" do
-        address = @mplab_program_file.symbols_in_code_space[:ins_option]
+        address = @mplab_program_file.symbols_in_program_memory[:ins_option]
         mplab_instruction = @disassembler.disassemble(address)
         expect(mplab_instruction).to eq :invalid
       end
