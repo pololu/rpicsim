@@ -7,4 +7,5 @@ group :development do
   gem 'deg-yard'  # My little fork of the yard gem that has some bug fixes.
   gem 'guard'
   gem 'guard-rspec'
+  gem 'rubocop'
 end
