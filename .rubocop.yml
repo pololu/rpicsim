@@ -27,6 +27,9 @@ LiteralInCondition:
   Exclude:
     - spec/example/nice_error_spec.rb
 
+SignalException:
+  EnforcedStyle: only_raise
+
 # We disable the TrailingComma cop because depending on how we configure it,
 # it will do one of the following undesirable things:
 # - Require us to put commas at the end of parameter lists for multi-line

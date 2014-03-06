@@ -160,12 +160,6 @@ RedundantSelf:
 ShadowingOuterLocalVariable:
   Enabled: false
 
-# Offence count: 58
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-SignalException:
-  Enabled: false
-
 # Offence count: 2
 # Configuration parameters: AllowIfMethodIsEmpty.
 SingleLineMethods:
