@@ -49,17 +49,17 @@ module RPicSim
       end
 
       klass = case type
-                when Class then type
-                when :word then Storage::MemoryWord
-                when :uint8 then Storage::MemoryUInt8
-                when :int8 then Storage::MemoryInt8
-                when :uint16 then Storage::MemoryUInt16
-                when :int16 then Storage::MemoryInt16
-                when :uint24 then Storage::MemoryUInt24
-                when :int24 then Storage::MemoryInt24
-                when :uint32 then Storage::MemoryUInt32
-                when :int32 then Storage::MemoryInt32
-                else raise ArgumentError, "Unknown type '#{type}'."
+              when Class then type
+              when :word then Storage::MemoryWord
+              when :uint8 then Storage::MemoryUInt8
+              when :int8 then Storage::MemoryInt8
+              when :uint16 then Storage::MemoryUInt16
+              when :int16 then Storage::MemoryInt16
+              when :uint24 then Storage::MemoryUInt24
+              when :int24 then Storage::MemoryInt24
+              when :uint32 then Storage::MemoryUInt32
+              when :int32 then Storage::MemoryInt32
+              else raise ArgumentError, "Unknown type '#{type}'."
               end
 
       variable = klass.new(name, address)

@@ -31,7 +31,8 @@ BracesAroundHashParameters:
 # Offence count: 97
 # Configuration parameters: IndentWhenRelativeTo, SupportedStyles, IndentOneStep.
 CaseIndentation:
-  Enabled: false
+  Exclude:
+    - lib/rpicsim/instruction.rb
 
 # Offence count: 3
 # Configuration parameters: CountComments.
