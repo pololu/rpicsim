@@ -132,7 +132,7 @@ LineEndConcatenation:
 
 # Offence count: 289
 LineLength:
-  Max: 156
+  Max: 140
 
 # Offence count: 1
 LiteralInCondition:

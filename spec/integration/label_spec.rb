@@ -28,7 +28,8 @@ describe 'Labels' do
       end
 
       it '#label provides a very useful error message for wrong names that start with a right name' do
-        expect { label(:additional) }.to raise_error "Cannot find label named 'additional'.  MPASM truncates labels.  You might have meant: addition."
+        expect { label(:additional) }.to raise_error "Cannot find label named 'additional'." \
+          'MPASM truncates labels.  You might have meant: addition.'
       end
     end
 

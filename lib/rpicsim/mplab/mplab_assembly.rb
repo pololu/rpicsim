@@ -88,7 +88,9 @@ module RPicSim::Mplab
       # More info: http://stackoverflow.com/q/15794170/28128
       f = DocumentLocator.java_class.resource('MPLABDocumentLocator.class').getFile()
       if f.include?('%5C')
-        $stderr.puts 'warning: A %5C character was detected in the MPLABDocumentLoator.class file location.  This might cause errors in the Microchip code.'
+        $stderr.puts 'warning: A %5C character was detected in the ' \
+          'MPLABDocumentLoator.class file location.  ' \
+          'This might cause errors in the Microchip code.'
       end
     end
 
