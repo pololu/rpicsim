@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe "SFRs as variables" do
+describe 'SFRs as variables' do
   before do
     start_sim Firmware::ReadSFR
   end
@@ -9,7 +9,7 @@ describe "SFRs as variables" do
     expect(reg(:PMADRL)).to be_a_kind_of RPicSim::Variable
   end
 
-  it "can be written and read from Ruby" do
+  it 'can be written and read from Ruby' do
     reg(:PMADRL).value.should == 0
     reg(:PMADRL).value = 3
     reg(:PMADRL).value.should == 3
@@ -17,15 +17,15 @@ describe "SFRs as variables" do
     x.value.should == 3
   end
   
-  it "has the right name" do
+  it 'has the right name' do
     reg(:PMADRL).name.should == :PMADRL
   end
   
-  it "returns the name with #to_s" do
-    reg(:PMADRL).to_s.should == "PMADRL"
+  it 'returns the name with #to_s' do
+    reg(:PMADRL).to_s.should == 'PMADRL'
   end
   
-  it "cannot always write to all the bits with #value=" do
+  it 'cannot always write to all the bits with #value=' do
     reg(:STATUS).value = 0
     reg(:STATUS).value.should == 0b00011000
   end

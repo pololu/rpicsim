@@ -1,5 +1,5 @@
-if ENV["COVERAGE"] == 'Y'
-  require "simplecov"
+if ENV['COVERAGE'] == 'Y'
+  require 'simplecov'
   SimpleCov.start
 end
 

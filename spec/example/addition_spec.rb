@@ -1,11 +1,11 @@
 require_relative '../spec_helper'
 
-describe "addition" do
+describe 'addition' do
   before do
     start_sim Firmware::Addition
   end
 
-  it "adds x to y and stores the result in z" do
+  it 'adds x to y and stores the result in z' do
     x.value = 70
     y.value = 22
     step

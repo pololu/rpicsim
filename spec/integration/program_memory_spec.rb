@@ -61,40 +61,40 @@ describe 'RPicSim::Sim#program_memory' do
 
   end
   
-  context "in user id space" do
+  context 'in user id space' do
     before do
       run_subroutine :setupUserId0, cycle_limit: 100
     end
 
-    describe "does not get loaded correctly from COF file", flaw: true do
+    describe 'does not get loaded correctly from COF file', flaw: true do
       # The workaround is to simply set the flash variables to the correct values from Ruby
       # and we have tests below to prove that works.
     
-      it "initial value cannot be read by Ruby", flaw: true do
+      it 'initial value cannot be read by Ruby', flaw: true do
         ids = (0x2000..0x2003).collect(&program_memory.method(:read_word))
         expect(ids).to eq [0x3FFF] * 4  # bad
       end
 
-      it "initial value cannot be read by the firmware", flaw: true do
+      it 'initial value cannot be read by the firmware', flaw: true do
         run_subroutine :readX, cycle_limit: 100
         expect(x.value).to eq 0x3FFF  # bad
       end
     end
     
     describe '#write_word' do
-      it "works (affects read_word)" do
+      it 'works (affects read_word)' do
         program_memory.write_word(0x2000, 0x700)
         expect(program_memory.read_word(0x2000)).to eq 0x700
       end
 
-      it "can be read by the firmware after being written by Ruby" do
+      it 'can be read by the firmware after being written by Ruby' do
         program_memory.write_word(0x2000, 0xA0E)
         run_subroutine :readX, cycle_limit: 100
         expect(x.value).to eq 0xA0E
       end
     end
     
-    it "can be written by firmware except in MPLAB X 1.85", flaw: true do
+    it 'can be written by firmware except in MPLAB X 1.85', flaw: true do
       # This flaw was reported and fixed:
       # http://www.microchip.com/forums/m743214.aspx
     

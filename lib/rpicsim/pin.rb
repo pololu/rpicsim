@@ -6,7 +6,7 @@ module RPicSim
     # Initializes a new Pin object to wrap the given MplabPin.
     # @param mplab_pin [Mplab::MplabPin]
     def initialize(mplab_pin)
-      raise ArgumentError, "mplab_pin is nil" if mplab_pin.nil?
+      raise ArgumentError, 'mplab_pin is nil' if mplab_pin.nil?
       @mplab_pin = mplab_pin
     end
 
@@ -55,7 +55,7 @@ module RPicSim
     end    
 
     def inspect
-      "#<%s %s>" % [self.class, to_s]
+      '#<%s %s>' % [self.class, to_s]
     end
   end
 end

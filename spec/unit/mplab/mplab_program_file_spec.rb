@@ -28,7 +28,7 @@ describe RPicSim::Mplab::MplabProgramFile do
     context 'when given a filename inside a dist directory that exists' do
       let(:filename) { Firmware::NestedSubroutines.filename }
       
-      it "succeeds" do
+      it 'succeeds' do
         # After writing this example, I think we should not write any more like it.  --David
         lookup = double('lookup')
         expect(RPicSim::Mplab::Lookup).to receive(:getDefault).and_return { lookup }

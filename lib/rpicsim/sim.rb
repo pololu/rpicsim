@@ -76,7 +76,7 @@ module RPicSim
       #   * +:address+: An integer to use as the address of the variable.
       def def_var(name, type, opts={})
         if @variable_set.nil?
-          raise "The device and filename need to be specified before defining variables."
+          raise 'The device and filename need to be specified before defining variables.'
         end
         
         @variable_set.def_var(name, type, opts)
@@ -400,7 +400,7 @@ module RPicSim
     def run_to(conditions, opts={})
       conditions = Array(conditions)
       if conditions.empty?
-        raise ArgumentError, "Must specify at least one condition."
+        raise ArgumentError, 'Must specify at least one condition.'
       end
 
       condition_procs = conditions.collect &method(:convert_condition_to_proc)
@@ -412,7 +412,7 @@ module RPicSim
       end
 
       if opts[:cycles] && opts[:cycle_limit]
-        raise ArgumentError, "Cannot specify both :cycles and :cycle_limit."
+        raise ArgumentError, 'Cannot specify both :cycles and :cycle_limit.'
       end
 
       start_cycle = cycle_count
@@ -508,7 +508,7 @@ module RPicSim
     # and just want to skip it.
     def return
       if stack_pointer.value == 0
-        raise "Cannot return because stack is empty."
+        raise 'Cannot return because stack is empty.'
       end
 
       # Simulate popping the stack.
@@ -589,7 +589,7 @@ module RPicSim
       when :return
         current_val = stack_pointer.value
         if current_val == 0
-          raise "The stack pointer is 0; waiting for a return would be strange and might not work."
+          raise 'The stack pointer is 0; waiting for a return would be strange and might not work.'
         else
           target_val = current_val - 1
         end

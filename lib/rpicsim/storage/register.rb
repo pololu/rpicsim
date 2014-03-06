@@ -72,7 +72,7 @@ module RPicSim::Storage
     end
     
     def inspect
-      "<%s %s 0x%x>" % [self.class, name, address]
+      '<%s %s 0x%x>' % [self.class, name, address]
     end
   end
 end

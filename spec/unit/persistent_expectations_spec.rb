@@ -8,24 +8,24 @@ describe RPicSim::RSpec::PersistentExpectations do
     o
   end
 
-  describe "#expecting" do
-    it "returns the current hash of expectations" do
+  describe '#expecting' do
+    it 'returns the current hash of expectations' do
       subject.expectations.should == {}
     end
   end
 
-  describe "#expecting" do
-    it "adds to the hash" do
+  describe '#expecting' do
+    it 'adds to the hash' do
       @a = []
-      @b = "abc"
+      @b = 'abc'
       empty_matcher = be_empty
-      subject.expecting @a => empty_matcher, @b => eq("abc")
-      subject.expectations.should == { @a => empty_matcher, @b => eq("abc") }
+      subject.expecting @a => empty_matcher, @b => eq('abc')
+      subject.expectations.should == { @a => empty_matcher, @b => eq('abc') }
     end
   end
 
-  describe "#check_expecations" do
-    it "just returns nil when the expectations match" do
+  describe '#check_expecations' do
+    it 'just returns nil when the expectations match' do
       subject.expecting [] => be_empty
       subject.check_expectations.should == nil
     end

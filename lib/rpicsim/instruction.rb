@@ -250,7 +250,7 @@ module RPicSim
       elsif operands[:n]
         n_address
       else
-        raise "This instruction does not have fields k or n."
+        raise 'This instruction does not have fields k or n.'
       end
     end
     

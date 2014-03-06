@@ -3,7 +3,7 @@ module RPicSim::Mplab
     # Initializes a new Pin object to wrap the given PinPhysical.
     # @param pin_physical [com.microchip.mplab.mdbcore.simulator.PinPhysical]
     def initialize(pin_physical)
-      raise ArgumentError, "pin_physical is nil" if pin_physical.nil?
+      raise ArgumentError, 'pin_physical is nil' if pin_physical.nil?
       @pin_physical = pin_physical
     end
 

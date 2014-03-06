@@ -23,12 +23,12 @@ module RPicSim::Mplab
       # debugger.Connect we will get two lines of: [Fatal Error] :1:1: Premature end of file.
       simulator
     
-      sim_meta = Mdbcore.platformtool.PlatformToolMetaManager.getTool("Simulator")
-      @assembly.SetTool(sim_meta.configuration_object_id, sim_meta.class_name, sim_meta.flavor, "")
+      sim_meta = Mdbcore.platformtool.PlatformToolMetaManager.getTool('Simulator')
+      @assembly.SetTool(sim_meta.configuration_object_id, sim_meta.class_name, sim_meta.flavor, '')
       if !sim_meta.getToolSupportForDevice(device).all? &:isSupported
-        raise "Microchip's simulator does not support " + device + "."
+        raise "Microchip's simulator does not support " + device + '.'
       end
-      @assembly.SetHeader("")  # The Microchip documentation doesn't say what this is.
+      @assembly.SetHeader('')  # The Microchip documentation doesn't say what this is.
       debugger.Connect(Mdbcore.debugger.Debugger::CONNECTION_TYPE::DEBUGGER)
       
       # Load our firmware into the simulator.
@@ -86,9 +86,9 @@ module RPicSim::Mplab
     def warn_about_5C
       # Detect a problem that once caused peripherals to load incorrectly.
       # More info: http://stackoverflow.com/q/15794170/28128
-      f = DocumentLocator.java_class.resource("MPLABDocumentLocator.class").getFile()
-      if f.include?("%5C")
-        $stderr.puts "warning: A %5C character was detected in the MPLABDocumentLoator.class file location.  This might cause errors in the Microchip code."
+      f = DocumentLocator.java_class.resource('MPLABDocumentLocator.class').getFile()
+      if f.include?('%5C')
+        $stderr.puts 'warning: A %5C character was detected in the MPLABDocumentLoator.class file location.  This might cause errors in the Microchip code.'
       end
     end
 

@@ -121,7 +121,7 @@ module RPicSim
         instr.transitions.each do |transition|
           next_instruction = transition.next_instruction
           if @max_depths[next_instruction] < @max_depths[instr] + transition.call_depth_change
-            raise "Call stack info double check failed: %s has max_depth %d and leads (%d) to %s with max_depth %d." %
+            raise 'Call stack info double check failed: %s has max_depth %d and leads (%d) to %s with max_depth %d.' %
               [instr, depth, transition.call_depth_change, next_instruction, @max_depths[next_instruction]]
           end
         end
@@ -175,7 +175,7 @@ module RPicSim
     # Returns a nice report string of all the {#worst_case_code_paths_filtered}.
     # @return [String]
     def worst_case_code_paths_filtered_report
-      s = ""
+      s = ''
       worst_case_code_paths_filtered.each do |code_path|
         s << code_path.to_s + "\n"
         s << "\n"

@@ -1,22 +1,22 @@
 module Firmware
-  Dir = File.dirname(__FILE__) + "/firmware/dist/"
+  Dir = File.dirname(__FILE__) + '/firmware/dist/'
 
   class Addition < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "Addition.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'Addition.cof'
     def_var :x, :uint16
     def_var :y, :uint16
     def_var :z, :uint16
   end
 
   class BoringLoop < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "BoringLoop.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'BoringLoop.cof'
   end
 
   class DrivePinHigh < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "DrivePinHigh.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'DrivePinHigh.cof'
   end
 
   class EepromVariables < RPicSim::Sim
@@ -26,8 +26,8 @@ module Firmware
   end
   
   class FlashVariables < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "FlashVariables.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'FlashVariables.cof'
     def_var :x, :uint16
     def_var :normalFlashVar, :word, memory: :program_memory
     def_var :userId0, :word, address: 0x2000, memory: :program_memory
@@ -38,39 +38,39 @@ module Firmware
   end
 
   class LongDelay < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "LongDelay.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'LongDelay.cof'
     def_var :hot, :uint8
   end
 
   class NestedSubroutines < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "NestedSubroutines.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'NestedSubroutines.cof'
   end
 
   class PinMirror < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "PinMirror.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'PinMirror.cof'
 
     def_pin :main_input, :RA0
     def_pin :main_output, :RA1
   end
 
   class ReadADC < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "ReadADC.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'ReadADC.cof'
   end
 
   class ReadPin < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "ReadPin.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'ReadPin.cof'
     def_var :x, :uint8
     def_pin :main_pin, :RA0
   end
 
   class ReadSFR < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "ReadSFR.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'ReadSFR.cof'
     def_var :x, :uint8
   end
 
@@ -101,8 +101,8 @@ module Firmware
   end
 
   class Variables < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "Variables.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'Variables.cof'
     def_var :xu8, :uint8
     def_var :xs8, :int8
     def_var :xu16, :uint16
@@ -116,8 +116,8 @@ module Firmware
   end
 
   class WriteTo5F < RPicSim::Sim
-    device_is "PIC10F322"
-    filename_is Dir + "WriteTo5F.cof"
+    device_is 'PIC10F322'
+    filename_is Dir + 'WriteTo5F.cof'
   end
 
 end

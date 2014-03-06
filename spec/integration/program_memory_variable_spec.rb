@@ -14,27 +14,27 @@ describe 'Program memory variables (midrange)' do
       expect(normalFlashVar.addresses.count).to eq 1
     end
   
-    it "can be read by Ruby" do
+    it 'can be read by Ruby' do
       normalFlashVar.value.should == 0x801
     end
 
-    it "can be read by the firmware" do
+    it 'can be read by the firmware' do
       run_subroutine :readX, cycle_limit: 100
       x.value.should == 0x801
     end
     
-    it "can be written by Ruby" do
+    it 'can be written by Ruby' do
       normalFlashVar.value = 700
       normalFlashVar.value.should == 700
     end
     
-    it "can be read by the firmware after being written by Ruby" do
+    it 'can be read by the firmware after being written by Ruby' do
       normalFlashVar.value = 0xA0E
       run_subroutine :readX, cycle_limit: 100
       x.value.should == 0xA0E
     end
     
-    it "can be written by firmware" do
+    it 'can be written by firmware' do
       x.value = 0xE23
       run_subroutine :saveX, cycle_limit: 20000
       normalFlashVar.value.should == 0xE23
@@ -60,12 +60,12 @@ describe 'Program memory variables (midrange)' do
       run_subroutine :setupUserId0, cycle_limit: 100
     end
         
-    it "can be written by Ruby" do
+    it 'can be written by Ruby' do
       userId0.value = 700
       userId0.value.should == 700
     end
 
-    it "can be read by the firmware after being written by Ruby" do
+    it 'can be read by the firmware after being written by Ruby' do
       userId0.value = 0xA0E
       run_subroutine :readX, cycle_limit: 100
       x.value.should == 0xA0E
@@ -79,7 +79,7 @@ describe 'Program memory variables (PIC18)' do
     start_sim Firmware::Test18F25K50
   end
 
-  context "word in normal space (not user id space)" do
+  context 'word in normal space (not user id space)' do
     subject { flashVar1 }
     
     it 'has two address' do

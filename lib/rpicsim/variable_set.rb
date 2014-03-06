@@ -42,7 +42,7 @@ module RPicSim
       else
         symbol = (opts[:symbol] || name).to_sym
         if symbol.to_s.include?('@')
-          raise "Limitations in MPLAB X code prevent us from accessing " +
+          raise 'Limitations in MPLAB X code prevent us from accessing ' +
             "variables with '@' in the name like '#{symbol}'"
         end
         address = symbol_addresses[symbol] or raise ArgumentError, "Cannot find variable in #{memory_type} named '#{symbol}'."
@@ -71,7 +71,7 @@ module RPicSim
       vars_by_address = @vars_for_memory_by_address[memory_type]
       variable.addresses.each do |address|
         if vars_by_address[address]
-          raise "Variable %s overlaps with %s at 0x%x" %
+          raise 'Variable %s overlaps with %s at 0x%x' %
             [variable, @vars_by_address[address], address]
         end
         vars_by_address[address] = variable

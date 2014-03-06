@@ -82,14 +82,14 @@ module RPicSim::Mplab
     
     def check_peripherals_in_data_store
       if data_store.getNumPeriphs == 0
-        raise "MPLAB X failed to load any peripheral descriptions into the data store."
+        raise 'MPLAB X failed to load any peripheral descriptions into the data store.'
       end
     end
 
     def check_peripheral_set
       peripherals = data_store.getProcessor.getPeripheralSet
       if peripherals.getNumPeripherals == 0
-        raise "MPLAB X failed to load any peripherals into the PeripheralSet."
+        raise 'MPLAB X failed to load any peripherals into the PeripheralSet.'
       end
     end
     

@@ -43,7 +43,7 @@ describe 'Disassembly' do
       expect(instruction0.size).to eq size
     end
     
-    it "is valid" do
+    it 'is valid' do
       expect(instruction0).to be_valid
     end
 
@@ -160,7 +160,7 @@ describe 'Disassembly' do
   end
   
   shared_examples_for 'instruction with field k that is a relative word address' do
-    it "has the right string" do
+    it 'has the right string' do
       string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:k] + 1) ]
       expect(instruction0.string).to eq string
     end
@@ -173,7 +173,7 @@ describe 'Disassembly' do
   
   shared_examples_for 'instruction with field n' do
   
-    it "has the right string" do
+    it 'has the right string' do
       string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:n] + 1) ]
       expect(instruction0.string).to eq string
     end

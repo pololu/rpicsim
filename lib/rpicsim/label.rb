@@ -22,7 +22,7 @@ module RPicSim
     
     # Returns a nice string representation of the label.
     def to_s
-      "<Label %s address=0x%x>" % [name, address]
+      '<Label %s address=0x%x>' % [name, address]
     end
   end
 end

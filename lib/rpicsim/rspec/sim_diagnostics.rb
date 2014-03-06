@@ -45,7 +45,7 @@ class RSpec::Core::Formatters::BaseTextFormatter
   def dump_sim_stack_trace(example)
     sim_stack_trace = example.metadata[:sim_stack_trace] or return
     output.puts long_padding
-    output.puts long_padding + "Simulation stack trace:"
+    output.puts long_padding + 'Simulation stack trace:'
     sim_stack_trace.output(output, long_padding)
   end
 end

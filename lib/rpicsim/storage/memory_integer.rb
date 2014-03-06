@@ -28,13 +28,13 @@ module RPicSim::Storage
     # Reads the value of the variable from memory.
     # @return [Integer]
     def value
-      raise NoMethodError, "value not implemented"
+      raise NoMethodError, 'value not implemented'
     end
 
     # Writes to the value to the variable's memory.
     # @return [Integer]
     def value=(val)
-      raise NoMethodError, "value= not implemented"
+      raise NoMethodError, 'value= not implemented'
     end
 
     def memory_value=(val)
@@ -50,7 +50,7 @@ module RPicSim::Storage
     end
 
     def inspect
-      "<%s %s 0x%x>" % [self.class, name, address]
+      '<%s %s 0x%x>' % [self.class, name, address]
     end
     
     private

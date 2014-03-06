@@ -10,8 +10,8 @@ describe RPicSim::CompositeMemory do
   it 'raises a good error message for invalid addresses' do
     expect(@mem1).to receive(:is_valid_address?).with(0x40).and_return(false).exactly(2).times
     expect(@mem2).to receive(:is_valid_address?).with(0x40).and_return(false).exactly(2).times
-    expect { @composite_memory.read_word(0x40) }.to raise_error "Invalid memory address 0x40."
-    expect { @composite_memory.write_word(0x40, 0) }.to raise_error "Invalid memory address 0x40."
+    expect { @composite_memory.read_word(0x40) }.to raise_error 'Invalid memory address 0x40.'
+    expect { @composite_memory.write_word(0x40, 0) }.to raise_error 'Invalid memory address 0x40.'
   end
   
   it 'uses the first memory if it can, without considering the second' do

@@ -47,7 +47,7 @@ module RPicSim
     end
     
     def memory(address)
-      find_memory(address) or raise "Invalid memory address %#x." % address
+      find_memory(address) or raise 'Invalid memory address %#x.' % address
     end
   end
 end

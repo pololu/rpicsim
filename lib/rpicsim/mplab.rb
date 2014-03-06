@@ -10,7 +10,7 @@ module RPicSim::Mplab
   # JRuby makes it hard to access packages with capital letters in their names.
   # This is a workaround to let us access those packages.
   capitalized_packages = Module.new do
-    include_package "com.microchip.mplab.libs.MPLABDocumentLocator"
+    include_package 'com.microchip.mplab.libs.MPLABDocumentLocator'
   end
   
   # The com.microchip.mplab.libs.MPLABDocumentLocator.MPLABDocumentLocator class from MPLAB X.

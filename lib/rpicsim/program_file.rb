@@ -75,14 +75,14 @@ module RPicSim
     # @param address [Integer] An address in program memory.
     # @return [String]
     def address_description(address)
-      desc = address < 0 ? address.to_s : ("0x%04x" % [address])
+      desc = address < 0 ? address.to_s : ('0x%04x' % [address])
       reference_points = labels.values.reject { |label| label.address > address }
       label = reference_points.max_by &:address
       
       if label
         offset = address - label.address
-        desc << " = " + label.name.to_s
-        desc << "+%#x" % [offset] if offset != 0
+        desc << ' = ' + label.name.to_s
+        desc << '+%#x' % [offset] if offset != 0
       end
       
       return desc
@@ -104,8 +104,8 @@ module RPicSim
         name.to_s.start_with?(label_sym.to_s)
       end
       if !maybe_intended_labels.empty?
-        message << "  MPASM truncates labels.  You might have meant: " +
-                   maybe_intended_labels.join(", ") + "."
+        message << '  MPASM truncates labels.  You might have meant: ' +
+                   maybe_intended_labels.join(', ') + '.'
       end
       message
     end

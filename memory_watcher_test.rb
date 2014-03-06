@@ -20,7 +20,7 @@ def supported_pic_devices
   Java::ComMicrochipCrownkingMplabinfo::mpPlatformTool.instance_eval do
     field_accessor :listOfDevices
   end
-  sim_meta = com.microchip.mplab.mdbcore.platformtool.PlatformToolMetaManager.getTool("Simulator")
+  sim_meta = com.microchip.mplab.mdbcore.platformtool.PlatformToolMetaManager.getTool('Simulator')
   devices = sim_meta.listOfDevices.to_a.uniq.sort
   devices = devices.grep(/PIC1[0268].*/)
   devices.select! do |device|

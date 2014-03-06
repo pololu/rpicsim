@@ -23,7 +23,7 @@ module RPicSim
       vars.each do |var|
         var.addresses.each do |address|
           if @vars_by_address[address]
-            raise "Variable %s overlaps with %s at 0x%x" %
+            raise 'Variable %s overlaps with %s at 0x%x' %
               [var, @vars_by_address[address], address]
           end
           @vars_by_address[address] = var

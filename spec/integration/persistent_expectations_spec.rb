@@ -14,7 +14,7 @@ describe RPicSim::RSpec::PersistentExpectations do
     run_cycles 10
   end
 
-  it "checks persistent expectations every step after they are set up" do
+  it 'checks persistent expectations every step after they are set up' do
     # we should get an error on the NEXT step if we expect high
     expecting pin(:RA1) => be_driving_high
     old_cycle_count = cycle_count
@@ -43,7 +43,7 @@ describe RPicSim::RSpec::PersistentExpectations do
     expect { step }.to_not raise_error
   end
 
-  it "checks persistent expectations in a block" do
+  it 'checks persistent expectations in a block' do
     # we should get an error on the NEXT step if we expect high
     yield_count = 0
     expecting(pin(:RA1) => be_driving_high) do
@@ -56,7 +56,7 @@ describe RPicSim::RSpec::PersistentExpectations do
     expect { step }.to_not raise_error
   end
 
-  it "restores expectations if a block raises an exception" do
+  it 'restores expectations if a block raises an exception' do
     begin
       expecting(pin(:RA1) => be_driving_high) do
         raise IntentionalError
@@ -67,7 +67,7 @@ describe RPicSim::RSpec::PersistentExpectations do
     expect(expectations).to eq({})
   end
 
-  it "restores nested expectations" do
+  it 'restores nested expectations' do
     low = be_driving_low
     high = be_driving_low
 
