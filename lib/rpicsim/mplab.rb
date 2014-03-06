@@ -21,13 +21,11 @@ module RPicSim::Mplab
 
   # Mutes the standard output, calls the given block, and then unmutes it.
   def self.mute_stdout
-    begin
-      orig = java.lang.System.out
-      java.lang.System.setOut(java.io.PrintStream.new(NullOutputStream.new))
-      yield
-    ensure
-      java.lang.System.setOut(orig)
-    end
+    orig = java.lang.System.out
+    java.lang.System.setOut(java.io.PrintStream.new(NullOutputStream.new))
+    yield
+  ensure
+    java.lang.System.setOut(orig)
   end
 
   # Mutes a particular type of exception printed by NetBeans,

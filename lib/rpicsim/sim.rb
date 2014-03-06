@@ -442,7 +442,7 @@ module RPicSim
       end
 
       # Return the argument that specified the condition that was satisfied.
-      return met_condition
+      met_condition
     end
 
     # Gets the address of the specified location in program memory.

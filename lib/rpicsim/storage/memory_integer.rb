@@ -42,7 +42,7 @@ module RPicSim::Storage
     end
 
     def memory_value(val)
-      self.value
+      value
     end
 
     def to_s

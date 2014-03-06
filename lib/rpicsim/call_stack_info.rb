@@ -292,7 +292,7 @@ module RPicSim
         # it is obvious whether any given skip was taken or not, as long
         # as you know which calls and gotos were taken.
 
-        return false
+        false
       end
 
       # Returns a multi-line string representing this execution path.

@@ -170,7 +170,7 @@ module RPicSim
     # Compares this instruction to another using the addresses.  This means you can
     # call +.sort+ on an array of instructions to put them in order by address.
     def <=>(other)
-      self.address <=> other.address
+      address <=> other.address
     end
 
     # Human-readable string representation of the instruction.

@@ -67,7 +67,7 @@ module RPicSim
       if !label
         raise ArgumentError, message_for_label_not_found(name)
       end
-      return label
+      label
     end
 
     # Generates a friendly human-readable string description of the given address in
@@ -85,7 +85,7 @@ module RPicSim
         desc << '+%#x' % [offset] if offset != 0
       end
 
-      return desc
+      desc
     end
 
     # Gets an {Instruction} object representing the PIC instruction at the given

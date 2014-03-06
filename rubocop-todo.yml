@@ -141,21 +141,6 @@ ParenthesesAsGroupedExpression:
 Proc:
   Enabled: false
 
-# Offence count: 1
-RedundantBegin:
-  Enabled: false
-
-# Offence count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-RedundantReturn:
-  Enabled: false
-
-# Offence count: 2
-# Cop supports --auto-correct.
-RedundantSelf:
-  Enabled: false
-
 # Offence count: 2
 ShadowingOuterLocalVariable:
   Enabled: false
