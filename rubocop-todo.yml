@@ -22,10 +22,6 @@ ClassLength:
 CollectionMethods:
   Enabled: false
 
-# Offence count: 3
-ConstantName:
-  Enabled: false
-
 # Offence count: 5
 CyclomaticComplexity:
   Max: 91
