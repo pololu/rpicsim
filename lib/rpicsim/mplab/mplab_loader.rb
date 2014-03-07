@@ -95,11 +95,12 @@ module RPicSim::Mplab
     end
 
     def jar_dir
-      @jar_dir ||= if (dir + 'mplab_ide.app').exist?
-        dir + 'mplab_ide.app/Contents/Resources/mplab_ide'  # Mac OS X
-      else
-        dir + 'mplab_ide'
-      end
+      @jar_dir ||=  if (dir + 'mplab_ide.app').exist?
+                      # Mac OS X
+                      dir + 'mplab_ide.app/Contents/Resources/mplab_ide'
+                    else
+                      dir + 'mplab_ide'
+                    end
     end
   end
 end
