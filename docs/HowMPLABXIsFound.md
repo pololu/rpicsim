@@ -3,7 +3,7 @@ How MPLAB X is found
 
 RPicSim uses many Java classes from MPLAB X.
 This section describes how it finds those classes at run time.
-The code that controls this can be found in `lib/rpicsim/mplab_x.rb` in the source code of RPicSim.
+The code that controls this can be found in `lib/rpicsim/mplab/mplab_loader.rb` in the source code of RPicSim.
 
 The primary thing that RPicSim needs to do is figure out what directory MPLAB X has been installed in.
 If the `RPICSIM_MPLABX` environment variable is set, it will assume that environment variable contains the path to the MPLAB X directory.

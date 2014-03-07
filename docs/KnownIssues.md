@@ -45,7 +45,7 @@ _MPLAB X versions affected: all tested versions_
 
 In Windows, a bug in MPLAB X prevents RPicSim from using an MPLAB X installed on any drive other than the C drive.
 
-This issue is tested in `spec/mplab_x/path_retrieval_spec.rb`.
+This issue is tested in `spec/mplab/path_retrieval_spec.rb`.
 
 
 Firmware under test must be inside a folder named "dist"
@@ -54,22 +54,14 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: all tested versions_
 
-This issue is tested in `spec/mplab_x/program_file_spec.rb`.
-
-
-No EEPROM support
-----
-_Type: RPicSim missing feature_
-
-RPicSim does not support reading or writing from EEPROM from Ruby.
+This issue is tested in `spec/mplab/program_file_spec.rb`.
 
 
 Cannot detect PIC model from COF file
 ----
 _Type: RPicSim missing feature_
 
-The MPLAB X code might allow RPicSim to detect the PIC device name from the COF file so that the user does not have to specify it when creating a {RPicSim::ProgramFile} or a subclass of {RPicSim::Sim}.
-Currently RPicSim requires the user to always specify the PIC device name.
+Currently RPicSim requires the user to always specify the PIC device name when creating a {RPicSim::ProgramFile} or a subclass of {RPicSim::Sim}, even though it might be possible to get that information from the COF file.
 
 
 Variables defined in user ID space are not read from the COF file
@@ -78,7 +70,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X version affected: all tested versions_
 
-The workaround is to simply set any variables defined in user ID space to the correct values from Ruby before running the simulation.
+If your firmware uses variables stored in user ID space, the workaround for this issue is to simply set any variables defined in user ID space to the correct values from Ruby before running the simulation.
 This issue is tested in `spec/integration/program_memory_variable_spec.rb`.
 
 
@@ -133,7 +125,7 @@ _Type: MPLAB X bug_
 
 _MPLAB X versions affected: 1.95, 2.00, 2.05_
 
-This issue is tested in `spec/mplab_x/memory_attach_spec.rb`.
+This issue is tested in `spec/mplab/memory_attach_spec.rb`.
 If you want to use the {file:RamWatcher.md RAM watcher}, you should use MPLAB X version 1.85 or 1.90.
 
 

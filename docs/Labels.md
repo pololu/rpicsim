@@ -18,7 +18,8 @@ To get a Label object, call {RPicSim::Sim#label} and pass it the name of the lab
     !!!ruby
     sim.label(:loopStart)  # => returns a Label object
 
-C compilers will generally put an underscore at the beginning of any labels they generate.  For example, to get the address of a C function named `foo`, you might have to access a label named `_foo` using code like this:
+C compilers will generally put an underscore at the beginning of any labels they generate.
+Therefore, to get the address of a C function named `foo`, you might have to access a label named `_foo` using code like this:
 
     !!!ruby
     sim.label(:_foo)
@@ -26,13 +27,13 @@ C compilers will generally put an underscore at the beginning of any labels they
 If RPicSim cannot find the label you want to use, you might troubleshoot it by printing out a list of all the known labels:
 
     !!!ruby
-    p sim.class.program_file.labels.keys
+    p sim.program_file.labels.keys
 
 
 Using a Label object
 ----
 
-You can basically only do three things with a Label object:
+There are three main things you can do with a Label object:
 
 * Get its name by calling {RPicSim::Label#name}.
 * Get its address by calling {RPicSim::Label#address}.

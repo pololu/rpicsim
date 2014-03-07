@@ -97,7 +97,7 @@ We can rewrite that using block arguments instead of explicitly clearing the exp
       end
     end
 
-If you need to repeat this patten many times in your tests, you might consider adding a method in `spec_helper.rb` to help you do it:
+If you need to repeat this patten many times in your tests, you might consider adding a method in your `spec_helper.rb` to help you do it:
 
     !!!ruby
     def transition(opts={})

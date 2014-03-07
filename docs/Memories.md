@@ -1,7 +1,7 @@
 Memories
 ====
 
-RPicSim uses the {RPicSim::Memory} class to provide access to the RAM, EEPROM, and program memories of the simulated device.
+RPicSim uses the {RPicSim::Memory} class to provide access to the RAM, EEPROM, and program memory of the simulated device.
 This is useful if you want to interact with variables and data structures in your firmware that are too complex to be handled by RPicSim's {file:Variables.md} feature, like strings, structs, and buffers.
 
 RAM and EEPROM
@@ -27,7 +27,7 @@ To get the {RPicSim::Memory Memory} object that represents program memory, call 
 In addition to letting you access the main part of program memory which contains the program, this object also allows access to the configuration words and user ID words.
 The program memory is also known as flash, ROM, and code space.
 
-Because of the different architectures, the program memory object behaves differently depending on whether your are simulating a PIC18 device or a non-PIC18 device, as described below.
+The program memory object behaves differently depending on whether your are simulating a PIC18 device or a non-PIC18 device, as described below.
 
 ### Program memory on a non-PIC18 devices
 

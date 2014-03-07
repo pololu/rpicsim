@@ -24,13 +24,13 @@ This allows us to move our tests and firmware files around on the disk without c
 Pins
 ----
 
-You can use {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin} to define an alternative name for a pin.  For more information, see {file:Pins.md}.
+You can use {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin} in your simulation class to define an alternative name for a pin.  For more information, see {file:Pins.md}.
 
 
 Variables
 ----
 
-You can use {RPicSim::Sim::ClassDefinitionMethods#def_var def_var} to define a variable in RAM, program memory, or EEPROM.
+You can use {RPicSim::Sim::ClassDefinitionMethods#def_var def_var} in your simulation class to define a variable in RAM, program memory, or EEPROM.
 For more information, see {file:Variables.md}.
 
 
@@ -53,7 +53,7 @@ It is sometimes helpful to define your own methods in the simulation class.  For
     end
 
 By making these `jumper_on` and `jumper_off` methods, we can write lots of tests that manipulate the jumper but we don't have to constantly worry about how the hardware jumper is implemented when writing or reading those tests.
-This makes our tests clearer to the reader and makes it easier to adapt them to change.
+This makes our tests easier to read and change.
 
 If you have an instance of the simulation class, you can call such a method in the usual way:
 

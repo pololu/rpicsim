@@ -4,7 +4,8 @@ Introduction to RSpec
 [RSpec](http://rspec.info/) is a testing tool for the Ruby programming language that allows you to write an automated test suite.
 RSpec provides great ways to combine code from similar tests, provides good error messages, and encourages you to specify exactly what you are testing.
 
-The main documentation for RSpec can be found from the project's website at [rspec.info](http://rspec.info/), but I think it is not very easy to follow.  This page goes over the most important things you should know about RSpec.
+The main documentation for RSpec can be found from the project's website at [rspec.info](http://rspec.info/).
+This page documents the most important things you should know about RSpec.
 
 File structure
 ----
@@ -42,12 +43,13 @@ An _example_ is the basic unit of an RSpec test suite.  Examples are defined usi
       end
     end
 
-The strings passed to `describe`, `context`, `it`, and `specify` are optional, but are used to generate helpful error messages and documentation.  If an example fails then a string about the expected behavior is produced by concatenating all the provided strings, from outermost to innermost.
+The strings passed to `describe`, `context`, `it`, and `specify` are optional, but are used to generate helpful error messages and documentation.
+If an example fails, then a string about the expected behavior is produced by concatenating all the provided strings, from outermost to innermost.
 
 Expectations
 ----
 
-In general, an RSpec example consists of some code to set up the situation being tested, and some code that called an _expectation_ that defines the expected outcome.
+In general, an RSpec example consists of some code to set up the situation being tested, and some code called an _expectation_ that defines the expected outcome.
 If an expectation fails, an exception is raised, the example stops executing, and a failure message is displayed.
 Expectations look like this:
 
@@ -71,7 +73,7 @@ Here is a concrete, runnable example:
       end
     end
 
-First, the code adds 1 to 5 and then expects it to equal 6.
+First, the code adds 1 to 5 and stores the result.
 Then the number 6 is passed as the first argument to `eq`, making an equality matcher that tests whether the result is equal to 6.
 Note that parentheses are not required when calling a method in Ruby: you can write `eq(6)` or `eq 6`.
 
@@ -155,7 +157,8 @@ The first argument is the name of a variable to define.
 The `let` method is passed a block that computes the value of the variable, and the block will be called if the value of the variable is ever needed.
 In other words, `let` variables are lazily evaluated.
 
-The example below shows how a `let` variable could be useful for making your tests more readable; I only had to write the number 2 once.  In this case, `let` allows us to separate the description of the expected behavior (the car can shift gears) from the arbitrary value (2) that we used to test it.
+The example below shows how a `let` variable could be useful for making your tests more readable.
+In this case, `let` allows us to separate the description of the expected behavior (the car can shift gears) from the arbitrary value (2) that we used to test it.
 
     !!!ruby
     describe "my car" do

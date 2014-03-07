@@ -23,7 +23,7 @@ Requiring "rpicsim/rspec" causes the {RPicSim::RSpec::Helpers} module to get inc
 
 This module provides the {RPicSim::RSpec::Helpers#start_sim start_sim} method and the methods described on the {file:PersistentExpectations.md persistent expectations page}.
 You can call `start_sim` in an example or a before hook to start a new simulation.
-The simulation object can then be accessed with by typing `sim` in your examples.
+The simulation object can then be accessed through a method named `sim` in your examples.
 
 ### Basic shortcuts
 
@@ -38,7 +38,7 @@ You can call these by simply typing a method name in an RSpec example:
 ### Firmware-specific shortcuts
 
 Unless you disable them, you will get access to firmware-specific shortcuts defined by the simulation.
-These shortcuts correspond to items defined with {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}, and {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin}.
+These shortcuts correspond to items defined with {RPicSim::Sim::ClassDefinitionMethods#def_var def_var} and {RPicSim::Sim::ClassDefinitionMethods#def_pin def_pin}.
 
 For example, if your {file:DefiningSimulationClass.md simulation class} defines a pin named `main_output`, then you can just write code like this in your RSpec examples:
 

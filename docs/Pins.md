@@ -23,8 +23,6 @@ The first argument of {RPicSim::Sim#pin} should be the name of the pin as a symb
 The allowed names come from the MPLAB X code, but they should match the names given in the PIC datasheet.
 For example, the PIC10F322 pin RA1 can be referred to by many names, including `:RA1`, `:PWM2`, `:AN1`, and `:NCO1CLK`.
 
-RPicSim does not model the GND and VDD pins.
-
 Pin aliases
 ----
 
@@ -46,19 +44,19 @@ This makes `:main_output` be an alias for `:RA1`.  You can now access the Pin ob
     !!!ruby
     pin(:main_output)
     
-Defining a pin alias also adds a "shortcut" method by the same name.  This means that you can access the pin like this:
+Defining a pin alias also adds a new method by the same name.  This means that you can access the pin like this:
 
     !!!ruby
     sim.main_output
     
-The shortcuts are also available in RSpec thanks to RPicsim's {file:RSpecIntegration.md RSpec integration}, so you can simply write `main_output` in any of your RSpec examples:
+Shortcuts for these methods are also available in RSpec thanks to RPicsim's {file:RSpecIntegration.md RSpec integration}, so you can simply write `main_output` instead of `sim.main_output` in any of your RSpec examples:
 
     !!!ruby
     it "drives the main output high" do
       expect(main_output).to be_driving_high
     end
     
-Note that since the shortcuts are available in many places, your pin names might conflict with names defined in other places.
+Note that since these methods are available in many places, your pin names might conflict with names defined in other places.
 
 
 Pin methods

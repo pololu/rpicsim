@@ -4,7 +4,6 @@ Preventing call stack overflow
 PIC microcontrollers feature a stack implemented in hardware that keeps track of return addresses for subroutine calls.
 Every time a `CALL` instruction is executed, the return address is pushed onto the stack.
 Every time a `RETURN` or similar instruction is executed, the return address is popped off of the stack.
-The PIC datasheets tend to refer to this as the "stack", but in RPicSim it is known as the _call stack_ in order to make it clear that this is the stack that relates to the `CALL` instruction and it is different from any kind of stack a C compiler might place in RAM for local variables.
 
 The call stack has a limited depth that depends on the device you are using.
 If your program has too many levels of nested subroutines then the call stack could overflow.
@@ -25,7 +24,7 @@ Here is an example:
         call_stack_info[0].max_depth be <= 5
       end
 
-      specify "ISR code uses no more than 2 levels" do
+      specify "ISR code uses no more than 1 level" do
         call_stack_info[4].max_depth.should be <= 1
       end
     end
@@ -90,4 +89,4 @@ However, there are some things that can mess up the algorithm in a bad way and g
 
 This code is not suitable (yet) for any firmware that uses a computed jump, paged program memory, or PUSH or POP instructions.
   
-This code only checks the hardware call stack; it does not check any kind of data stack that your compiler might use to store the values of local variables.  Checking that kind of stack is important, but would be much harder.
+This code only checks the hardware call stack; it does not check any kind of data stack that your compiler might use to store the values of local variables.

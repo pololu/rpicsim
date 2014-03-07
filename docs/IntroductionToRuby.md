@@ -13,7 +13,7 @@ This manual comes with plenty of concrete, usable examples that you can start wi
 You should be able to accomplish a lot with RPicSim by just copying the examples in this manual, without any specific study of the Ruby language.
 However, knowing Ruby will allow you to condense repetitive parts of your tests, enable you to express complex concepts, and make it much easier to troubleshoot problems.
 
-If you are new to Ruby, I recommend spending an afternoon perusing the [Documentation page on ruby-lang.org](https://www.ruby-lang.org/en/documentation/).
+If you are new to Ruby, it would be a good idea to spend an afternoon perusing the [Documentation page on ruby-lang.org](https://www.ruby-lang.org/en/documentation/).
 If you want more, there are many books you can buy that teach Ruby.
 If you have any particular questions, try searching Google and then try asking on [StackOverflow](http://www.stackoverflow.com).
 Your question will probably be answered within hours, but remember to provide all the necessary information in your first post (see [SSCCE.org](http://www.sscce.org)).
@@ -76,7 +76,7 @@ Blocks
 
 Whenever you see code between the Ruby keywords `do` and `end`, or between `{` and `}`, that code is inside a Ruby _block_.
 A block is a chunk of executable code that can be easily created, passed around, and called like a method.
-Any given block could be called once, multiple times, or never depending on the situation.
+Any given block could be called once, multiple times, or never, depending on the situation.
 
 For example, here is some code that passes a black to a method called `foo_method`.
 The block prints "hello world" to the standard output.

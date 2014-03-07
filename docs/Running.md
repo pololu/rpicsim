@@ -19,8 +19,7 @@ Single-stepping
 
 The {RPicSim::Sim#step} method is the most basic way to run the simulation.
 It executes a single instruction.
-The program counter will be updated to point to the next instruction, and the {RPicSim::Sim#cycle_count cycle count} will be increased by the number of cycles that the instruction took.
-This method might do some interesting things at times when the CPU is stalled (i.e. during a flash write) or during sleep and that behavior has not been characterized.
+The {RPicSim::Sim#pc program counter} will be updated to point to the next instruction, and the {RPicSim::Sim#cycle_count cycle count} will be increased by the number of cycles that the instruction took.
 
 The `step` method is the most basic way to run a simulation, and all the `run_*` methods described here call `step` in order to actually run the simulation.
 
@@ -120,7 +119,7 @@ The first argument should be a label name (or any valid argument to {RPicSim::Si
 For example, to test a subroutine that drives the `main_output` pin high:
 
     run_subroutine :drivePinHigh, cycle_limit: 20
-    main_output.should be_driving_high
+    expect(main_output).to be_driving_high
 
 In this example, `main_output` is a pin alias, as described in the {file:Pins.md Pins page}.
 

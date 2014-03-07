@@ -4,7 +4,7 @@ RAM watcher
 When writing a {file:UnitTesting.md unit test} for some part of your firmware, you should probably test any RAM variable that the code is supposed to write to, and make sure that it contains the correct value after the code executes.
 However, it is also helpful to try to make sure that your code does not write to any other parts of memory; it should only write to the places that you were expecting it to write to.
 
-RPicSim's _ram watcher_ lets you see all the places in RAM (including SFRs) that were written by your code.
+RPicSim's _RAM watcher_ lets you see all the places in RAM (including SFRs) that were written by your code.
 It detects writes to RAM even if the underlying RAM value didn't change.
 For example, if your program runs a `clrf x` instruction, the RAM watcher will detect this even if `x` was already equal to 0.
 
@@ -24,8 +24,8 @@ The resulting object is an instance of the {RPicSim::MemoryWatcher} class and ha
 
 * The {RPicSim::MemoryWatcher#writes writes} method provides a hash representing all the writes that have been recorded.
   Each key of the hash is the name of the variable or SFR that was written to, or just the address that was written to if the write was to an unrecognized location in memory.
-  The values of the hash are the final value that the item had after the last write.
-  If a variable is written to twice, the RAM watcher will only report about the last write.
+  The values of the hash are the final value that the variable had after the last write.
+  If a variable is written to more than once, the RAM watcher will only report about the last write.
 * The {RPicSim::MemoryWatcher#clear clear} method erases all previous records.
 
 For example, to test the 16-bit addition routine from the {file:Variables.md Variables page} with the RAM watcher, you could write:
@@ -40,7 +40,8 @@ For example, to test the 16-bit addition routine from the {file:Variables.md Var
       expect(ram_watcher.writes).to eq({z: 92})
     end
 
-The third line in the example above advances the simulation by one step.  That line is necessary for two reasons:
+The third line in the example above advances the simulation by one step.
+That initial step is necessary for two reasons:
 
 * Without it, the RAM watcher would report the writes to the `x` and `z` variables performed above, even though those writes came from Ruby code.
 * Without it, the RAM watcher would report spurious writes to several registers such as INTCON and LATA.

@@ -1,12 +1,12 @@
 Variables
 ====
 
-RPicSim uses the {RPicSim::Variable} class to let you access simulated program variables stored in RAM or program memory, as well as Special Function Registers, which can be useful for {file:UnitTesting.md unit testing}.
+RPicSim uses the {RPicSim::Variable} class to let you access simulated program variables stored in RAM, program memory, or EEPROM, as well as Special Function Registers, which can be useful for {file:UnitTesting.md unit testing}.
 
 To access a variable, RPicSim needs to know the name it will be called in your Ruby code, what type of memory it is stored in, what data type it is (e.g. 16-bit unsigned integer), and its address in memory.
 This information is deduced in different ways for the different types of variables described below.
 
-User-defined
+User-defined variables
 ----
 For variables defined in your firmware, RPicSim can usually deduce the address by looking at the symbol table in your COF file, so you will not need to type the address.
 However, RPicSim cannot deduce the data type of a variable, so any variables used need to be explicitly defined in the {file:DefiningSimulationClass.md simulation class} using {RPicSim::Sim::ClassDefinitionMethods#def_var def_var}.
@@ -50,7 +50,7 @@ You can use the `symbol` option to specify what symbol in the symbol table marks
 The example above shows how you could access a variable from a C compiler (which will generally be prefixed with an underscore) without having to type the underscore in your tests.
 More generally, the `symbol` option allows you to call a variable one thing in your firmware and call it a different thing in your tests.
 
-RPicSim will raise an exception if it cannot find the specified symbol in the symbol table.  To troubleshoot this, you might print the list of variables that RPicSim found:
+RPicSim will raise an exception if it cannot find the specified symbol in the symbol table.  To troubleshoot this, you might print the list of symbols that RPicSim found:
 
     !!!ruby
     p sim.class.program_file.var_addresses.keys
@@ -60,15 +60,15 @@ You can use the `address` option to specify an arbitrary address instead of usin
     !!!ruby
     def_var :counter, :uint8, address: 0x63
     
-Variables are assumed to be in RAM by default, but you can specify that they are in program memory using the `memory` option.
+Variables are assumed to be in RAM by default, but you can specify that they are in program memory or EEPROM using the `memory` option.
 
     !!!ruby
     def_var :settings, :word, memory: :program_memory
-
+    def_var :checksum, :uint16, memory: :eeprom
 
 ### Program memory on non-PIC18 devices
 
-On non-PIC18 devices, program memory is made up into words that are 12 bits or 14 bits wide.
+On non-PIC18 devices, program memory is made up of words that are 12 bits or 14 bits wide.
 
 The type of address used for program memory of these devices is called a _word address_ because it specifies the number of a word instead of the number of a byte.  For example, a word address of `1` would correspond to the second word in program memory.
 
@@ -122,7 +122,7 @@ Once you have defined a variable and accessed it using one of the methods above,
 Protected bits
 ----
 
-When you write to the register with {RPicSim::Variable#value=}, you are (according to our understanding of MPLAB X) writing to it in the same way that the simulated microcontroller would write to it.
+When you write to a register with {RPicSim::Variable#value=}, you are (according to our understanding of MPLAB X) writing to it in the same way that the simulated microcontroller would write to it.
 This means that some bits might not be writable or might have restrictions on what value can be written to them.
 For example, the TO and PD bits of the STATUS register on the PIC10F322 are not writable by the microcontroller.
 
@@ -187,7 +187,7 @@ In `spec/addition_spec.rb`, we write a simple unit test that writes to `x` and `
         start_sim Addition
       end
     
-      it "can add 70 + 22"
+      it "can add 70 + 22" do
         x.value = 70
         y.value = 22
         run_subroutine :addition, cycle_limit: 100
