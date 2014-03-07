@@ -256,7 +256,6 @@ module RPicSim
 
     ### Modules that modify the behavior of the instruction. ###
 
-
     # This module is mixed into any {Instruction} that represents a goto or branch.
     module Goto
       def generate_transitions

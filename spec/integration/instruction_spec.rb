@@ -354,7 +354,6 @@ describe 'Disassembly' do
     end
   end
 
-
   context 'for baseline architecture', address_increment: 1 do
     let(:program_file) { Firmware::Test10F202.program_file }
 
@@ -1561,7 +1560,6 @@ describe 'Disassembly' do
   end
 
 end
-
 
 describe 'Disassembly of invalid instructions' do
   let(:program_file) { Firmware::Test18F25K50.program_file }

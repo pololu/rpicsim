@@ -24,11 +24,6 @@ CyclomaticComplexity:
 Documentation:
   Enabled: false
 
-# Offence count: 4
-# Cop supports --auto-correct.
-EmptyLines:
-  Enabled: false
-
 # Offence count: 9
 EmptyLinesAroundAccessModifier:
   Enabled: false

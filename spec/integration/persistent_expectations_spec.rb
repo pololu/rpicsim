@@ -80,5 +80,4 @@ describe RPicSim::RSpec::PersistentExpectations do
     expect(expectations[pin(:RA1)]).to eq nil
   end
 
-
 end

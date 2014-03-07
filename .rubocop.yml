@@ -24,6 +24,11 @@ Debugger:
   Exclude:
     - lib/rpicsim/mplab/**
 
+# The EmptyLines cop removes some intentional empty lines, including
+# empty lines inside strings.
+EmptyLines:
+  Enabled: false
+
 # Rubocop wants to us to specify the encoding at the top of
 # every single source file if RUBY_VERSION < '2.0.0'.
 Encoding:

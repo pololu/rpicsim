@@ -18,7 +18,6 @@ class SimStub
   end
 end
 
-
 describe 'rspec helpers' do
   describe 'monkey patch for BePredicate matchers' do
 
