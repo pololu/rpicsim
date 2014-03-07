@@ -62,10 +62,6 @@ HashSyntax:
 IfUnlessModifier:
   Enabled: false
 
-# Offence count: 3
-IndentationWidth:
-  Enabled: false
-
 # Offence count: 10
 # Cop supports --auto-correct.
 LeadingCommentSpace:

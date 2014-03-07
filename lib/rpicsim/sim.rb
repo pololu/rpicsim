@@ -277,7 +277,7 @@ module RPicSim
       end
 
       self.class.pin_aliases.each do |our_name, datasheet_name|
-         @pins_by_name[our_name] = @pins_by_name[datasheet_name] or raise "Pin #{datasheet_name} not found."
+        @pins_by_name[our_name] = @pins_by_name[datasheet_name] or raise "Pin #{datasheet_name} not found."
       end
     end
 
