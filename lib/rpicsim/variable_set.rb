@@ -80,8 +80,8 @@ module RPicSim
       @vars_for_memory[memory_type][name] = variable
     end
 
-    def vars_for_memory(memory_type)
-      @vars_for_memory[memory_type]
+    def var_names_for_memory(memory_type)
+      @vars_for_memory[memory_type].keys
     end
 
     def bind(memories)

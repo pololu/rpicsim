@@ -65,3 +65,15 @@ if !RPicSim::Flaws[:fr_memory_attach_useless]
   end
 
 end
+
+# This will help us catch bugs sooner since it allows us to test some parts of
+# the RAM watcher no matter what version of MPLAB X we are running.
+describe 'Sim#ram_watcher basic test' do
+  it 'sees RAM variables written' do
+    start_sim Firmware::Addition
+    ram_watcher = new_ram_watcher
+    x.value = 255
+    step
+    ram_watcher.writes.should_not be_empty
+  end
+end
