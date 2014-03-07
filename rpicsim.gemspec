@@ -5,7 +5,7 @@ require_relative "lib/rpicsim/version"
 Gem::Specification.new do |s|
   s.name = 'rpicsim'
   s.version  = RPicSim::VERSION
-  s.date = '2014-01-22'
+  s.date = '2014-03-07'
 
   # The summary should be the same as the description at https://github.com/pololu/rpicsim
   s.summary = 'RPicSim provides an interface to the MPLAB X PIC simulator that allows you to write simulator-based automated tests of PIC firmware with Ruby and RSpec.'
