@@ -4,7 +4,7 @@ Change log
 0.2.0
 ----
 
-Released on 2014-03-06.
+Released on 2014-03-07.
 This release includes many, many breaking changes.
 
 0.1.0
