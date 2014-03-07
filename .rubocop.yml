@@ -35,6 +35,12 @@ Encoding:
 FavorSprintf:
   Enabled: false
 
+# We catch an intentional exception without doing anything special to
+# handle it in a spec.
+HandleExceptions:
+  Exclude:
+    - spec/integration/persistent_expectations_spec.rb
+
 # We use 'if false' to disable a spec that is actually supposed to raise an
 # error, which is just there to help us write the documentation.
 LiteralInCondition:

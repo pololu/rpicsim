@@ -52,10 +52,6 @@ FavorUnlessOverNegatedIf:
 FavorUntilOverNegatedWhile:
   Enabled: false
 
-# Offence count: 1
-HandleExceptions:
-  Enabled: false
-
 # Offence count: 26
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
