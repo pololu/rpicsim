@@ -93,18 +93,7 @@ module RPicSim::Mplab
       end
     end
 
-    # This is commented out because MPLAB X v2.00 with the PIC18F25K50
-    # reports three missing peripherals:
-    #  PBADEN_PCFG
-    #  config
-    #  CONFIG3H.PBADEN
-    #
-    #def check_missing_peripherals
-    #  peripherals = data_store.getProcessor.getPeripheralSet
-    #  if peripherals.getMissingPeripherals.to_a.size > 0
-    #    raise "This device has missing peripherals: " + peripherals.getMissingReasons().to_a.inspect
-    #  end
-    #end
-
+    # Note: if you are troubleshooting missing peripherals, you could check:
+    #  data_store.getProcessor.getPeripheralSet.getMissingPeripherals.to_a
   end
 end

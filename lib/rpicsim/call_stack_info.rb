@@ -86,14 +86,12 @@ module RPicSim
           end
 
           if prev_depth.nil? || new_depth > prev_depth
-            #puts "%30s, MD=%d" % [ni, new_depth]
             @max_depths[ni] = new_depth
             instructions_to_process << ni
             @back_links[ni] = []
           end
 
           if new_depth == @max_depths[ni]
-            #puts "Adding backlink #{ni} -> #{instruction}"
             @back_links[ni] << instruction
           end
         end
@@ -146,8 +144,6 @@ module RPicSim
     # @return [Array(CodePath)]
     def worst_case_code_paths_filtered
       all_code_paths = worst_case_code_paths
-
-      #puts "all worst-case code paths: #{all_code_paths.size}"
 
       # Filter out code path that are just a superset of another code path.
       previously_seen_instruction_sequences = Set.new

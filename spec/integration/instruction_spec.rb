@@ -283,9 +283,9 @@ describe 'Disassembly' do
   end
 
   shared_examples_for 'instruction with hard-to-predict effect on control' do
-     it 'leads to no instructions' do
-       expect(instruction0.next_addresses).to be_empty
-     end
+    it 'leads to no instructions' do
+      expect(instruction0.next_addresses).to be_empty
+    end
   end
 
   shared_examples_for 'conditional skip' do

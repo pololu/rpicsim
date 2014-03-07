@@ -266,9 +266,6 @@ module RPicSim
     def initialize_pins
       pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
 
-      #pins.reject! { |p| p.to_s == "VDD" } or raise "Failed to filter out VDD pin."
-      #pins.reject! { |p| p.to_s == "VSS" } or raise "Failed to filter out VSS pin."
-
       @pins_by_name = {}
       pins.each do |pin|
         pin.names.each do |name|

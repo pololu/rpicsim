@@ -27,7 +27,6 @@ describe 'rcs03a program structure' do
   end
 
   it 'reports back traces containing each instruction in the path' do
-    #puts call_stack_info[4].worst_case_code_paths.join("\n")
     addrs = call_stack_info[4].worst_case_code_paths.collect(&:addresses)
     addrs.should == [[4, 0x100], [4, 0x100, 0x101], [4, 0x100, 0x101, 0x102]]
 

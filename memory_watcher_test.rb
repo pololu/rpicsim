@@ -26,7 +26,6 @@ def supported_pic_devices
   devices.select! do |device|
     sim_meta.getToolSupportForDevice(device).all? { |s| s && s.isSupported }
   end
-  #devices = devices.drop_while { |d| d != TroubledDevices.last } # tmphax
   devices -= TroubledDevices
   devices
 end
@@ -60,7 +59,7 @@ File.open('output.txt', 'w') do |output|
 
     ram_watcher = sim.ram_watcher
     sim.step
-    #output.puts ram_watcher.writes.inspect
+    # output.puts ram_watcher.writes.inspect
     ram_watcher.clear
     sim.step
     output.puts ram_watcher.writes.inspect

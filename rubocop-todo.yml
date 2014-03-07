@@ -62,11 +62,6 @@ HashSyntax:
 IfUnlessModifier:
   Enabled: false
 
-# Offence count: 10
-# Cop supports --auto-correct.
-LeadingCommentSpace:
-  Enabled: false
-
 # Offence count: 3
 # Cop supports --auto-correct.
 LineEndConcatenation:
