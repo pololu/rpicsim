@@ -18,6 +18,12 @@ AndOr:
 ConstantName:
   Enabled: false
 
+# Rubocop thinks I am trying to call the Ruby debugger whenever I call
+# method named "debugger".
+Debugger:
+  Exclude:
+    - lib/rpicsim/mplab/**
+
 # Rubocop wants to us to specify the encoding at the top of
 # every single source file if RUBY_VERSION < '2.0.0'.
 Encoding:

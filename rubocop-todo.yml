@@ -26,10 +26,6 @@ CollectionMethods:
 CyclomaticComplexity:
   Max: 91
 
-# Offence count: 3
-Debugger:
-  Enabled: false
-
 # Offence count: 41
 Documentation:
   Enabled: false
