@@ -16,12 +16,6 @@ CaseIndentation:
 ClassLength:
   Max: 230
 
-# Offence count: 23
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredMethods.
-CollectionMethods:
-  Enabled: false
-
 # Offence count: 5
 CyclomaticComplexity:
   Max: 91

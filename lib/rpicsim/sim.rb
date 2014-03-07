@@ -264,7 +264,7 @@ module RPicSim
     end
 
     def initialize_pins
-      pins = @simulator.pins.collect { |mplab_pin| Pin.new(mplab_pin) }
+      pins = @simulator.pins.map { |mplab_pin| Pin.new(mplab_pin) }
 
       @pins_by_name = {}
       pins.each do |pin|
@@ -400,7 +400,7 @@ module RPicSim
         raise ArgumentError, 'Must specify at least one condition.'
       end
 
-      condition_procs = conditions.collect(&method(:convert_condition_to_proc))
+      condition_procs = conditions.map(&method(:convert_condition_to_proc))
 
       allowed_keys = [:cycle_limit, :cycles]
       invalid_keys = opts.keys - allowed_keys
@@ -532,7 +532,7 @@ module RPicSim
     # Gets the contents of the stack as an array of integers.
     # @return [Array(Integer)] An array of integers.
     def stack_contents
-      (0...stack_pointer.value).collect do |n|
+      (0...stack_pointer.value).map do |n|
         @stack_memory.read_word(n)
       end
     end
@@ -545,11 +545,11 @@ module RPicSim
       # The stack stores return addresses, not call addresses.
       # We get the call addresses by subtracting the address increment,
       # which is the number of address units that each word of program memory takes up.
-      addresses = stack_contents.collect do |return_address|
+      addresses = stack_contents.map do |return_address|
         return_address - address_increment
       end
       addresses << pc.value
-      entries = addresses.collect do |address|
+      entries = addresses.map do |address|
         StackTraceEntry.new address, program_file.address_description(address)
       end
       StackTrace.new(entries)

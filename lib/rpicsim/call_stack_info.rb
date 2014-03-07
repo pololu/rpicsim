@@ -102,7 +102,7 @@ module RPicSim
     # Returns all the {Instruction}s that have the worse case possible call stack depth.
     # @return [Array(Instruction)]
     def instructions_with_worst_case
-      @max_depths.select { |instr, depth| depth == @max_depth }.collect(&:first).sort
+      @max_depths.select { |instr, depth| depth == @max_depth }.map(&:first).sort
     end
 
     # Returns all the {Instruction}s that are reachable from the given root.
@@ -161,7 +161,7 @@ module RPicSim
 
       # For each instruction that has a code path leading to it, pick out
       # the shortest code path (in terms of interesting instructions).
-      code_paths = code_paths.group_by { |cp| cp.instructions.last }.collect do |instr, code_paths|
+      code_paths = code_paths.group_by { |cp| cp.instructions.last }.map do |instr, code_paths|
         code_paths.min_by { |cp| cp.interesting_instructions.count }
       end
 
@@ -197,7 +197,7 @@ module RPicSim
           # Investigate all possible code paths that could get to this instruction.
           # However, exclude code paths that have the same instruction twice;
           # otherwise we get stuck in an infinite loop.
-          (prev_instrs - instrs).collect do |instr|
+          (prev_instrs - instrs).map do |instr|
             [instr] + instrs
           end
         end
@@ -235,12 +235,12 @@ module RPicSim
 
       # Returns the addresses of the underlying instructions.
       def addresses
-        instructions.collect(&:address)
+        instructions.map(&:address)
       end
 
       # Returns an array of the addresses of the interesting instructions.
       def interesting_addresses
-        interesting_instructions.collect(&:address)
+        interesting_instructions.map(&:address)
       end
 
       # Returns just the interesting instructions, as defined by {#interesting_instruction?}.

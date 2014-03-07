@@ -202,7 +202,7 @@ module RPicSim
     # Returns the addresses of all the instructions this instruction could directly lead to.
     # @return [Array(Integer)]
     def next_addresses
-      transitions.collect(&:next_address)
+      transitions.map(&:next_address)
     end
 
     private

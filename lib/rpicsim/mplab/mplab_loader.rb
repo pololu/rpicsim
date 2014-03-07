@@ -84,7 +84,7 @@ module RPicSim::Mplab
         '/opt/microchip/mplabx/',                    # Linux
         '/Applications/microchip/mplabx/',           # Mac OS X
       ]
-      dir = candidates.detect { |d| File.directory?(d) }
+      dir = candidates.find { |d| File.directory?(d) }
       raise cannot_find_mplab_error if !dir
       dir
     end

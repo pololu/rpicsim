@@ -3,7 +3,7 @@ require_relative '../spec_helper'
 describe RPicSim::StackTrace do
   it 'can take entries and output them in reverse order with padding' do
     entry_data = [[3, 'three'], [4, 'four'], [5, 'five']]
-    entries = entry_data.collect do |addr, desc|
+    entries = entry_data.map do |addr, desc|
       RPicSim::StackTraceEntry.new(addr, desc)
     end
     stack_trace = RPicSim::StackTrace.new(entries)

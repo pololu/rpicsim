@@ -71,7 +71,7 @@ describe 'RPicSim::Sim#program_memory' do
       # and we have tests below to prove that works.
 
       it 'initial value cannot be read by Ruby', flaw: true do
-        ids = (0x2000..0x2003).collect(&program_memory.method(:read_word))
+        ids = (0x2000..0x2003).map(&program_memory.method(:read_word))
         expect(ids).to eq [0x3FFF] * 4  # bad
       end
 

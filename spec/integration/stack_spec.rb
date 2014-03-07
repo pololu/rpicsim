@@ -81,9 +81,9 @@ END
       it 'decrements stack contents by 2' do
         goto :testCall
         step
-        trace_addresses = sim.stack_trace.entries.collect(&:address)
+        trace_addresses = sim.stack_trace.entries.map(&:address)
         expect(trace_addresses.size).to eq 2
-        expect(trace_addresses).to eq sim.stack_contents.collect { |a| a - 2 } + [pc.value]
+        expect(trace_addresses).to eq sim.stack_contents.map { |a| a - 2 } + [pc.value]
       end
     end
   end

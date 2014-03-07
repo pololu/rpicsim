@@ -52,7 +52,7 @@ module RPicSim::Mplab
     end
 
     def pins
-      pin_descs = (0...data_store.getNumPins).collect { |i| data_store.getPinDesc(i) }
+      pin_descs = (0...data_store.getNumPins).map { |i| data_store.getPinDesc(i) }
 
       pin_set = data_store.getProcessor.getPinSet
 
@@ -64,7 +64,7 @@ module RPicSim::Mplab
         pin_set.getPin name                # Trigger the lazy loading.
       end
 
-      (0...pin_set.getNumPins).collect do |i|
+      (0...pin_set.getNumPins).map do |i|
         MplabPin.new pin_set.getPin(i)
       end
     end

@@ -14,7 +14,7 @@ describe 'rcs03a program structure' do
   end
 
   it 'can report the reachable instructions' do
-    call_stack_info[0].reachable_instructions.collect(&:address).sort.should ==
+    call_stack_info[0].reachable_instructions.map(&:address).sort.should ==
       [0, 32, 33, 34, 35, 36, 37, 64, 65, 66, 96, 97, 128, 129, 256, 257, 258]
   end
 
@@ -27,10 +27,10 @@ describe 'rcs03a program structure' do
   end
 
   it 'reports back traces containing each instruction in the path' do
-    addrs = call_stack_info[4].worst_case_code_paths.collect(&:addresses)
+    addrs = call_stack_info[4].worst_case_code_paths.map(&:addresses)
     addrs.should == [[4, 0x100], [4, 0x100, 0x101], [4, 0x100, 0x101, 0x102]]
 
-    addrs = call_stack_info[0].worst_case_code_paths.collect(&:addresses)
+    addrs = call_stack_info[0].worst_case_code_paths.map(&:addresses)
     addrs.should == [
       [0, 32, 33, 36,     64, 65, 96, 128, 256],
       [0, 32, 34, 35, 36, 64, 65, 96, 128, 256],
@@ -48,7 +48,7 @@ describe 'rcs03a program structure' do
   end
 
   it 'can report filtered code paths' do
-    addrs = call_stack_info[0].worst_case_code_paths_filtered.collect(&:interesting_addresses)
+    addrs = call_stack_info[0].worst_case_code_paths_filtered.map(&:interesting_addresses)
     addrs.should == [
       [0, 36, 64, 65, 96, 128, 256],
     ]

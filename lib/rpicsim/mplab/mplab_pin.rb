@@ -47,7 +47,7 @@ module RPicSim::Mplab
     end
 
     def names
-      @pin_physical.collect(&:name)
+      @pin_physical.map(&:name)
     end
 
     def name
