@@ -190,8 +190,8 @@ describe 'Disassembly' do
     end
 
     it 'decodes all fields properly' do
-      expect(instruction0.operands).to eq({n: 0, k: 9})
-      expect(instruction1.operands).to eq({n: 1, k: -9})
+      expect(instruction0.operands).to eq(n: 0, k: 9)
+      expect(instruction1.operands).to eq(n: 1, k: -9)
     end
   end
 
@@ -262,8 +262,8 @@ describe 'Disassembly' do
     end
 
     it 'can properly decode all fields' do
-      expect(instruction0.operands).to eq({n: 1, m: 0})  # ++FSR1
-      expect(instruction1.operands).to eq({n: 0, k: 2})  # 2[FSR0]
+      expect(instruction0.operands).to eq(n: 1, m: 0)  # ++FSR1
+      expect(instruction1.operands).to eq(n: 0, k: 2)  # 2[FSR0]
     end
   end
 

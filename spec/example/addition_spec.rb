@@ -11,6 +11,6 @@ describe 'addition' do
     step
     ram_watcher = new_ram_watcher
     run_subroutine :addition, cycle_limit: 100
-    expect(ram_watcher.writes).to eq({z: 92})
+    expect(ram_watcher.writes).to eq(z: 92)
   end unless RPicSim::Flaws[:fr_memory_attach_useless]
 end
