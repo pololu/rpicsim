@@ -621,7 +621,7 @@ module RPicSim
     private
     def ram_vars
       ram_var_names = self.class.variable_set.var_names_for_memory(:ram)
-      @vars.values_at *ram_var_names
+      @vars.values_at(*ram_var_names)
     end
     
     def sfr_vars
