@@ -605,7 +605,7 @@ module RPicSim
     # changes to RAM.  For more information, see {file:RamWatcher.md}.
     # @return [MemoryWatcher]
     def new_ram_watcher
-      MemoryWatcher.new(self, @simulator.fr_memory, @ram_vars.values + @sfrs.values)
+      MemoryWatcher.new(self, @ram, @variable_set.vars_for_memory(:ram).values + @sfrs.values)
     end
 
     def shortcuts

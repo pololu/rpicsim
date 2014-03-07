@@ -8,8 +8,6 @@ module RPicSim::Mplab
     end
 
     def disassemble(address)
-      # To avoid showing a large, difficult to understand Java trace, we
-      # catch the InvalidInstructionException here.
       begin
         instr = @disasm.Disassemble(address, nil, nil)
       rescue Java::ComMicrochipMplabMdbcoreDisasm::InvalidInstructionException

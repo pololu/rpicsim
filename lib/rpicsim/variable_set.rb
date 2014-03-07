@@ -80,6 +80,10 @@ module RPicSim
       @vars_for_memory[memory_type][name] = variable
     end
 
+    def vars_for_memory(memory_type)
+      @vars_for_memory[memory_type]
+    end
+
     def bind(memories)
       vars = {}
       memories.each do |memory_type, memory|
