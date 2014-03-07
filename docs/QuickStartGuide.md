@@ -65,11 +65,11 @@ We have not yet told RPicSim where to find the firmware file.  To do this, make 
     require 'rpicsim/rspec'
     
     class MySim < RPicSim::Sim
-      device_is "PIC10F322"
-      filename_is File.dirname(__FILE__) + "/../firmware/dist/default/production/firmware_dir.production.cof"
+      use_device "PIC10F322"
+      use_file File.dirname(__FILE__) + "/../firmware/dist/default/production/firmware_dir.production.cof"
     end
 
-Edit the `device_is` and `filename_is` lines to match your actual device and the path to its COF file.  The file specified here can either be COF or HEX, but COF is recommended because it allows convenient access to the variables, functions, and labels defined in the firmware.
+Edit the `use_device` and `use_file` lines to match your actual device and the path to its COF file.  The file specified here can either be COF or HEX, but COF is recommended because it allows convenient access to the variables, functions, and labels defined in the firmware.
 
 Eventually you should rename the `MySim` class to something more specific, such as the concatenation of the project name with "Sim".
 

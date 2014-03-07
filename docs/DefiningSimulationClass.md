@@ -4,8 +4,8 @@ Defining your simulation class
 In order to run a simulation of your firmware using RPicSim, you must make a new subclass of {RPicSim::Sim}.  This class is called your _simulation class_. Below is an example:
 
     class MySim < RPicSim::Sim
-      device_is "PIC10F322"
-      filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
+      use_device "PIC10F322"
+      use_file File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
     end
 
 A full list of the special RPicSim methods you can call inside your class definition can be found by looking at the documentation for {RPicSim::Sim::ClassDefinitionMethods}.
@@ -15,11 +15,11 @@ Required properties
 
 There are two things you must do inside a simulation class.
 
-First, call {RPicSim::Sim::ClassDefinitionMethods#device_is device_is} in order to specify the PIC device your firmware runs on.  Unfortunately, RPicSim cannot just detect this information from your COF file.  The argument to `device_is` should be a simple string containing the official name of the PIC device, like "PIC10F322".
+First, call {RPicSim::Sim::ClassDefinitionMethods#use_device use_device} in order to specify the PIC device your firmware runs on.  Unfortunately, RPicSim cannot just detect this information from your COF file.  The argument to `use_device` should be a simple string containing the official name of the PIC device, like "PIC10F322".
 
-Second, call {RPicSim::Sim::ClassDefinitionMethods#filename_is filename_is} to specify the path to your COF or HEX file.  This must be done after calling `device_is`.
+Second, call {RPicSim::Sim::ClassDefinitionMethods#use_file use_file} to specify the path to your COF or HEX file.  This must be done after calling `use_device`.
 In the example, we start with `File.dirname(__FILE__)`, which is the name of the directory that the current Ruby file is in, and add a string to that.
-This allows us to move our tests and firmware files around on the disk without changing the `filename_is` line.
+This allows us to move our tests and firmware files around on the disk without changing the `use_file` line.
 
 Pins
 ----
@@ -40,8 +40,8 @@ Methods
 It is sometimes helpful to define your own methods in the simulation class.  For example, here are some methods that help us simulate the effect of the user placing a jumper between RA1 and GND:
 
     class MySim < RPicSim::Sim
-      device_is "PIC10F322"
-      filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
+      use_device "PIC10F322"
+      use_file File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
       
       def jumper_on
         pin(:RA1).set false

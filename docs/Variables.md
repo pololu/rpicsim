@@ -170,8 +170,8 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     require 'rpicsim/rspec'
 
     class Addition < RPicSim::Sim
-      device_is "PIC10F322"
-      filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
+      use_device "PIC10F322"
+      use_file File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
       def_var :x, :uint16
       def_var :y, :uint16
       def_var :z, :uint16

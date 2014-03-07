@@ -100,8 +100,8 @@ In `spec/spec_helper.rb`, we make a simulation class that points to the compiled
     require 'rpicsim/rspec'
     
     class PinMirror < RPicSim::Pic
-      device_is "PIC10F322"
-      filename_is File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
+      use_device "PIC10F322"
+      use_file File.dirname(__FILE__) + "../firmware/dist/firmware.cof"
         
       def_pin :main_input, :RA0
       def_pin :main_output, :RA1

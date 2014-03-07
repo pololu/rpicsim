@@ -23,20 +23,18 @@ module RPicSim
     # These methods should be called while defining a subclass of {Sim}.
     module ClassDefinitionMethods
 
-      # Specifies what exact device the firmware runs on.  In theory we could extract this
-      # from the COF file instead of requiring it to be specified in subclasses of {Sim}, but
-      # MPLAB X classes do not seem to make that easy.
+      # Specifies what exact device the firmware runs on.
       # @param device [String] The device name, for example "PIC10F322".
-      def device_is(device)
+      def use_device(device)
         @device = device
         @assembly = Mplab::MplabAssembly.new(device)
       end
 
       # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
       # COF is recommended so that you can access label addresses and other debugging information.
-      # You must call {#device_is} before calling this.
-      def filename_is(filename)
-        raise "The device needs to be specified before filename (e.g. 'device_is \"PIC10F322\"')" unless @device
+      # You must call {#use_device} before calling this.
+      def use_file(filename)
+        raise "The device needs to be specified before filename (e.g. 'use_device \"PIC10F322\"')" unless @device
         @filename = filename
         load_program_file
       end

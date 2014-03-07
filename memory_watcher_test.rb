@@ -52,8 +52,8 @@ File.open('output.txt', 'w') do |output|
     puts device
     klass = Class.new(RPicSim::Sim)
     klass.instance_eval do
-      device_is device
-      filename_is 'spec/firmware/dist/Zeros.hex'
+      use_device device
+      use_file 'spec/firmware/dist/Zeros.hex'
     end
     sim = klass.new
 
