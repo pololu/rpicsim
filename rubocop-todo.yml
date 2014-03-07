@@ -31,11 +31,6 @@ Documentation:
   Enabled: false
 
 # Offence count: 4
-# Configuration parameters: Style, SupportedStyles.
-DotPosition:
-  Enabled: false
-
-# Offence count: 4
 # Cop supports --auto-correct.
 EmptyLines:
   Enabled: false

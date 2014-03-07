@@ -24,17 +24,17 @@ module RPicSim::Mplab
 
     def symbols_in_program_memory
       @symbols_in_code_space ||= Hash[
-        symbols.
-          select { |s| s.m_lType != 0 && !EepromRange.include?(s.address) }.
-          map { |s| [s.m_Symbol.to_sym, s.address] }
+        symbols
+          .select { |s| s.m_lType != 0 && !EepromRange.include?(s.address) }
+          .map { |s| [s.m_Symbol.to_sym, s.address] }
       ]
     end
 
     def symbols_in_eeprom
       @symbols_in_eeprom ||= Hash[
-        symbols.
-          select { |s| s.m_lType != 0 && EepromRange.include?(s.address) }.
-          map { |s| [s.m_Symbol.to_sym, s.address - EepromRange.min] }
+        symbols
+          .select { |s| s.m_lType != 0 && EepromRange.include?(s.address) }
+          .map { |s| [s.m_Symbol.to_sym, s.address - EepromRange.min] }
       ]
     end
 
