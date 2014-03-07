@@ -3,7 +3,7 @@ module RPicSim::Mplab
   # interface, so we can easily receive events from objects that support
   # sending updates to observers.
   class MplabObserver
-    include Java::comMicrochipMplabUtilObservers::Observer
+    include Java::ComMicrochipMplabUtilObservers::Observer
 
     def initialize(subject, &callback)
       @callback = callback

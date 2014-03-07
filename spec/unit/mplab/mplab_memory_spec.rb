@@ -9,7 +9,7 @@ describe RPicSim::Mplab::MplabMemory do
       expect(memory).to receive(:Read) do |address, size, bytes|
         expect(address).to eq 12
         expect(size).to eq 1
-        expect(bytes).to be_a_kind_of Java::byte[]
+        expect(bytes).to be_a_kind_of Java.byte[]
         expect(bytes.size).to eq 1
         bytes.ubyte_set(0, 0x9B)
       end
@@ -22,7 +22,7 @@ describe RPicSim::Mplab::MplabMemory do
       expect(memory).to receive(:Write) do |address, size, bytes|
         expect(address).to eq 12
         expect(size).to eq 1
-        expect(bytes).to be_a_kind_of Java::byte[]
+        expect(bytes).to be_a_kind_of Java.byte[]
         expect(bytes.size).to eq 1
         expect(bytes.ubyte_get(0)).to eq 0x9B
       end

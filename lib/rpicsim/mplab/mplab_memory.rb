@@ -14,7 +14,7 @@ module RPicSim::Mplab
     end
 
     def write_byte(address, byte)
-      array = Java::byte[1].new
+      array = Java.byte[1].new
       array.ubyte_set(0, byte)
       @memory.Write(address, 1, array)
       byte

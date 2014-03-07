@@ -22,11 +22,6 @@ ClassLength:
 CollectionMethods:
   Enabled: false
 
-# Offence count: 5
-# Cop supports --auto-correct.
-ColonMethodCall:
-  Enabled: false
-
 # Offence count: 3
 ConstantName:
   Enabled: false

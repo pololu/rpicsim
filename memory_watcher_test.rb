@@ -17,7 +17,7 @@ TroubledDevices = %w{
 }
 
 def supported_pic_devices
-  Java::ComMicrochipCrownkingMplabinfo::mpPlatformTool.instance_eval do
+  Java::ComMicrochipCrownkingMplabinfo.mpPlatformTool.instance_eval do
     field_accessor :listOfDevices
   end
   sim_meta = com.microchip.mplab.mdbcore.platformtool.PlatformToolMetaManager.getTool('Simulator')
