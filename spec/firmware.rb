@@ -4,6 +4,7 @@ module Firmware
   class Addition < RPicSim::Sim
     use_device 'PIC10F322'
     use_file Dir + 'Addition.cof'
+    
     def_var :x, :uint16
     def_var :y, :uint16
     def_var :z, :uint16
@@ -29,6 +30,7 @@ module Firmware
     use_device 'PIC10F322'
     use_file Dir + 'FlashVariables.cof'
     def_var :x, :uint16
+    
     def_var :normalFlashVar, :word, memory: :program_memory
     def_var :userId0, :word, address: 0x2000, memory: :program_memory
     def_var :userId1, :word, address: 0x2001, memory: :program_memory

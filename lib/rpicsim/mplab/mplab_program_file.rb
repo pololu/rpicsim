@@ -18,27 +18,63 @@ module RPicSim::Mplab
 
     def symbols_in_ram
       @symbols_in_ram ||= Hash[
-        symbols.select { |s| s.m_lType == 0 }.map { |s| [s.m_Symbol.to_sym, s.address] }
+        grouped_symbols[:ram]
+          .map { |s| [s.m_Symbol.to_sym, s.address] }
       ]
     end
 
     def symbols_in_program_memory
       @symbols_in_code_space ||= Hash[
-        symbols
-          .select { |s| s.m_lType != 0 && !EepromRange.include?(s.address) }
+        grouped_symbols[:program_memory]
           .map { |s| [s.m_Symbol.to_sym, s.address] }
       ]
     end
 
     def symbols_in_eeprom
       @symbols_in_eeprom ||= Hash[
-        symbols
-          .select { |s| s.m_lType != 0 && EepromRange.include?(s.address) }
+        grouped_symbols[:eeprom]
           .map { |s| [s.m_Symbol.to_sym, s.address - EepromRange.min] }
       ]
     end
-
+    
     private
+    
+    def grouped_symbols
+      @grouped_symbols ||= begin
+        hash = symbols.group_by(&method(:memory_type))
+        hash.default = []
+        hash
+      end
+    end
+    
+    # m_lType:  meaning:
+    # 0         MPASM RAM
+    # 12        XC8 RAM
+    # 22        MPASM program memory or EEPROM
+    # 14        XC8 program memory variable
+    # 65        XC8 program memory function
+    
+    def memory_type(symbol)
+      case symbol.m_lType
+      when 0, 12
+        :ram
+      when 22
+        EepromRange.include?(symbol.address) ? :eeprom : :program_memory
+      when 12
+        :ram
+      when 14, 65
+        :program_memory
+      else
+        raise "Unknown m_lType #{symbol.m_lType} for symbol #{symbol.name}."
+      end
+    end
+    
+    # Useful for debugging.
+    # Just put this line in your simulation class definition temporarily:
+    # pp program_file.instance_variable_get(:@mplab_program_file).send(:symbol_dump)
+    def symbol_dump
+      symbols.map { |s| [s.m_Symbol, s.m_lType, s.address, memory_type(s)] }
+    end
 
     def symbols
       @program_file.getSymbolTable.getSymbols(0, 0)
