@@ -623,11 +623,11 @@ module RPicSim
       ram_var_names = self.class.variable_set.var_names_for_memory(:ram)
       @vars.values_at(*ram_var_names)
     end
-    
+
     def sfr_vars
       @sfrs.values
     end
-    
+
     def address_increment
       @assembly.device_info.code_address_increment
     end

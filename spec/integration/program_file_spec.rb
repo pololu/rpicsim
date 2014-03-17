@@ -18,27 +18,27 @@ describe 'Firmware compiled with XC8' do
     filename = File.dirname(__FILE__) + '/../firmware/xc8/dist/TestXC8.cof'
     @program_file = RPicSim::ProgramFile.new filename, 'PIC18F25K50'
   end
-  
+
   it 'has main' do
     expect(@program_file.symbols_in_program_memory).to have_key :main
   end
-  
+
   it 'has another function' do
-    expect(@program_file.symbols_in_program_memory).to have_key :function1  
+    expect(@program_file.symbols_in_program_memory).to have_key :function1
   end
-  
+
   it 'has a non-static RAM variable' do
     expect(@program_file.symbols_in_ram[:ramVarUint8]).to eq 0x500
   end
-  
+
   it 'has a static RAM variable' do
     expect(@program_file.symbols_in_ram[:staticRamVarUint8]).to eq 0x501
   end
-  
+
   it 'has a program memory variable' do
     expect(@program_file.symbols_in_program_memory[:flashVarUint16]).to eq 0x1000
   end
-  
+
   it 'has a static program memory variable' do
     expect(@program_file.symbols_in_program_memory[:staticFlashVarUint16]).to eq 0x1002
   end

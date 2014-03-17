@@ -14,7 +14,7 @@ CaseIndentation:
 # Offence count: 3
 # Configuration parameters: CountComments.
 ClassLength:
-  Max: 230
+  Max: 300
 
 # Offence count: 5
 CyclomaticComplexity:

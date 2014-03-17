@@ -36,9 +36,9 @@ module RPicSim::Mplab
           .map { |s| [s.m_Symbol.to_sym, s.address - EepromRange.min] }
       ]
     end
-    
+
     private
-    
+
     def grouped_symbols
       @grouped_symbols ||= begin
         hash = symbols.group_by(&method(:memory_type))
@@ -46,14 +46,14 @@ module RPicSim::Mplab
         hash
       end
     end
-    
+
     # m_lType:  meaning:
     # 0         MPASM RAM
     # 12        XC8 RAM
     # 22        MPASM program memory or EEPROM
     # 14        XC8 program memory variable
     # 65        XC8 program memory function
-    
+
     def memory_type(symbol)
       case symbol.m_lType
       when 0, 12
@@ -68,7 +68,7 @@ module RPicSim::Mplab
         raise "Unknown m_lType #{symbol.m_lType} for symbol #{symbol.name}."
       end
     end
-    
+
     # Useful for debugging.
     # Just put this line in your simulation class definition temporarily:
     # pp program_file.instance_variable_get(:@mplab_program_file).send(:symbol_dump)
