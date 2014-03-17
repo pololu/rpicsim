@@ -1,6 +1,12 @@
 Change log
 ====
 
+0.2.4
+----
+Released on 2014-03-17.
+
+- Added code for recognizing more types of symbols from XC8.  The XC8 symbols are more complicated than I previously thought.
+
 0.2.3
 ----
 Released on 2014-03-17.
