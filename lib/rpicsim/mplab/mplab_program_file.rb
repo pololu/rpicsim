@@ -49,23 +49,32 @@ module RPicSim::Mplab
 
     # m_lType:  meaning:
     # 0         MPASM RAM
-    # 12        XC8 RAM
-    # 22        MPASM program memory or EEPROM
+    # 2         XC8 RAM
+    # 8         XC8 RAM (SFR bits)
+    # 12        XC8 RAM (variables, SFR uint8_t)
     # 14        XC8 program memory variable
+    # 22        MPASM program memory or EEPROM
+    # 40        XC8 local variable (pointer to a struct?)
+    # 44        XC8 local variable
     # 65        XC8 program memory function
-
+    # 76        XC8 program memory function
+    # 108       XC8 program memory variable (array)
+    # 110       XC8 program memory variable (struct)
+    # 366       XC8 program memory variable (array of pointers)
+    #
+    # TODO: make a test for each of these cases; TestXC8.c and program_file_spec.rb only only has a few
     def memory_type(symbol)
       case symbol.m_lType
-      when 0, 12
+      when 0, 2, 8, 12
         :ram
       when 22
         EepromRange.include?(symbol.address) ? :eeprom : :program_memory
-      when 12
+      when 12, 40, 44, 108
         :ram
-      when 14, 65
+      when 14, 65, 76, 110, 366
         :program_memory
       else
-        raise "Unknown m_lType #{symbol.m_lType} for symbol #{symbol.name}."
+        :unknown
       end
     end
 
