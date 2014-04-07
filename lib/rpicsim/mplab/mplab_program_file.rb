@@ -65,12 +65,10 @@ module RPicSim::Mplab
     # TODO: make a test for each of these cases; TestXC8.c and program_file_spec.rb only only has a few
     def memory_type(symbol)
       case symbol.m_lType
-      when 0, 2, 8, 12
+      when 0, 2, 8, 12, 40, 44, 108
         :ram
       when 22
         EepromRange.include?(symbol.address) ? :eeprom : :program_memory
-      when 12, 40, 44, 108
-        :ram
       when 14, 65, 76, 110, 366
         :program_memory
       else
