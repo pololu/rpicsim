@@ -60,6 +60,7 @@ module RPicSim::Mplab
     # 76        XC8 program memory function
     # 108       XC8 program memory variable (array)
     # 110       XC8 program memory variable (struct)
+    # 111       XC8 program memory variable (array of uint32_t)
     # 366       XC8 program memory variable (array of pointers)
     #
     # TODO: make a test for each of these cases; TestXC8.c and program_file_spec.rb only only has a few
@@ -69,7 +70,7 @@ module RPicSim::Mplab
         :ram
       when 22
         EepromRange.include?(symbol.address) ? :eeprom : :program_memory
-      when 14, 65, 76, 110, 366
+      when 14, 65, 76, 110, 111, 366
         :program_memory
       else
         :unknown
