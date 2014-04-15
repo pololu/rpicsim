@@ -58,9 +58,10 @@ module RPicSim::Mplab
     # 44        XC8 local variable
     # 65        XC8 program memory function
     # 76        XC8 program memory function
+    # 104       XC8 program memory variable (array of unions) (but sometimes in RAM instead)
     # 108       XC8 program memory variable (array)
     # 110       XC8 program memory variable (struct)
-    # 111       XC8 program memory variable (array of uint32_t)
+    # 111       XC8 program memory variable (array of uint32_t) (but sometimes it is in RAM instead)
     # 366       XC8 program memory variable (array of pointers)
     #
     # TODO: make a test for each of these cases; TestXC8.c and program_file_spec.rb only only has a few
@@ -70,7 +71,7 @@ module RPicSim::Mplab
         :ram
       when 22
         EepromRange.include?(symbol.address) ? :eeprom : :program_memory
-      when 14, 65, 76, 110, 111, 366
+      when 14, 65, 76, 104, 110, 111, 366
         :program_memory
       else
         :unknown
@@ -79,7 +80,7 @@ module RPicSim::Mplab
 
     # Useful for debugging.
     # Just put this line in your simulation class definition temporarily:
-    # pp program_file.instance_variable_get(:@mplab_program_file).send(:symbol_dump)
+    # pp program_file.instance_variable_get(:@mplab_program_file).send(:symbol_dump).sort
     def symbol_dump
       symbols.map { |s| [s.m_Symbol, s.m_lType, s.address, memory_type(s)] }
     end
