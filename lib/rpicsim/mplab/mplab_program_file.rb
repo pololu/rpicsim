@@ -56,11 +56,18 @@ module RPicSim::Mplab
     # 22        MPASM program memory or EEPROM
     # 40        XC8 local variable (pointer to a struct?)
     # 44        XC8 local variable
+    # 64        XC8 program memory function
     # 65        XC8 program memory function
+    # 66        XC8 program memory function
+    # 69        XC8 program memory function
     # 76        XC8 program memory function
+    # 78        XC8 program memory function
+    # 79        XC8 program memory function
+    # 81        XC8 program memory function
+    # 82        XC8 program memory function
     # 104       XC8 program memory variable (array of unions) (but sometimes in RAM instead)
     # 108       XC8 program memory variable (array)
-    # 110       XC8 program memory variable (struct)
+    # 110       XC8 program memory variable (struct) (but sometimes in RAM instead)
     # 111       XC8 program memory variable (array of uint32_t) (but sometimes it is in RAM instead)
     # 366       XC8 program memory variable (array of pointers)
     #
@@ -71,7 +78,7 @@ module RPicSim::Mplab
         :ram
       when 22
         EepromRange.include?(symbol.address) ? :eeprom : :program_memory
-      when 14, 65, 76, 104, 110, 111, 366
+      when 14, 64, 65, 66, 69, 76, 78, 79, 81, 82, 104, 110, 111, 366
         :program_memory
       else
         :unknown

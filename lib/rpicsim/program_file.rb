@@ -2,6 +2,10 @@ require_relative 'mplab'
 require_relative 'label'
 require_relative 'instruction'
 
+# TODO: interface for adding labels and/or symbols from other sources because
+# sometimes the COF file is inadequate.  When symbols have the same address,
+# think about how to choose the more interesting one in a stack trace (fewer underscores?)
+
 module RPicSim
   # Represents a PIC program file (e.g. COF or HEX).
   class ProgramFile
