@@ -35,7 +35,7 @@ module RPicSim
     end
 
     def valid_address?(address)
-      find_memory(address) != nil
+      !find_memory(address).nil?
     end
 
     private

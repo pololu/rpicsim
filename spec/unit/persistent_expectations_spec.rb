@@ -27,7 +27,7 @@ describe RPicSim::RSpec::PersistentExpectations do
   describe '#check_expecations' do
     it 'just returns nil when the expectations match' do
       subject.expecting [] => be_empty
-      subject.check_expectations.should == nil
+      expect(subject.check_expectations).to eq nil
     end
 
     it "raises the right error when expectations don't match" do

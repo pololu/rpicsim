@@ -78,6 +78,13 @@ LiteralInCondition:
 MethodLength:
   Max: 130
 
+# We can't always use snake case for method names if we want to match Java
+# method names.
+MethodName:
+  Exclude:
+    - lib/rpicsim/mplab/**
+    - spec/mplab/**
+
 SignalException:
   EnforcedStyle: only_raise
 

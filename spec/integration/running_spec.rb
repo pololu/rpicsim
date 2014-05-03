@@ -12,7 +12,7 @@ describe RPicSim::Sim do
     end
 
     it 'returns nil' do
-      run_steps(3).should == nil
+      expect(run_steps(3)).to eq nil
     end
 
     it 'is different than running a specified number of cycles (some steps take multiple cycles)' do
