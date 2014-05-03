@@ -70,7 +70,7 @@ module RPicSim
       #     firmware and call it a different thing in your tests.
       #     This option is ignored if +:address is specified.
       #   * +:address+: An integer to use as the address of the variable.
-      def def_var(name, type, opts={})
+      def def_var(name, type, opts = {})
         if @variable_set.nil?
           raise 'The device and filename need to be specified before defining variables.'
         end
@@ -393,7 +393,7 @@ module RPicSim
     #    This option is a more powerful version of +cycle_limit+, so it cannot
     #    be used at the same time as +cycle_limit+.
     # @return The condition that was met which caused the run to stop.
-    def run_to(conditions, opts={})
+    def run_to(conditions, opts = {})
       conditions = Array(conditions)
       if conditions.empty?
         raise ArgumentError, 'Must specify at least one condition.'
@@ -477,7 +477,7 @@ module RPicSim
     #   generally point to a subroutine in program memory that will end by
     #   executing a return instructions.
     # @param opts Any of the options supported by {#run_to}.
-    def run_subroutine(location, opts={})
+    def run_subroutine(location, opts = {})
       stack_push pc.value
       goto location
       run_to :return, opts

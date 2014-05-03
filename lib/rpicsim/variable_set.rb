@@ -21,7 +21,7 @@ module RPicSim
       @vars_for_memory_by_address[name] = {}
     end
 
-    def def_var(name, type, opts={})
+    def def_var(name, type, opts = {})
       allowed_keys = [:memory, :symbol, :address]
       invalid_keys = opts.keys - allowed_keys
       if !invalid_keys.empty?

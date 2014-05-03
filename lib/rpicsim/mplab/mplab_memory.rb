@@ -37,7 +37,7 @@ module RPicSim::Mplab
       MplabObserver.new(@memory) do |event|
         next if event.EventType != Mdbcore.memory::MemoryEvent::EVENTS::MEMORY_CHANGED
         address_ranges = event.AffectedAddresses.map do |mr|
-          mr.Address...(mr.Address+mr.Size)
+          mr.Address...(mr.Address + mr.Size)
         end
         yield address_ranges
       end

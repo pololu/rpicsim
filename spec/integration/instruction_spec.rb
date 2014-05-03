@@ -13,7 +13,7 @@ describe RPicSim::Instruction do
 end
 
 def describe_instruction(opcode, metadata = {}, &proc)
-  describe(opcode, {opcode: opcode}.merge(metadata), &proc)
+  describe(opcode, { opcode: opcode }.merge(metadata), &proc)
 end
 
 describe 'Disassembly' do
@@ -159,7 +159,7 @@ describe 'Disassembly' do
 
   shared_examples_for 'instruction with field k that is a relative word address' do
     it 'has the right string' do
-      string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:k] + 1) ]
+      string = "#{opcode} 0x%X" % [instruction0.address + address_increment * (instruction0.operands[:k] + 1)]
       expect(instruction0.string).to eq string
     end
 
@@ -172,7 +172,7 @@ describe 'Disassembly' do
   shared_examples_for 'instruction with field n' do
 
     it 'has the right string' do
-      string = "#{opcode} 0x%X" % [ instruction0.address + address_increment * (instruction0.operands[:n] + 1) ]
+      string = "#{opcode} 0x%X" % [instruction0.address + address_increment * (instruction0.operands[:n] + 1)]
       expect(instruction0.string).to eq string
     end
 
@@ -1564,7 +1564,7 @@ end
 describe 'Disassembly of invalid instructions' do
   let(:program_file) { Firmware::Test18F25K50.program_file }
   let(:address) { program_file.label(:invalidInstruction).address }
-  subject(:instruction) { program_file.instruction(address)}
+  subject(:instruction) { program_file.instruction(address) }
 
   it 'is invalid' do
     expect(instruction).to_not be_valid

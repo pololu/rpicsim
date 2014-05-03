@@ -6,7 +6,7 @@ module RPicSim
       @entries = entries
     end
 
-    def output(io, padding='')
+    def output(io, padding = '')
       @entries.reverse_each do |entry|
         output_entry(entry, io, padding)
       end

@@ -57,7 +57,7 @@ describe RPicSim::Mplab::MplabPin do
     let(:io_state) { 'foo' }
 
     specify '#output? raises an exception' do
-      expect {mplab_pin.output?}.to raise_exception 'Invalid IO state: foo'
+      expect { mplab_pin.output? }.to raise_exception 'Invalid IO state: foo'
     end
   end
 
@@ -81,7 +81,7 @@ describe RPicSim::Mplab::MplabPin do
     let(:pin_state) { 'bar' }
 
     specify '#high? raises an exception' do
-      expect {mplab_pin.high?}.to raise_exception 'Invalid pin state: bar'
+      expect { mplab_pin.high? }.to raise_exception 'Invalid pin state: bar'
     end
   end
 

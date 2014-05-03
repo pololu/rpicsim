@@ -1,5 +1,3 @@
-inherit_from: rubocop-todo.yml
-
 AllCops:
   Includes:
     - docs/plugin/**/*.rb

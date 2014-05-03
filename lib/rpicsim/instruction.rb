@@ -209,7 +209,7 @@ module RPicSim
 
     # For certain opcodes, this method gets over-written.
     def generate_transitions
-      [ advance(1) ]
+      [advance(1)]
     end
 
     # Makes a transition representing the default behavior: the microcontroller
@@ -218,7 +218,7 @@ module RPicSim
       transition(address + num * size)
     end
 
-    def transition(addr, attrs={})
+    def transition(addr, attrs = {})
       Transition.new(self, addr, @instruction_store, attrs)
     end
 
@@ -261,7 +261,7 @@ module RPicSim
     module Goto
       def generate_transitions
         # Assumption: The GOTO instruction's k operand is absolute on all architectures
-        [ transition(k_address, non_local: true) ]
+        [transition(k_address, non_local: true)]
       end
     end
 
@@ -270,7 +270,7 @@ module RPicSim
     # skipped depending on some condition.
     module ConditionalSkip
       def generate_transitions
-        [ advance(1), advance(2) ]
+        [advance(1), advance(2)]
       end
     end
 
@@ -285,25 +285,25 @@ module RPicSim
     # This module is mixed into any {Instruction} that represents a subroutine call.
     module Call
       def generate_transitions
-        [ transition(k_address, call_depth_change: 1), advance(1) ]
+        [transition(k_address, call_depth_change: 1), advance(1)]
       end
     end
 
     module RelativeCall
       def generate_transitions
-        [ transition(n_address, call_depth_change: 1), advance(1) ]
+        [transition(n_address, call_depth_change: 1), advance(1)]
       end
     end
 
     module ConditionalRelativeBranch
       def generate_transitions
-        [ transition(n_address, non_local: true), advance(1) ]
+        [transition(n_address, non_local: true), advance(1)]
       end
     end
 
     module RelativeBranch
       def generate_transitions
-        [ transition(relative_target_address, non_local: true) ]
+        [transition(relative_target_address, non_local: true)]
       end
     end
 
