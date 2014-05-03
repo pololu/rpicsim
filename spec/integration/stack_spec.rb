@@ -86,6 +86,14 @@ END
         expect(trace_addresses).to eq sim.stack_contents.map { |a| a - 2 } + [pc.value]
       end
     end
+
+    describe '#stack_push' do
+      it 'updates the TOSU:TOSH:TOSL registers' do
+        stack_push 0x123456
+        tos = [reg(:TOSU).value, reg(:TOSH).value, reg(:TOSL).value]
+        expect(tos).to eq [0x12, 0x34, 0x56]
+      end
+    end
   end
 
   context 'for enhanced-midrange architecture' do

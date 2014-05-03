@@ -509,20 +509,7 @@ module RPicSim
       # Simulate popping the stack.
       stack_pointer.value -= 1
       pc.value = @stack_memory.read_word(stack_pointer.value)
-
-      # Update the TOSU:TOSH:TOSL registers because the simulator uses that
-      # when simulating a return instruction.
-      if @sfrs.key?(:TOSL)
-        tos = if stack_pointer.value == 0
-                0
-              else
-                @stack_memory.read_word(stack_pointer.value - 1)
-              end
-
-        reg(:TOSL).value = tos >> 0 & 0xFF
-        reg(:TOSH).value = tos >> 8 & 0xFF
-        reg(:TOSU).value = tos >> 16 & 0xFF if @sfrs.key?(:TOSU)
-      end
+      update_top_of_stack_registers
     end
 
     # Generates a friendly human-readable string description of where the
@@ -539,6 +526,7 @@ module RPicSim
 
       @stack_memory.write_word(stack_pointer.value, value)
       stack_pointer.value += 1
+      update_top_of_stack_registers
     end
 
     # Gets the contents of the stack as an array of integers.
@@ -566,6 +554,26 @@ module RPicSim
       end
       StackTrace.new(entries)
     end
+
+    private
+
+    # Update the TOSU:TOSH:TOSL registers because the simulator uses those
+    # (if they exist) when simulating a return instruction.
+    def update_top_of_stack_registers
+      return unless @sfrs.key?(:TOSL)
+
+      tos = if stack_pointer.value == 0
+              0
+            else
+              @stack_memory.read_word(stack_pointer.value - 1)
+            end
+
+      reg(:TOSL).value = tos >> 0 & 0xFF
+      reg(:TOSH).value = tos >> 8 & 0xFF
+      reg(:TOSU).value = tos >> 16 & 0xFF if @sfrs.key?(:TOSU)
+    end
+
+    public
 
     def inspect
       "#<#{self.class}:0x%x, #{pc_description}, stack_pointer = #{stack_pointer.value}>" % object_id

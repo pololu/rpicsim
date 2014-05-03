@@ -30,14 +30,11 @@ describe '#return for a PIC18 device' do
     # This is necessary because apparently the simulator sets PC equal to
     # TOSU:TOSH:TOSL when it executes a return/retlw/retfie instruction,
     # instead of actually reading from the stack memory.
+    stack_push 0x123456
     stack_push label(:start).address
-    goto :testCallAndOperation
-    run_to :emptyRoutine, cycle_limit: 10
     sim.return
     tos = [reg(:TOSU).value, reg(:TOSH).value, reg(:TOSL).value]
-    expect(tos).to eq [0, 0, label(:start).address]
-    run_to :start, cycle_limit: 10
-    expect(reg(:PRODL).value).to eq 1
+    expect(tos).to eq [0x12, 0x34, 0x56]
   end
 end
 
@@ -57,4 +54,3 @@ describe '#return for an enhanced midrange device' do
     expect { sim.return }.to raise_error 'Cannot return because stack is empty.'
   end
 end
-
