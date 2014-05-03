@@ -417,8 +417,8 @@ module RPicSim
         max_cycle = start_cycle + opts[:cycle_limit] if opts[:cycle_limit]
       end
 
-      # Loop as long as none of the conditions are satisfied.
-      while !(met_condition_index = condition_procs.find_index(&:call))
+      # Loop until one of the conditions is satisfied.
+      until (met_condition_index = condition_procs.find_index(&:call))
         if max_cycle && cycle_count >= max_cycle
           raise "Failed to reach #{conditions.inspect} after #{cycle_count - start_cycle} cycles."
         end

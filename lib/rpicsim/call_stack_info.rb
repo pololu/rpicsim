@@ -75,7 +75,7 @@ module RPicSim
       @max_depths = { @root => 0 }
       @back_links = Hash.new { [] }
       instructions_to_process = [root]
-      while !instructions_to_process.empty?
+      until instructions_to_process.empty?
         instruction = instructions_to_process.pop
         instruction.transitions.reverse_each do |transition|
           ni = transition.next_instruction

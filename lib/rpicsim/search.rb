@@ -10,7 +10,7 @@ module RPicSim
     # graph backwards in order to find code_paths for a given instruction.
     def self.depth_first_search_simple(root_nodes)
       unprocessed_nodes = root_nodes.reverse
-      while !unprocessed_nodes.empty?
+      until unprocessed_nodes.empty?
         node = unprocessed_nodes.pop
         nodes = yield node
         unprocessed_nodes.concat(nodes.reverse)

@@ -47,6 +47,9 @@ EmptyLines:
 Encoding:
   Enabled: false
 
+FavorUnlessOverNegatedIf:
+  Enabled: false
+
 # This cop was present in rubocop 0.18.1.
 # Later versions should have a StringFormat cop that we can
 # configure to say that we prefer using the String#% operator.
