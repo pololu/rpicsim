@@ -98,6 +98,5 @@ module RPicSim::Mplab
         unsigned
       end
     end
-
   end
 end

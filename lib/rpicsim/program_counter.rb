@@ -1,5 +1,4 @@
 module RPicSim
-
   # Instances of this class represent the program counter in a
   # simulated microcontroller.
   class ProgramCounter

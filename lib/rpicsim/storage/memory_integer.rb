@@ -76,7 +76,6 @@ module RPicSim::Storage
       check_value val, 0..255
       @memory.write_byte(@address, val)
     end
-
   end
 
   # Represents a signed 8-bit variable.
@@ -232,5 +231,4 @@ module RPicSim::Storage
       @memory.write_word(@address, val)
     end
   end
-
 end

@@ -45,6 +45,5 @@ module RPicSim
     def valid_address?(address)
       @mplab_memory.valid_address?(address)
     end
-
   end
 end

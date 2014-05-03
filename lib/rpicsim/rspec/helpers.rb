@@ -42,7 +42,6 @@ module RPicSim
           raise "Invalid sim_shortcuts configuration value: #{configuration_value.inspect}"
         end
       end
-
     end
   end
 end

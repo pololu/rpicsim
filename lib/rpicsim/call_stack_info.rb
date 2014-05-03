@@ -299,6 +299,5 @@ module RPicSim
           interesting_instructions.join("\n") + "\n"
       end
     end
-
   end
 end

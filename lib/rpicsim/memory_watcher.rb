@@ -86,6 +86,5 @@ module RPicSim
 
       [:PCL, :PCLATH, :STATUS]
     end
-
   end
 end

@@ -19,10 +19,8 @@ module RPicSim
   # This class keeps track of the state of the simulation and provides methods for
   # running the simulation, reading the state, and changing the state.
   class Sim
-
     # These methods should be called while defining a subclass of {Sim}.
     module ClassDefinitionMethods
-
       # Specifies what exact device the firmware runs on.
       # @param device [String] The device name, for example "PIC10F322".
       def use_device(device)
@@ -81,7 +79,6 @@ module RPicSim
 
         self::Shortcuts.send(:define_method, name) { var name }
       end
-
     end
 
     # These are class methods that you can call on subclasses of {Sim}.
@@ -128,7 +125,6 @@ module RPicSim
         @variable_set.def_memory_type :program_memory, program_file.symbols_in_program_memory
         @variable_set.def_memory_type :eeprom, program_file.symbols_in_eeprom
       end
-
     end
 
     # This module is used in RPicSim's {file:RSpecIntegration.md RSpec integration}
@@ -656,5 +652,4 @@ module RPicSim
       @assembly.device_info.code_address_increment
     end
   end
-
 end

@@ -121,5 +121,4 @@ module Firmware
     use_device 'PIC10F322'
     use_file Dir + 'WriteTo5F.cof'
   end
-
 end

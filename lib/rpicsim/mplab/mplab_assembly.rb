@@ -103,6 +103,5 @@ module RPicSim::Mplab
         $stderr.puts "warning: MPLAB X will be looking for files at a bad path: #{path}"
       end
     end
-
   end
 end

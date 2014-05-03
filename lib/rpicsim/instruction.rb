@@ -329,7 +329,6 @@ module RPicSim
       def call_depth_change
         @attrs.fetch(:call_depth_change, 0)
       end
-
     end
   end
 end

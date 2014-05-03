@@ -83,6 +83,5 @@ module RPicSim
       flaw.affects_version '2.05', false
       flaw.probably_affects_other_versions :false
     end
-
   end
 end
