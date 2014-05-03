@@ -7,7 +7,7 @@ resultVar res 2
 
 rst code 0
   goto start
-  
+
 isr code 4
 isr
   call emptyRoutine
@@ -20,23 +20,29 @@ flashVar2
   db 0x11, 0x22
 flashVar3
   db 0x03, 0xCC, 0x12
-  
+
 main code 0x40
 start
   bra $
 
 emptyRoutine:
   return
-  
+
 invalidInstruction:
   dw 0x0001
 
 testCall:
   call emptyRoutine
   return
-  
+
 testRCall:
   rcall emptyRoutine
+  return
+
+testCallAndOperation:
+  clrf      PRODL
+  call      emptyRoutine
+  incf      PRODL
   return
 
 readFlashVar1:
@@ -50,7 +56,7 @@ readFlashVar1:
   movff     TABLAT, resultVar + 1
   return
 
-  
+
 instructions code 0x1000
 
 ; == Byte-oriented instructions ==
@@ -63,7 +69,7 @@ ins_addwfc:
     addwfc  4, F, ACCESS
     addwfc  5, W, BANKED
 
-ins_andwf: 
+ins_andwf:
     andwf   4, F, ACCESS
     andwf   5, W, BANKED
 
@@ -74,7 +80,7 @@ ins_clrf:
 ins_comf:
     comf    4, F, ACCESS
     comf    5, W, BANKED
-    
+
 ins_cpfseq:
     cpfseq  4, ACCESS
     cpfseq  5, BANKED
@@ -125,7 +131,7 @@ ins_movff:
 ins_movwf:
     movwf   4, ACCESS
     movwf   5, BANKED
-    
+
 ins_mulwf:
     mulwf   4, ACCESS
     mulwf   5, BANKED
@@ -196,7 +202,7 @@ ins_btg:
     btg     4, 6, ACCESS
     btg     5, 7, BANKED
 
-    
+
 ; == Control operations ==
 
 ins_bc:
@@ -247,7 +253,7 @@ ins_bov:
     bov    $ + 2
     bov    $ + 0x100
     bov    $ - 0xFE
-    
+
 ins_bra:
     bra     $ + 0xC
     bra     $ - 0x8
@@ -261,14 +267,14 @@ ins_bz:
     bz      $ + 2
     bz      $ + 0x100
     bz      $ - 0xFE
-    
+
 ins_call:
     call    4, 0
     call    6, 1
 
 ins_clrwdt:
     clrwdt
-    
+
 ins_daw:
     daw
 
@@ -290,7 +296,7 @@ ins_rcall:
     rcall    $ + 2
     rcall    $ + 0x800
     rcall    $ - 0x7FE
-    
+
 ins_reset:
     reset
 
@@ -334,7 +340,7 @@ ins_mullw:
 
 ins_sublw:
     sublw    9
-    
+
 ins_xorlw:
     xorlw    9
 
@@ -342,25 +348,25 @@ ins_xorlw:
 
 ins_tblrd:
     tblrd*
-    
+
 ins_tblrd_postinc:
     tblrd*+
 
 ins_tblrd_postdec:
     tblrd*-
-    
+
 ins_tblrd_preinc:
     tblrd+*
-    
+
 ins_tblwt:
     tblwt*
-    
+
 ins_tblwt_postinc:
     tblwt*+
-    
+
 ins_tblwt_postdec:
     tblwt*-
-    
+
 ins_tblwt_preinc:
     tblwt+*
 

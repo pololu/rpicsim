@@ -509,6 +509,20 @@ module RPicSim
       # Simulate popping the stack.
       stack_pointer.value -= 1
       pc.value = @stack_memory.read_word(stack_pointer.value)
+
+      # Update the TOSU:TOSH:TOSL registers because the simulator uses that
+      # when simulating a return instruction.
+      if @sfrs.key?(:TOSL)
+        tos = if stack_pointer.value == 0
+                0
+              else
+                @stack_memory.read_word(stack_pointer.value - 1)
+              end
+
+        reg(:TOSL).value = tos >> 0 & 0xFF
+        reg(:TOSH).value = tos >> 8 & 0xFF
+        reg(:TOSU).value = tos >> 16 & 0xFF if @sfrs.key?(:TOSU)
+      end
     end
 
     # Generates a friendly human-readable string description of where the
