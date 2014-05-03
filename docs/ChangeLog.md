@@ -1,6 +1,14 @@
 Change log
 ====
 
+0.2.5
+----
+Released on 2014-05-02.
+
+- {RPicSim::Sim#stack_push} and {RPicSim::Sim#return} now update the TOSU, TOSH, and TOSL registers if they exist.
+  This fixes bugs that were happening when using those methods in PIC18 simulations.
+- Added recognition for more types of symbols found in XC8-generated COF files, but there are still issues with proper identification of variables in programs compiled with XC8.
+
 0.2.4
 ----
 Released on 2014-03-17.
