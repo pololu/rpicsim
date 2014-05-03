@@ -6,26 +6,12 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offence count: 2
-ParenthesesAsGroupedExpression:
-  Enabled: false
-
-# Offence count: 3
-# Cop supports --auto-correct.
-Proc:
-  Enabled: false
-
-# Offence count: 2
 ShadowingOuterLocalVariable:
   Enabled: false
 
 # Offence count: 2
 # Configuration parameters: AllowIfMethodIsEmpty.
 SingleLineMethods:
-  Enabled: false
-
-# Offence count: 1
-# Cop supports --auto-correct.
-SpaceAfterComma:
   Enabled: false
 
 # Offence count: 5

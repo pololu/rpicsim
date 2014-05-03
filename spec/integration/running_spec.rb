@@ -42,7 +42,7 @@ describe RPicSim::Sim do
     end
 
     it 'can run until an arbitrary proc is fulfilled' do
-      run_to Proc.new { pc.value >= 0x40 }
+      run_to proc { pc.value >= 0x40 }
       pc.value.should == 0x41
     end
 

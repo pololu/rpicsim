@@ -598,7 +598,7 @@ module RPicSim
         c
 
       when Integer
-        Proc.new { pc.value == c }
+        proc { pc.value == c }
 
       when :return
         current_val = stack_pointer.value
@@ -607,7 +607,7 @@ module RPicSim
         else
           target_val = current_val - 1
         end
-        Proc.new { stack_pointer.value == target_val }
+        proc { stack_pointer.value == target_val }
 
       when Label
         convert_condition_to_proc c.address

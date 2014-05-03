@@ -4,7 +4,7 @@ describe 'rcs03a program structure' do
   subject(:call_stack_info) do
     RPicSim::CallStackInfo.hash_from_program_file(
       Firmware::NestedSubroutines.program_file,
-      [0,4]
+      [0, 4]
     )
   end
 
