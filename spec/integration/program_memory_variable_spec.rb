@@ -36,7 +36,7 @@ describe 'Program memory variables (midrange)' do
 
     it 'can be written by firmware' do
       x.value = 0xE23
-      run_subroutine :saveX, cycle_limit: 20000
+      run_subroutine :saveX, cycle_limit: 20_000
       normalFlashVar.value.should == 0xE23
     end
   end

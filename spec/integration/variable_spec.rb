@@ -16,22 +16,22 @@ describe 'Variables' do
   end
 
   it 'can store and retrieve values from an unsigned 16-bit variable' do
-    xu16.value = 65000
-    xu16.value.should == 65000
+    xu16.value = 65_000
+    xu16.value.should == 65_000
   end
 
   it 'can store and retrieve values from a signed 16-bit variable' do
-    xs16.value = -32000
-    xs16.value.should == -32000
+    xs16.value = -32_000
+    xs16.value.should == -32_000
   end
 
   it 'can store and retrieve values from an unsigned 24-bit variable' do
-    xu24.value = 16777215
-    xu24.value.should == 16777215
+    xu24.value = 16_777_215
+    xu24.value.should == 16_777_215
   end
 
   it 'can store and retrieve values from a signed 24-bit variable' do
-    xs24.value = -8388608
+    xs24.value = -8_388_608
     xs24.value.should == -8_388_608
   end
 

@@ -23,7 +23,7 @@ describe 'RPicSim::Sim#eeprom' do
 
   it 'can be written by firmware' do
     wreg.value = 0xE2
-    run_subroutine :eepromWrite, cycle_limit: 20000
+    run_subroutine :eepromWrite, cycle_limit: 20_000
     expect(eeprom.read_byte(0x10)).to eq 0xE2
   end
 

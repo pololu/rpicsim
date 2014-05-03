@@ -41,7 +41,7 @@ describe 'RPicSim::Sim#program_memory' do
 
       it 'can read the value written by the firmware' do
         x.value = 0xE23
-        run_subroutine :saveX, cycle_limit: 20000
+        run_subroutine :saveX, cycle_limit: 20_000
         expect(program_memory.read_word(address)).to eq 0xE23
       end
     end
@@ -99,7 +99,7 @@ describe 'RPicSim::Sim#program_memory' do
       # http://www.microchip.com/forums/m743214.aspx
 
       x.value = 0xE23
-      run_subroutine :saveX, cycle_limit: 20000
+      run_subroutine :saveX, cycle_limit: 20_000
 
       expected = RPicSim::Flaws[:firmware_cannot_write_user_id0] ? 0x3FFF : 0xE23
       expect(program_memory.read_word(0x2000)).to eq expected
