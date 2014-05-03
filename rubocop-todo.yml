@@ -5,15 +5,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offence count: 2
-ShadowingOuterLocalVariable:
-  Enabled: false
-
-# Offence count: 2
-# Configuration parameters: AllowIfMethodIsEmpty.
-SingleLineMethods:
-  Enabled: false
-
 # Offence count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.

@@ -69,12 +69,12 @@ module RPicSim
       end
 
       vars_by_address = @vars_for_memory_by_address[memory_type]
-      variable.addresses.each do |address|
-        if vars_by_address[address]
+      variable.addresses.each do |occupied_address|
+        if vars_by_address[occupied_address]
           raise 'Variable %s overlaps with %s at 0x%x' %
-            [variable, @vars_by_address[address], address]
+            [variable, vars_by_address[occupied_address], occupied_address]
         end
-        vars_by_address[address] = variable
+        vars_by_address[occupied_address] = variable
       end
 
       @vars_for_memory[memory_type][name] = variable

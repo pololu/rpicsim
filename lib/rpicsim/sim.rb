@@ -214,11 +214,15 @@ module RPicSim
 
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]
-    def device; self.class.device; end
+    def device
+      self.class.device
+    end
 
     # Returns the path to the firmware file.
     # @return [String]
-    def filename; self.class.filename; end
+    def filename
+      self.class.filename
+    end
 
     # Makes a new simulation using the settings specified when the class was defined.
     def initialize

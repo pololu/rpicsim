@@ -163,8 +163,8 @@ module RPicSim
 
       # For each instruction that has a code path leading to it, pick out
       # the shortest code path (in terms of interesting instructions).
-      code_paths = code_paths.group_by { |cp| cp.instructions.last }.map do |instr, code_paths|
-        code_paths.min_by { |cp| cp.interesting_instructions.count }
+      code_paths = code_paths.group_by { |cp| cp.instructions.last }.map do |instr, paths|
+        paths.min_by { |cp| cp.interesting_instructions.count }
       end
 
       code_paths
