@@ -191,3 +191,9 @@ These issues might affect other PIC architectures as well.
 
 These issues are tested in `spec/integration/adc_midrange_spec.rb`.  The bad modulus issue was {http://www.microchip.com/forums/m760886.aspx reported to Microchip} in November 2013.
 
+
+Variables from XC8 are not correctly identified
+----
+
+RAM variables in programs using the XC8 compiler are often misidentified as being in program memory, and you need to get their address using {RPicSim::ProgramFile#symbols_in_program_memory}.
+Some variables are not be identified at all, and you would have to write code to get their addresses from the SYM file.
