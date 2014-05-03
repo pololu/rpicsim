@@ -251,7 +251,7 @@ describe 'Disassembly' do
     end
 
     it 'can properly decode all fields' do
-      expect(instruction0.operands).to eq(:fs => 6, :fd => 7)
+      expect(instruction0.operands).to eq(fs: 6, fd: 7)
     end
   end
 

@@ -44,15 +44,15 @@ describe 'Memory.attach on the RAM memory' do
     # This is an event where we extracted the data from it immediately.
     event = @obs.events.first
     if RPicSim::Flaws[:fr_memory_attach_useless]
-      event.should == {:type=>'MEMORY_CHANGED', :affected=>[[0, 128]]}
+      event.should == {type: 'MEMORY_CHANGED', affected: [[0, 128]]}
     else
-      event.should == {:type => 'MEMORY_CHANGED', :affected => [[2, 1], [5, 1], [7, 1], [10, 2], [16, 1], [37, 1]]}
+      event.should == {type: 'MEMORY_CHANGED', affected: [[2, 1], [5, 1], [7, 1], [10, 2], [16, 1], [37, 1]]}
     end
 
     # This is an event where we waited until the step was done to extract data.
     # It's bad that the two are different.
     raw_event = @obs.event_data(@obs.raw_events.first)
-    raw_event.should == {:type => 'MEMORY_CHANGED', :affected => []}
+    raw_event.should == {type: 'MEMORY_CHANGED', affected: []}
   end
 
   context 'for a boring loop' do
@@ -61,14 +61,14 @@ describe 'Memory.attach on the RAM memory' do
     if !RPicSim::Flaws[:fr_memory_attach_useless]
 
       it 'has usable output' do
-        changed_pcl_and_pclath = {:type=>'MEMORY_CHANGED', :affected=>[[2, 1], [10, 1]]}
-        boring_out_of_sync = {:type=>'OUT_OF_SYNCH', :affected=>[[0, 128]]}
+        changed_pcl_and_pclath = {type: 'MEMORY_CHANGED', affected: [[2, 1], [10, 1]]}
+        boring_out_of_sync = {type: 'OUT_OF_SYNCH', affected: [[0, 128]]}
         typical_events = [changed_pcl_and_pclath, boring_out_of_sync]
 
         events.should == []
         step
         events.should == [
-          {:type=>'MEMORY_CHANGED', :affected=>[[2, 1], [5, 1], [7, 1], [10, 2], [16, 1], [37, 1]]},
+          {type: 'MEMORY_CHANGED', affected: [[2, 1], [5, 1], [7, 1], [10, 2], [16, 1], [37, 1]]},
           boring_out_of_sync,
         ]
         events.clear
@@ -88,7 +88,7 @@ describe 'Memory.attach on the RAM memory' do
     else
 
       it 'has useless output in MPLAB X 1.95 and above', flaw: true do
-        all_memory_changed = {:type=>'MEMORY_CHANGED', :affected=>[[0, 128]]}
+        all_memory_changed = {type: 'MEMORY_CHANGED', affected: [[0, 128]]}
 
         events.should == []
         step

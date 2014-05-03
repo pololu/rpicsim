@@ -62,11 +62,17 @@ HandleExceptions:
   Exclude:
     - spec/integration/persistent_expectations_spec.rb
 
+LineLength:
+  Max: 140
+
 # We use 'if false' to disable a spec that is actually supposed to raise an
 # error, which is just there to help us write the documentation.
 LiteralInCondition:
   Exclude:
     - spec/example/nice_error_spec.rb
+
+MethodLength:
+  Max: 130
 
 SignalException:
   EnforcedStyle: only_raise
