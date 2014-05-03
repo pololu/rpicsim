@@ -108,6 +108,7 @@ module RPicSim
       attr_reader :program_file
 
       private
+
       # This gets called when a new subclass of PicSim is created.
       def inherited(subclass)
         subclass.instance_eval do
@@ -641,6 +642,7 @@ module RPicSim
     end
 
     private
+
     def ram_vars
       ram_var_names = self.class.variable_set.var_names_for_memory(:ram)
       @vars.values_at(*ram_var_names)

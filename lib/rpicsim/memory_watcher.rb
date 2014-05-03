@@ -72,6 +72,7 @@ module RPicSim
     end
 
     private
+
     def remove_vars(vars, var_names_to_remove)
       vars.reject! do |key, val|
         name = key.is_a?(Integer) ? key : key.name

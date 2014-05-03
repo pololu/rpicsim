@@ -101,6 +101,7 @@ module RPicSim
     end
 
     private
+
     def message_for_label_not_found(name)
       message = "Cannot find label named '#{name}'."
 

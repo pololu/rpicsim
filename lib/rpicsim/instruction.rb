@@ -206,6 +206,7 @@ module RPicSim
     end
 
     private
+
     # For certain opcodes, this method gets over-written.
     def generate_transitions
       [ advance(1) ]

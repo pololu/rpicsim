@@ -54,6 +54,7 @@ module RPicSim::Storage
     end
 
     private
+
     def check_value(value, allowed_values)
       if !allowed_values.include?(value)
         raise ArgumentError, "Invalid value #{value} written to #{name}."

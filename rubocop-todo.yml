@@ -5,29 +5,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offence count: 97
-# Configuration parameters: IndentWhenRelativeTo, SupportedStyles, IndentOneStep.
-CaseIndentation:
-  Exclude:
-    - lib/rpicsim/instruction.rb
-
-# Offence count: 3
-# Configuration parameters: CountComments.
-ClassLength:
-  Max: 300
-
-# Offence count: 5
-CyclomaticComplexity:
-  Max: 91
-
-# Offence count: 41
-Documentation:
-  Enabled: false
-
-# Offence count: 9
-EmptyLinesAroundAccessModifier:
-  Enabled: false
-
 # Offence count: 11
 # Cop supports --auto-correct.
 EmptyLinesAroundBody:

@@ -70,6 +70,7 @@ module RPicSim
     end
 
     private
+
     def generate
       @max_depths = { @root => 0 }
       @back_links = Hash.new { [] }
@@ -97,6 +98,7 @@ module RPicSim
         end
       end
     end
+
     public
 
     # Returns all the {Instruction}s that have the worse case possible call stack depth.

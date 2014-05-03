@@ -64,6 +64,7 @@ module RPicSim::Mplab
     end
 
     private
+
     # Gets a com.microchip.mplab.mdbcore.debugger.Debugger object.
     def debugger
       lookup Mdbcore.debugger.Debugger.java_class

@@ -14,15 +14,28 @@ AccessorMethodName:
 AndOr:
   Enabled: false
 
+CaseIndentation:
+  Exclude:
+    - lib/rpicsim/instruction.rb
+
+ClassLength:
+  Max: 300
+
 # Rubocop wants me to change constants like ForwardedMethods to FORWARDED_METHODS.
 ConstantName:
   Enabled: false
+
+CyclomaticComplexity:
+  Max: 100
 
 # Rubocop thinks I am trying to call the Ruby debugger whenever I call
 # method named "debugger".
 Debugger:
   Exclude:
     - lib/rpicsim/mplab/**
+
+Documentation:
+  Enabled: false
 
 # The EmptyLines cop removes some intentional empty lines, including
 # empty lines inside strings.
