@@ -62,6 +62,10 @@ HandleExceptions:
   Exclude:
     - spec/integration/persistent_expectations_spec.rb
 
+# Sometimes we want to have an if-block with one line in it to avoid long lines
+IfUnlessModifier:
+  Enabled: false
+
 LineLength:
   Max: 140
 

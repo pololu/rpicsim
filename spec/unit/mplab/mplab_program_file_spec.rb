@@ -19,7 +19,7 @@ describe RPicSim::Mplab::MplabProgramFile do
       let(:filename) { 'spec/firmware/BoringLoop.cof' }
 
       it 'raises an exception saying so' do
-        error_message = 'The file must be inside a directory named dist or else the MCLoader ' +
+        error_message = 'The file must be inside a directory named dist or else the MCLoader ' \
                         'class will throw an exception saying that it cannot find the COF file.'
         expect { described_class.new(filename, device) }.to raise_error error_message
       end

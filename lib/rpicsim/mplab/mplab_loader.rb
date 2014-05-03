@@ -90,7 +90,7 @@ module RPicSim::Mplab
     end
 
     def cannot_find_mplab_error
-      'Cannot find MPLABX.  Install it in the standard location or ' +
+      'Cannot find MPLABX.  Install it in the standard location or ' \
       'set the RPICSIM_MPLABX environment variable to its full path.'
     end
 

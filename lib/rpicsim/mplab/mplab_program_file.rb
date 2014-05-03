@@ -7,7 +7,7 @@ module RPicSim::Mplab
       raise "File does not exist: #{filename}" if !File.exist?(filename)  # Avoid a Java exception.
 
       if !File.realdirpath(filename).split('/').include?('dist')
-        raise 'The file must be inside a directory named dist or else the MCLoader ' +
+        raise 'The file must be inside a directory named dist or else the MCLoader ' \
               'class will throw an exception saying that it cannot find the COF file.'
       end
 
