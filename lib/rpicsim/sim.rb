@@ -33,7 +33,7 @@ module RPicSim
       # You must call {#use_device} before calling this.
       def use_file(filename)
         raise "The device needs to be specified before filename (e.g. 'use_device \"PIC10F322\"')" unless @device
-        @filename = filename
+        @filename = filename.to_s
         load_program_file
       end
 
