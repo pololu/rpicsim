@@ -205,6 +205,13 @@ module RPicSim
       transitions.map(&:next_address)
     end
 
+    # Returns true if this is actually a valid instruction.  Invalid
+    # instructions can occur when disassembling bytes that are not actually
+    # instructions.
+    def valid?
+      @valid
+    end
+
     private
 
     # For certain opcodes, this method gets over-written.
@@ -220,10 +227,6 @@ module RPicSim
 
     def transition(addr, attrs = {})
       Transition.new(self, addr, @instruction_store, attrs)
-    end
-
-    def valid?
-      @valid
     end
 
     private
