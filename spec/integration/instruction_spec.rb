@@ -17,6 +17,7 @@ def describe_instruction(opcode, metadata = {}, &proc)
 end
 
 describe 'Disassembly' do
+  let(:example) { RSpec.current_example }
   let(:opcode) { example.metadata[:opcode] }
   let(:label_name) { example.metadata[:label_name] || ('ins_' + opcode.downcase) }
   let(:address) { program_file.label(label_name).address }

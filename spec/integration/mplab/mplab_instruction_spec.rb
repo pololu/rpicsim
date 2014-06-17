@@ -1,6 +1,7 @@
 require_relative '../../spec_helper'
 
 describe RPicSim::Mplab::MplabInstruction do
+  let(:example) { RSpec.current_example }
 
   # Some fields in PIC instructions are signed two's complement numbers,
   # but unfortunately MPLAB X does not give us the signed value.  We need

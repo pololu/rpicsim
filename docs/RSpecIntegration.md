@@ -113,7 +113,7 @@ This information can help when you are {file:Debugging.md debugging} issues.
 Better RSpec error messages
 ----
 
-RPicSim also overrides some of RSpec's error messages to be better.
+If you are using RSpec 2.x, RPicSim also overrides some of RSpec's error messages to be better.
 
 For example, instead of just saying an error message like "expected driving_high? to return true, got false", RSpec will actually say what object it called `driving_high?` on.
 This feature is important when you are using {file:PersistentExpectations.md persistent expectations} and want to know which expectation failed, because the stack trace will not help.

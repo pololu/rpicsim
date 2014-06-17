@@ -7,9 +7,9 @@ describe RPicSim::Mplab::MplabPin do
   let(:io_state_enum) { RPicSim::Mplab::Mdbcore.simulator.Pin::IOState }
 
   before do
-    allow(pin_physical).to receive(:getIOState).and_return { io_state }
-    allow(pin_physical).to receive(:get).and_return { pin_state }
-    allow(pin_physical).to receive(:pinName).and_return { pin_name }
+    allow(pin_physical).to receive(:getIOState) { io_state }
+    allow(pin_physical).to receive(:get) { pin_state }
+    allow(pin_physical).to receive(:pinName) { pin_name }
   end
 
   describe '#set_low' do

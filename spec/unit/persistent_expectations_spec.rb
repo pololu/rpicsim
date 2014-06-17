@@ -19,8 +19,9 @@ describe RPicSim::RSpec::PersistentExpectations do
       @a = []
       @b = 'abc'
       empty_matcher = be_empty
-      subject.expecting @a => empty_matcher, @b => eq('abc')
-      subject.expectations.should == { @a => empty_matcher, @b => eq('abc') }
+      abc_matcher = eq('abc')
+      subject.expecting @a => empty_matcher, @b => abc_matcher
+      subject.expectations.should == { @a => empty_matcher, @b => abc_matcher }
     end
   end
 

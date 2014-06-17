@@ -15,7 +15,7 @@ end
 
 RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
   t.pattern = nil
-  
+
   if ENV["COVERAGE"] == 'Y'
     t.ruby_opts = "--debug"
   end
@@ -33,12 +33,18 @@ end
 
 desc "Run the specs against multiple versions of MPLAB X."
 task "multispec" do
-  Dir.glob((mplab_x_bottles_path + "*").to_s).sort.each do |path|
+  # First, test against each version of MPLAB X
+  mplabx_paths = Dir.glob((mplab_x_bottles_path + "*").to_s).sort
+  mplabx_paths.each do |path|
     puts "Running specs against MPLAB X from #{path}"
     ENV['RPICSIM_MPLABX'] = path
     Rake::Task['spec'].invoke
     Rake::Task['spec'].reenable
   end
+
+  # TODO: For the last bottled version of MPLAB X, test it against RSpec 2.99 and 2.14.1
+  #ENV['RUBYGEMS_GEMDEPS'] = 'spec/rspec2_deps.rb'
+  #Rake::Task['spec'].invoke
 end
 
 desc "Print out lines of code and related statistics."

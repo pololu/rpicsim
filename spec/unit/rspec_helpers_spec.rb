@@ -24,37 +24,63 @@ describe 'rspec helpers' do
     it "provides a nicer error message when something like 'not be_empty' fails" do
       expect { [1].should be_empty }.to raise_error(
         RSpec::Expectations::ExpectationNotMetError,
-        'expected [1].empty? to return true, got false'
+        'expected `[1].empty?` to return true, got false'
       )
     end
 
     it "provides a nicer error message when something like 'be_empty' fails" do
       expect { [].should_not be_empty }.to raise_error(
         RSpec::Expectations::ExpectationNotMetError,
-        'expected [].empty? to return false, got true'
+        'expected `[].empty?` to return false, got true'
       )
     end
 
   end
 
-  describe 'monkey patch for BaseTextFormatter' do
-    it 'shows the sim info if available' do
-      sio = StringIO.new
-      btf = RSpec::Core::Formatters::BaseTextFormatter.new(sio)
+  describe 'simulation diagnostics' do
+    let (:stack_trace) do
       stack_trace = double('stack_trace')
       stack_trace.stub(:output) { |io, padding| io.puts padding + 'StackTrace' }
-      info = { sim_stack_trace: stack_trace, sim_cycle_count: 111 }
-      example = double('example', metadata: info)
-      btf.should_receive(:dump_backtrace_without_sim_diagnostics) # avoid running the real thing
-      btf.dump_backtrace(example)
+      stack_trace
+    end
 
-      sio.string.should == <<-END
+    let (:info) do
+      { sim_stack_trace: stack_trace, sim_cycle_count: 111 }
+    end
+
+    let(:example) do
+      double('example', metadata: info)
+    end
+
+    if defined?(RSpec::Core::Notifications)
+      # Rspec 3.x
+      it 'monkeypatches FailedExampleNotification in RSpec 3.x' do
+        n = RSpec::Core::Notifications::FailedExampleNotification.new(example)
+        expect(n).to receive(:fully_formatted_without_sim_diagnostics).and_return('')
+        expect(n.fully_formatted).to eq <<-END
+
+     Simulation cycle count: 111
+
+     Simulation stack trace:
+     StackTrace
+        END
+      end
+    else
+      # RSpec 2.x
+      it 'monkeypatches BaseTextFormatter to add diagnostics in RSpec 2.x' do
+        sio = StringIO.new
+        btf = RSpec::Core::Formatters::BaseTextFormatter.new(sio)
+        btf.should_receive(:dump_backtrace_without_sim_diagnostics)
+        btf.dump_backtrace(example)
+
+        sio.string.should == <<-END
 
      Simulation cycle count: 111
 
      Simulation stack trace:
      StackTrace
       END
+      end
     end
   end
 
