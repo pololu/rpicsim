@@ -8,13 +8,23 @@ task "default" => "spec"
 # put every last filename in the commandline.  It makes the test output
 # needlessly verbose, especially if you are running the multispec task.
 class RSpec::Core::RakeTaskBetter < RSpec::Core::RakeTask
-  def files_to_run
-    (ENV['SPEC'] || pattern) ? super : []
+  def spec_command
+    cmd_parts = []
+    cmd_parts << (rspec_command || default_rspec_command)
+    cmd_parts << files_to_run
+    cmd_parts << rspec_opts
+    cmd_parts.flatten.reject(&blank).join(' ')
+  end
+
+  attr_accessor :rspec_command
+
+  def default_rspec_command
+    'rspec'
   end
 end
 
-RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
-  t.pattern = nil
+rspec_task = RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
+  t.pattern = 'spec'
 
   if ENV["COVERAGE"] == 'Y'
     t.ruby_opts = "--debug"
@@ -25,26 +35,36 @@ RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
   # t.ruby_opts = '-rspec/spec_helper'
 end
 
+def run_specs
+  Rake::Task['spec'].reenable
+  Rake::Task['spec'].invoke
+end
+
 desc "Run the specs and generate a code coverage report."
 task "coverage" do
   ENV["COVERAGE"] = 'Y'
   Rake::Task['spec'].invoke
 end
 
-desc "Run the specs against multiple versions of MPLAB X."
+desc "Run the specs against multiple versions of MPLAB X and RSpec."
 task "multispec" do
   # First, test against each version of MPLAB X
   mplabx_paths = Dir.glob((mplab_x_bottles_path + "*").to_s).sort
   mplabx_paths.each do |path|
-    puts "Running specs against MPLAB X from #{path}"
+    puts "\nRunning specs against MPLAB X from #{path}"
     ENV['RPICSIM_MPLABX'] = path
-    Rake::Task['spec'].invoke
-    Rake::Task['spec'].reenable
+    run_specs
   end
 
-  # TODO: For the last bottled version of MPLAB X, test it against RSpec 2.99 and 2.14.1
-  #ENV['RUBYGEMS_GEMDEPS'] = 'spec/rspec2_deps.rb'
-  #Rake::Task['spec'].invoke
+  # For the last bottled version of MPLAB X, test it against RSpec 2.99 and 2.14
+  # TODO: be more flexible/consistent and just test every version of RSpec installed
+  %w{ 2.99.0 2.14.0 }.each do |version|
+    puts "\nRunning specs against RSpec #{version} and MPLAB X from #{ENV['RPICSIM_MPLABX']}"
+    rspec_task.rspec_command = "jruby ./spec/rspec_runner.rb \"~> #{version}\""
+    run_specs
+  end
+
+
 end
 
 desc "Print out lines of code and related statistics."

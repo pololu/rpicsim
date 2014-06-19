@@ -33,10 +33,14 @@ module RPicSim::RSpec::SimDiagnostics
   end
 end
 
-
 RSpec.configure do |config|
-  config.after(:each) do |example|
-    if @sim && example.exception
+  config.after(:each) do
+    ex = if RSpec.respond_to?(:current_example)
+           RSpec.current_example  # RSpec 3.x
+         else
+           example # RSpec 2.x
+         end
+    if @sim && ex.exception
       RPicSim::RSpec::SimDiagnostics.store_diagnostics(example, @sim)
     end
   end
