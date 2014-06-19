@@ -63,8 +63,6 @@ task "multispec" do
     rspec_task.rspec_command = "jruby ./spec/rspec_runner.rb \"~> #{version}\""
     run_specs
   end
-
-
 end
 
 desc "Print out lines of code and related statistics."
