@@ -36,7 +36,7 @@ end
 RSpec.configure do |config|
   config.after(:each) do
     ex = if RSpec.respond_to?(:current_example)
-           RSpec.current_example  # RSpec 3.x
+           RSpec.current_example  # RSpec 3.x and 2.99
          else
            example # RSpec 2.x
          end

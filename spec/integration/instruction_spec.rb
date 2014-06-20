@@ -17,11 +17,10 @@ def describe_instruction(opcode, metadata = {}, &proc)
 end
 
 describe 'Disassembly' do
-  let(:example) { RSpec.current_example }
-  let(:opcode) { example.metadata[:opcode] }
-  let(:label_name) { example.metadata[:label_name] || ('ins_' + opcode.downcase) }
+  let(:opcode) { rspec_example.metadata[:opcode] }
+  let(:label_name) { rspec_example.metadata[:label_name] || ('ins_' + opcode.downcase) }
   let(:address) { program_file.label(label_name).address }
-  let(:address_increment) { example.metadata[:address_increment] }
+  let(:address_increment) { rspec_example.metadata[:address_increment] }
 
   let(:instruction0) { program_file.instruction(address) }
   let(:instruction1) { program_file.instruction(address + instruction0.size) }
@@ -178,7 +177,7 @@ describe 'Disassembly' do
     end
 
     it 'has an n field with a relative word address in it' do
-      expected_n = 0xC / example.metadata[:address_increment] - 1
+      expected_n = 0xC / rspec_example.metadata[:address_increment] - 1
       expect(instruction0.operands).to eq(n: expected_n)
       expect(instruction1.operands).to eq(n: -expected_n)
     end

@@ -1,8 +1,6 @@
 require_relative '../../spec_helper'
 
 describe RPicSim::Mplab::MplabInstruction do
-  let(:example) { RSpec.current_example }
-
   # Some fields in PIC instructions are signed two's complement numbers,
   # but unfortunately MPLAB X does not give us the signed value.  We need
   # to get the signed value from the unsigned value.  That conversion is done
@@ -39,8 +37,10 @@ describe RPicSim::Mplab::MplabInstruction do
         @disassembler = @assembly.disassembler
       end
 
-      let(:opcode) { example.metadata[:opcode] }
-      let(:address) { @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym] }
+      let(:opcode) { rspec_example.metadata[:opcode] }
+      let(:address) do
+        @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym]
+      end
 
       def n_value(address)
         inst = @disassembler.disassemble(address)
@@ -87,8 +87,10 @@ describe RPicSim::Mplab::MplabInstruction do
         ['ADDFSR', 6],
       ]
 
-      let(:opcode) { example.metadata[:opcode] }
-      let(:address) { @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym] }
+      let(:opcode) { rspec_example.metadata[:opcode] }
+      let(:address) do
+        @mplab_program_file.symbols_in_program_memory[('ins_' + opcode.downcase).to_sym]
+      end
 
       instructions.each do |opcode, bits|
         describe opcode, opcode: opcode do
