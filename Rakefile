@@ -48,7 +48,8 @@ end
 
 desc "Run the specs against multiple versions of MPLAB X and RSpec."
 task "multispec" do
-  # First, test against each version of MPLAB X
+  # First, test against each bottled version of MPLAB X.
+  # Presumably this will be using a 3.x version of RSpec.
   mplabx_paths = Dir.glob((mplab_x_bottles_path + "*").to_s).sort
   mplabx_paths.each do |path|
     puts "\nRunning specs against MPLAB X from #{path}"
@@ -56,8 +57,8 @@ task "multispec" do
     run_specs
   end
 
-  # For the last bottled version of MPLAB X, test it against RSpec 2.99 and 2.14
-  # TODO: be more flexible/consistent and just test every version of RSpec installed
+  # Test against RSpec 2.99 and 2.14
+  # This will use the latest bottled version of MPLAB X.
   %w{ 2.99.0 2.14.0 }.each do |version|
     puts "\nRunning specs against RSpec #{version} and MPLAB X from #{ENV['RPICSIM_MPLABX']}"
     rspec_task.rspec_command = "jruby ./spec/rspec_runner.rb \"~> #{version}\""
