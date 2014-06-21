@@ -1,12 +1,13 @@
 Steps to release a new version of RPicSim:
 
-1) rake multispec
-2) bundle exec rubocop
-3) rake doc
-4) Update version number in lib/rpicsim/version.rb
-5) git commit -am "Updated version to x.x.x"
-6) rake build
-7) gem push rpicsim-x.x.x.gem
-8) git tag x.x.x
-9) git push origin && git push origin --tags
-10) Upload new docs.
+1) rake todo
+2) rake multispec
+3) bundle exec rubocop
+4) rake doc
+5) Update version number in lib/rpicsim/version.rb
+6) git commit -am "Updated version to x.x.x"
+7) rake build
+8) gem push rpicsim-x.x.x.gem
+9) git tag x.x.x
+10) git push origin && git push origin --tags
+11) Upload new docs.
