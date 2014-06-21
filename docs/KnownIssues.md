@@ -123,7 +123,7 @@ RAM watcher is useless because all of RAM seems to change on every step
 ----
 _Type: MPLAB X bug_
 
-_MPLAB X versions affected: 1.95, 2.00, 2.05_
+_MPLAB X versions affected: 1.95 and later_
 
 This issue is tested in `spec/mplab/memory_attach_spec.rb`.
 If you want to use the {file:RamWatcher.md RAM watcher}, you should use MPLAB X version 1.85 or 1.90.
