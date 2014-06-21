@@ -38,13 +38,13 @@ describe 'rspec helpers' do
   end
 
   describe 'simulation diagnostics' do
-    let (:stack_trace) do
+    let(:stack_trace) do
       stack_trace = double('stack_trace')
       stack_trace.stub(:output) { |io, padding| io.puts padding + 'StackTrace' }
       stack_trace
     end
 
-    let (:info) do
+    let(:info) do
       { sim_stack_trace: stack_trace, sim_cycle_count: 111 }
     end
 

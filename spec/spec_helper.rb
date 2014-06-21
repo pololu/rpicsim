@@ -26,4 +26,3 @@ def rspec_example
     example  # RSpec 2.x
   end
 end
-
