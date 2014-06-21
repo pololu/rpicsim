@@ -1,6 +1,13 @@
 Change log
 ====
 
+0.3.0
+----
+Released on 2014-06-20.
+
+- Adds support for RSpec 3.x.  This release was tested with RSpec 2.14.1, 2.99.0, and 3.0.0.
+- Adds support for MPLAB X 2.10.
+
 0.2.5
 ----
 Released on 2014-05-02.
