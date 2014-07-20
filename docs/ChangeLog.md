@@ -1,6 +1,11 @@
 Change log
 ====
 
+UNRELEASED VERSION
+----
+
+- Adds {RPicSim::Memory#read_bytes} and {RPicSim::Memory#write_bytes}.
+
 0.3.0
 ----
 Released on 2014-06-20.
