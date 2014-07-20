@@ -197,3 +197,15 @@ Variables from XC8 are not correctly identified
 
 RAM variables in programs using the XC8 compiler are often misidentified as being in program memory, and you need to get their address using {RPicSim::ProgramFile#symbols_in_program_memory}.
 Some variables are not be identified at all, and you would have to write code to get their addresses from the SYM file.
+
+Cannot read the top byte of PIC18 flash memory
+----
+
+_Type: MPLAB X bug_
+
+_MPLAB X versions affected: all tested verions_
+
+Attempting to read from the top (last) byte of program memory will cause an exception because the top address is not considered to be valid.
+For example, you cannot use `program_memory.read_byte(0x7FFF)` on a PIC18F25K50 simulation.
+One workaround is to use `read_word` instead.
+This seems to only affect PIC18 devices.

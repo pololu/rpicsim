@@ -2,28 +2,48 @@
 
 require 'spec_helper'
 
-describe 'PIC18 end-of-memory issues' do
+describe 'end-of-memory issues (PIC18)' do
   before do
     start_sim Firmware::Test18F25K50
   end
 
   it 'cannot read the top byte of program memory', flaw: true do
-    program_memory.read_byte(0x7FFE)
+    expect(program_memory.valid_address?(0x7FFE)).to eq true  # good
+    expect(program_memory.valid_address?(0x7FFF)).to eq false # bad
+  end
+end
+
+describe 'end-of-memory issues (enhanced midrange)' do
+  before do
+    start_sim Firmware::Test16F1826
   end
 
-  it 'cannot read the top word of program memory', flaw: true do
-    program_memory.read_byte(0x7FFE)
+  it 'can read the top word of program memory' do
+    expect(program_memory.valid_address?(0x7FF)).to eq true
+    expect(program_memory.valid_address?(0x800)).to eq false
+  end
+end
+
+describe 'end-of-memory issues (midrange)' do
+  before do
+    start_sim Firmware::Test10F322
   end
 
-  it 'cannot read the top byte of RAM', flaw: true do
-    ram.read_byte(0x0FFF)
+  it 'can read the top word of program memory' do
+    expect(program_memory.valid_address?(0x1FF)).to eq true
+    expect(program_memory.valid_address?(0x200)).to eq false
+  end
+end
+
+describe 'end-of-memory issues (baseline)' do
+  before do
+    start_sim Firmware::Test10F202
   end
 
-  it 'cannot read the top byte of EEPROM', flaw: true do
-    eeprom.read_byte(0xFF)
-  end
-
-  it 'cannot read the last word of stack memory', flaw: true do
-    stack_memory.read_word(31)
+  it 'can read the top word of program memory' do
+    expect(program_memory.valid_address?(0x23F)).to eq true
+    expect(program_memory.valid_address?(0x240)).to eq false
+    # Butt this chip is only supposed to have 0x200 words so this is weird
+    # and might be another bug.
   end
 end
