@@ -158,6 +158,7 @@ module RPicSim
         :run_to_cycle_count,
         :reg,
         :stack_contents,
+        :stack_memory,
         :stack_push,
         :stack_trace,
         :step,
@@ -211,6 +212,11 @@ module RPicSim
     # bytes in the simulated EEPROM.
     # @return [Memory]
     attr_reader :eeprom
+
+    # Returns a {Memory} object that allows direct reading and writing of the
+    # bytes in the simulated hardware call stack.
+    # @return [Memory]
+    attr_reader :stack_memory
 
     # Returns a string like "PIC10F322" specifying the PIC device number.
     # @return [String]

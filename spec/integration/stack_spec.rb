@@ -23,7 +23,14 @@ describe 'Stack methods' do
     describe '#stack_contents' do
       it 'returns the addresses on the stack' do
         run_to :ioo, cycle_limit: 100
-        sim.stack_contents.should == [0x23, 0x42, 0x61]
+        expect(sim.stack_contents).to eq [0x23, 0x42, 0x61]
+      end
+    end
+
+    describe '#stack_memory' do
+      it 'returns a Memory object representing the stack' do
+        run_to :ioo, cycle_limit: 100
+        expect(stack_memory.read_word(1)).to eq 0x42
       end
     end
 
