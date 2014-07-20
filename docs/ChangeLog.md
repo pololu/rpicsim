@@ -5,6 +5,7 @@ UNRELEASED VERSION
 ----
 
 - Adds {RPicSim::Memory#read_bytes} and {RPicSim::Memory#write_bytes}.
+- Fixed a bug in the RSpec 3.x suppoort that was causing the informative error messages when an example fails to not work.
 
 0.3.0
 ----

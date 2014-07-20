@@ -41,7 +41,7 @@ RSpec.configure do |config|
            example # RSpec 2.x
          end
     if @sim && ex.exception
-      RPicSim::RSpec::SimDiagnostics.store_diagnostics(example, @sim)
+      RPicSim::RSpec::SimDiagnostics.store_diagnostics(ex, @sim)
     end
   end
 end
