@@ -283,8 +283,9 @@ xc8_files.each do |xc8_file|
   hex_file = xc8_file.parent.parent + 'xc8' + 'dist' + xc8_file.sub_ext('.hex').basename
   file hex_file => xc8_file do
     device = detect_device(xc8_file)
+    map_file = hex_file.sub_ext('.map')
     hex_file.parent.mkpath
-    sh "xc8 #{xc8_file} --chip=#{device} -O#{hex_file} --mode=free"
+    sh "xc8 #{xc8_file} --chip=#{device} -O#{hex_file} -M#{map_file} --mode=free"
   end
   Rake::Task['firmware:xc8'].enhance [hex_file]
 end

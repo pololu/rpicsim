@@ -13,6 +13,7 @@ require_relative 'memory_watcher'
 require_relative 'program_file'
 require_relative 'stack_pointer'
 require_relative 'stack_trace'
+require_relative 'xc8_sym_file'
 
 module RPicSim
   # This class represents a PIC microcontroller simulation.
