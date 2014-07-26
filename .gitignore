@@ -1,9 +1,4 @@
 *~
-*.err
-*.lst
-*.o
-*.cof
-*.hex
 /*.gem
 
 /coverage
@@ -11,3 +6,6 @@
 /.yardoc
 Gemfile.lock
 Introduction.md
+
+funclist
+l.obj

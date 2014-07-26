@@ -4,7 +4,7 @@ describe 'ProgramFile from MPLAB X' do
   it 'cannot load a file that is not inside a "dist" directory', flaw: true do
     klass = com.microchip.mplab.mdbcore.program.spi.IProgramFileProviderFactory.java_class
     factory = org.openide.util.Lookup.getDefault.lookup(klass)
-    program_file = factory.getProvider('spec/firmware/BoringLoop.cof', 'PIC10F322')
+    program_file = factory.getProvider('spec/firmware/mplab/BoringLoop.cof', 'PIC10F322')
     exc = com.microchip.mplab.mdbcore.program.exceptions.ProgramFileProcessingException
 
     msg = '"The debug file does not appear to be located in the expected ' \

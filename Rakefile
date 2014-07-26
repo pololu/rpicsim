@@ -82,8 +82,11 @@ end
 
 task "spec" => "firmware"
 
-desc "Compile the firmware used for the specs."
-task "firmware"
+desc 'Compile any firmware that is not stored in git.'
+task 'firmware' => 'firmware:mpasm'
+
+desc 'Compile MPASM firmware'
+task 'firmware:mpasm'
 
 desc 'Generate documentation with YARD'
 task 'doc' => 'Introduction.md' do
@@ -125,7 +128,7 @@ end
 def mpasm_path
   @mpasm_path ||= begin
     mpasm = ENV['RPICSIM_MPASM']
-    
+
     mpasm ||= [
       ('mpasmx' if which('mpasmx')),
       ('mpasm' if which('mpasm')),
@@ -136,15 +139,15 @@ def mpasm_path
     ].find do |mpasm|
       mpasm && File.exist?(mpasm)
     end
-    
+
     if !mpasm
       raise "Cannot find MPASM or MPASMX executable.  Please put it on your path or set the RPICSIM_MPASM environment variable to its full path."
     end
-      
+
     if !File.exist?(mpasm)
       raise "MPASM executable does not exist: #{mpasm}"
     end
-    
+
     mpasm
   end
 end
@@ -152,7 +155,7 @@ end
 def mplink_path
   @mplink_path ||= begin
     mplink = ENV['RPICSIM_MPASM']
-    
+
     mplink ||= [
       ('mplink' if which('mplink')),
       'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mplink.exe',
@@ -162,15 +165,15 @@ def mplink_path
     ].find do |mplink|
       mplink && File.exist?(mplink)
     end
-    
+
     if !mplink
       raise "Cannot find MPLINK executable.  Please put it on your path or set the RPICSIM_MPLINK environment variable to its full path."
     end
-      
+
     if !File.exist?(mplink)
       raise "MPLINK executable does not exist: #{mplink}"
     end
-    
+
     mplink
   end
 end
@@ -178,22 +181,22 @@ end
 def mplab_x_bottles_path
   @mplab_x_bottles_path ||= begin
     path = ENV['RPICSIM_MPLABX_BOTTLES']
-    
+
     path ||= [
       "~/MPLABX",
       "C:/MPLABX"
     ].find do |p|
       p && File.directory?(p)
     end
-    
+
     if !path
       raise "Cannot find MPLAB X bottles directory.  You can specify where it is using the RPICSIM_MPLABX_BOTTLES environment variable."
     end
-    
+
     if !File.directory?(path)
       raise "MPLAB X bottles directory does not exist: #{path}."
     end
-    
+
     Pathname(path)
   end
 end
@@ -201,11 +204,11 @@ end
 # Detects a device string like "10F322" from the first line of the ASM file.
 def detect_device(asm_file)
   first_line = File.open(asm_file, 'r') { |f| f.readline }
-  md = first_line.match %r{p([0-9A-Za-z]+)}
+  md = first_line.match %r{(p|chip=)([0-9A-Za-z]+)}
   if !md
     raise "Could not determine device from first line of #{asm_file}."
   end
-  md[1]
+  md[2]
 end
 
 # err_file should be a Pathname object to an MPASM .err file.
@@ -240,11 +243,10 @@ def mpasm(options, o_file)
   end
 end
 
-asm_files = Dir.glob('spec/firmware/src/*.asm').map(&method(:Pathname))
-raise 'No firmware found' if asm_files.empty?
-
+asm_files = Dir.glob('spec/firmware/mpasm/*.asm').map(&method(:Pathname))
+raise 'No MPASM firmware found' if asm_files.empty?
 asm_files.each do |asm_file|
-  cof_file = asm_file.parent.parent + 'dist' + asm_file.sub_ext('.cof').basename
+  cof_file = asm_file.parent.parent + 'mpasm' + 'dist' + asm_file.sub_ext('.cof').basename
   file cof_file => asm_file do
     device = detect_device(asm_file)
     o_file = cof_file.sub_ext('.o')
@@ -253,17 +255,41 @@ asm_files.each do |asm_file|
     o_file.parent.mkpath
     mpasm %Q{-p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}, o_file
     sh %Q{#{mplink_path} -p#{device} -q -w -o"#{cof_file}" "#{o_file}"}
-  end  
-  task 'firmware' => cof_file
+  end
+  task 'firmware:mpasm' => cof_file
 end
 
-desc 'Clean up compiled firmware output files.'
-task 'firmware:clean' do
-  FileUtils.rm_r 'spec/firmware/dist', verbose: true
+desc 'Clean up compiled MPASM output files.'
+task 'firmware:mpasm:clean' do
+  FileUtils.rm_rf 'spec/firmware/mpasm/dist', verbose: true
 end
 
 # Copy the COF file out of the dist directory so we can test that flaw in MPLAB X
-task 'firmware' => 'spec/firmware/BoringLoop.cof'
-file 'spec/firmware/BoringLoop.cof' => 'spec/firmware/dist/BoringLoop.cof' do
-  FileUtils.cp 'spec/firmware/dist/BoringLoop.cof', 'spec/firmware/BoringLoop.cof', verbose: true
+task 'firmware:mpasm' => 'spec/firmware/mpasm/BoringLoop.cof'
+file 'spec/firmware/mpasm/BoringLoop.cof' => 'spec/firmware/mpasm/dist/BoringLoop.cof' do
+  FileUtils.cp 'spec/firmware/mpasm/dist/BoringLoop.cof',
+    'spec/firmware/mpasm/BoringLoop.cof', verbose: true
+end
+
+desc 'Compile all firmware'
+task 'firmware:all' => ['firmware:mpasm', 'firmware:xc8']
+
+desc 'Compile all XC8 firmware'
+task 'firmware:xc8'
+
+xc8_files = Dir.glob('spec/firmware/xc8/*.c').map(&method(:Pathname))
+raise 'No XC8 firmware found' if xc8_files.empty?
+xc8_files.each do |xc8_file|
+  hex_file = xc8_file.parent.parent + 'xc8' + 'dist' + xc8_file.sub_ext('.hex').basename
+  file hex_file => xc8_file do
+    device = detect_device(xc8_file)
+    hex_file.parent.mkpath
+    sh "xc8 #{xc8_file} --chip=#{device} -O#{hex_file} --mode=free"
+  end
+  Rake::Task['firmware:xc8'].enhance [hex_file]
+end
+
+desc 'Delete compiled XC8 output files.'
+task 'firmware:xc8:clean' do
+  FileUtils.rm_rf 'spec/firmware/xc8/dist', verbose: true
 end

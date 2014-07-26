@@ -1,9 +1,4 @@
-/** This is a C program that we compile with XC8 to make sure that
- RPicSim is compatible with XC8.
- The output is used in RPicSim's speds.
- It is built with build.rb and the output COF file is committed to GIT so that
- RPicSim contributors do not have to install XC8 themselves. **/
- 
+// chip=18F25K50
 #include <xc.h>
 #include <stdint.h>
 

@@ -1,9 +1,9 @@
 module Firmware
-  Dir = File.dirname(__FILE__) + '/firmware/dist/'
+  MpasmDistDir = File.dirname(__FILE__) + '/firmware/mpasm/dist/'
 
   class Addition < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'Addition.cof'
+    use_file MpasmDistDir + 'Addition.cof'
 
     def_var :x, :uint16
     def_var :y, :uint16
@@ -12,23 +12,23 @@ module Firmware
 
   class BoringLoop < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'BoringLoop.cof'
+    use_file MpasmDistDir + 'BoringLoop.cof'
   end
 
   class DrivePinHigh < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'DrivePinHigh.cof'
+    use_file MpasmDistDir + 'DrivePinHigh.cof'
   end
 
   class EepromVariables < RPicSim::Sim
     use_device 'PIC18F25K50'
-    use_file Dir + 'EepromVariables.cof'
+    use_file MpasmDistDir + 'EepromVariables.cof'
     def_var :eepromVar1, :uint8, memory: :eeprom
   end
 
   class FlashVariables < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'FlashVariables.cof'
+    use_file MpasmDistDir + 'FlashVariables.cof'
     def_var :x, :uint16
 
     def_var :normalFlashVar, :word, memory: :program_memory
@@ -41,18 +41,18 @@ module Firmware
 
   class LongDelay < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'LongDelay.cof'
+    use_file MpasmDistDir + 'LongDelay.cof'
     def_var :hot, :uint8
   end
 
   class NestedSubroutines < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'NestedSubroutines.cof'
+    use_file MpasmDistDir + 'NestedSubroutines.cof'
   end
 
   class PinMirror < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'PinMirror.cof'
+    use_file MpasmDistDir + 'PinMirror.cof'
 
     def_pin :main_input, :RA0
     def_pin :main_output, :RA1
@@ -60,40 +60,40 @@ module Firmware
 
   class ReadADC < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'ReadADC.cof'
+    use_file MpasmDistDir + 'ReadADC.cof'
   end
 
   class ReadPin < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'ReadPin.cof'
+    use_file MpasmDistDir + 'ReadPin.cof'
     def_var :x, :uint8
     def_pin :main_pin, :RA0
   end
 
   class ReadSFR < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'ReadSFR.cof'
+    use_file MpasmDistDir + 'ReadSFR.cof'
     def_var :x, :uint8
   end
 
   class Test10F202 < RPicSim::Sim
     use_device 'PIC10F202'
-    use_file Dir + 'Test10F202.cof'
+    use_file MpasmDistDir + 'Test10F202.cof'
   end
 
   class Test10F322 < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'Test10F322.cof'
+    use_file MpasmDistDir + 'Test10F322.cof'
   end
 
   class Test16F1826 < RPicSim::Sim
     use_device 'PIC16F1826'
-    use_file Dir + 'Test16F1826.cof'
+    use_file MpasmDistDir + 'Test16F1826.cof'
   end
 
   class Test18F25K50 < RPicSim::Sim
     use_device 'PIC18F25K50'
-    use_file Dir + 'Test18F25K50.cof'
+    use_file MpasmDistDir + 'Test18F25K50.cof'
     def_var :var1, :uint8
     def_var :var2, :uint16
     def_var :resultVar, :uint16
@@ -104,7 +104,7 @@ module Firmware
 
   class Variables < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'Variables.cof'
+    use_file MpasmDistDir + 'Variables.cof'
     def_var :xu8, :uint8
     def_var :xs8, :int8
     def_var :xu16, :uint16
@@ -119,6 +119,6 @@ module Firmware
 
   class WriteTo5F < RPicSim::Sim
     use_device 'PIC10F322'
-    use_file Dir + 'WriteTo5F.cof'
+    use_file MpasmDistDir + 'WriteTo5F.cof'
   end
 end

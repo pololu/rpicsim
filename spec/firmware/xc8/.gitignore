@@ -2,10 +2,10 @@
 *.cmf
 *.d
 *.hxl
+*.lst
 *.p1
 *.pre
 *.sdb
-*.sym
 *.as
 *.obj
 *.rlf
