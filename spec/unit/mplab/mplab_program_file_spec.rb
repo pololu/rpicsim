@@ -16,7 +16,7 @@ describe RPicSim::Mplab::MplabProgramFile do
     end
 
     context 'when given a filename that exists but is not in a dist directory' do
-      let(:filename) { 'spec/firmware/mplab/BoringLoop.cof' }
+      let(:filename) { 'spec/firmware/mpasm/BoringLoop.cof' }
 
       it 'raises an exception saying so' do
         error_message = 'The file must be inside a directory named dist or else the MCLoader ' \

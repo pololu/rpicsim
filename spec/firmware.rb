@@ -1,5 +1,6 @@
 module Firmware
-  MpasmDistDir = File.dirname(__FILE__) + '/firmware/mpasm/dist/'
+  MpasmDistDir = Pathname(File.dirname(__FILE__) + '/firmware/mpasm/dist/')
+  Xc8DistDir = Pathname(File.dirname(__FILE__) + '/firmware/xc8/dist/')
 
   class Addition < RPicSim::Sim
     use_device 'PIC10F322'
@@ -100,6 +101,11 @@ module Firmware
     def_var :flashVar1, :word, memory: :program_memory
     def_var :flashVar2, :word, memory: :program_memory
     def_var :flashVar3, :uint24, memory: :program_memory
+  end
+
+  class TestXC8 < RPicSim::Sim
+    use_device 'PIC18F25K50'
+    use_file Xc8DistDir + 'TestXC8.hex'
   end
 
   class Variables < RPicSim::Sim
