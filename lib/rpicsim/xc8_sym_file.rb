@@ -9,7 +9,7 @@ module RPicSim
 
     attr_reader :symbol_raw_data
 
-    def initialize(filename)
+    def initialize(filename, opts = {})
       @symbols = {}
       @symbols_in_ram = {}
       @symbols_in_eeprom = {}
@@ -20,6 +20,26 @@ module RPicSim
         BANK0 BANK1 BANK2 BANK3 BANK4 BANK5 BANK6 BANK7}
       @sections_in_code = %w{CODE CONST IDLOC MEDIUMCONST SMALLCONST}
       @sections_in_eeprom = %w{EEDATA}
+
+      allowed_keys = [:custom_ram_sections,
+                      :custom_code_sections,
+                      :custom_eeprom_sections]
+      invalid_keys = opts.keys - allowed_keys
+      if !invalid_keys.empty?
+        raise "Invalid options: #{invalid_keys.inspect}"
+      end
+
+      if opts[:custom_ram_sections]
+        @sections_in_ram += opts[:custom_ram_sections]
+      end
+
+      if opts[:custom_code_sections]
+        @sections_in_code += opts[:custom_code_sections]
+      end
+
+      if opts[:custom_eeprom_sections]
+        @sections_in_eeprom += opts[:custom_eeprom_sections]
+      end
 
       read_data
       sort_data

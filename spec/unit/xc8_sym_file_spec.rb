@@ -4,7 +4,11 @@ describe RPicSim::Xc8SymFile do
   let (:filename) { 'spec/firmware/xc8/ExampleSym.sym' }
 
   subject(:sym_file) do
-    described_class.new(filename)
+    described_class.new(filename,
+      custom_ram_sections: %w{MYRAM},
+      custom_code_sections: %w{MYCODE},
+      custom_eeprom_sections: %w{MYEEPROM},
+    )
   end
 
   it 'gets the addresses right' do
@@ -33,7 +37,7 @@ describe RPicSim::Xc8SymFile do
     expect(sym_file.symbols_in_program_memory[varname]).to eq nil
   end
 
-  ram_sections = %w{ABS COMRAM BIGRAM RAM SFR FARRAM}
+  ram_sections = %w{ABS COMRAM BIGRAM RAM SFR FARRAM MYRAM}
   ram_sections += 8.times.map { |n| "BANK#{n}" }
   ram_sections.each do |section|
     it "reports variables in #{section} as RAM" do
@@ -41,14 +45,14 @@ describe RPicSim::Xc8SymFile do
     end
   end
 
-  code_sections = %w{CODE CONST IDLOC SMALLCONST MEDIUMCONST}
+  code_sections = %w{CODE CONST IDLOC SMALLCONST MEDIUMCONST MYCODE}
   code_sections.each do |section|
     it "reports variables in #{section} as code" do
       test_code_var("_varIn#{section}".to_sym)
     end
   end
 
-  eeprom_sections = %w{EEDATA}
+  eeprom_sections = %w{EEDATA MYEEPROM}
   eeprom_sections.each do |section|
     it "reports variables in #{section} as EEPROM" do
       test_eeprom_var("_varIn#{section}".to_sym)
