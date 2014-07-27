@@ -6,6 +6,7 @@ require_relative 'pin'
 require_relative 'memory'
 require_relative 'composite_memory'
 require_relative 'storage/register'
+require_relative 'symbol_set'
 require_relative 'variable_set'
 require_relative 'program_counter'
 require_relative 'label'
@@ -13,7 +14,6 @@ require_relative 'memory_watcher'
 require_relative 'program_file'
 require_relative 'stack_pointer'
 require_relative 'stack_trace'
-require_relative 'xc8_sym_file'
 
 module RPicSim
   # This class represents a PIC microcontroller simulation.
@@ -30,12 +30,42 @@ module RPicSim
       end
 
       # Specifies the path to the firmware file.  The file can be a HEX or COF file, but
-      # COF is recommended so that you can access label addresses and other debugging information.
+      # COF is recommended so that you can access symbol/label addresses and other
+      # debugging information.
       # You must call {#use_device} before calling this.
       def use_file(filename)
         raise "The device needs to be specified before filename (e.g. 'use_device \"PIC10F322\"')" unless @device
         @filename = filename.to_s
         load_program_file
+      end
+
+      # Specifies additional symbols to use in the simulation.  Symbols might be
+      # loaded from the program file when you call {#use_file}, but if those
+      # symbols are not sufficient then you can call this method to incorporate
+      # another source of symbols.
+      #
+      # The +symbol_source+ parameter should be an object that responds to some
+      # subset of these methods: +#symbols+, +#symbols_in_ram+,
+      # +#symbols_in_program_memory+, +#symbols_in_eeprom+.  The methods should
+      # take no arguments and return a hash where the keys are symbol names
+      # (represented as Ruby symbols) and the values are addresses (as
+      # integers).
+      def use_symbols(symbol_source)
+        if symbol_source.respond_to?(:symbols)
+          @symbol_set.def_symbols symbol_source.symbols
+        end
+
+        if symbol_source.respond_to?(:symbols_in_ram)
+          @symbol_set.def_symbols symbol_source.symbols_in_ram, :ram
+        end
+
+        if symbol_source.respond_to?(:symbols_in_program_memory)
+          @symbol_set.def_symbols symbol_source.symbols_in_program_memory, :program_memory
+        end
+
+        if symbol_source.respond_to?(:symbols_in_eeprom)
+          @symbol_set.def_symbols symbol_source.symbols_in_eeprom, :eeprom
+        end
       end
 
       # Define a pin alias.
@@ -105,6 +135,34 @@ module RPicSim
       # The {ProgramFile} object representing the firmware.
       attr_reader :program_file
 
+      # Returns all the symbols known to the simulation.
+      # The returns value is a hash where the keys are the names of the symbols
+      # (represented as Ruby symbols) and the values are the addresses of the symbols.
+      def symbols
+        @symbol_set.symbols
+      end
+
+      # Returns all the symbols in RAM.
+      # The returns value is a hash where the keys are the names of the symbols
+      # (represented as Ruby symbols) and the values are the addresses of the symbols.
+      def symbols_in_ram
+        @symbol_set.symbols_in_memory(:ram)
+      end
+
+      # Returns all the symbols in program memory.
+      # The returns value is a hash where the keys are the names of the symbols
+      # (represented as Ruby symbols) and the values are the addresses of the symbols.
+      def symbols_in_program_memory
+        @symbol_set.symbols_in_memory(:program_memory)
+      end
+
+      # Returns all the symbols in EEPROM.
+      # The returns value is a hash where the keys are the names of the symbols
+      # (represented as Ruby symbols) and the values are the addresses of the symbols.
+      def symbols_in_eeprom
+        @symbol_set.symbols_in_memory(:eeprom)
+      end
+
       private
 
       # This gets called when a new subclass of PicSim is created.
@@ -120,11 +178,19 @@ module RPicSim
         @program_file = ProgramFile.new(@filename, @device)
         @labels = program_file.labels
 
+        @symbol_set = SymbolSet.new
+        @symbol_set.def_memory_type :ram
+        @symbol_set.def_memory_type :program_memory
+        @symbol_set.def_memory_type :eeprom
+
+        use_symbols(@program_file)
+
         @variable_set = VariableSet.new
         @variable_set.address_increment = program_file.address_increment
-        @variable_set.def_memory_type :ram, program_file.symbols_in_ram
-        @variable_set.def_memory_type :program_memory, program_file.symbols_in_program_memory
-        @variable_set.def_memory_type :eeprom, program_file.symbols_in_eeprom
+        @variable_set.def_memory_type :ram, @symbol_set.symbols_in_memory(:ram)
+        @variable_set.def_memory_type :program_memory,
+          @symbol_set.symbols_in_memory(:program_memory)
+        @variable_set.def_memory_type :eeprom, @symbol_set.symbols_in_memory(:eeprom)
       end
     end
 

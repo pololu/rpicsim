@@ -7,6 +7,13 @@ UNRELEASED VERSION
 - Adds {RPicSim::Memory#read_bytes} and {RPicSim::Memory#write_bytes}.
 - Adds {RPicSim::Sim#stack_memory}.
 - Fixes a bug in the RSpec 3.x suppoort that was causing the informative error messages when an example fails to not work.
+- Adds the ability to get load symbols into your simulation from a source besides the program file.
+    - Adds {RPicSim::Sim::ClassDefinitionMethods#use_symbols}
+    - Adds {RPicSim::Sim::ClassMethods#symbols}
+    - Adds {RPicSim::Sim::ClassMethods#symbols_in_ram}
+    - Adds {RPicSim::Sim::ClassMethods#symbols_in_program_memory}
+    - Adds {RPicSim::Sim::ClassMethods#symbols_in_eeprom}
+- Adds the {RPicSim::Xc8SymFile} class, which can load symbols from a SYM file produced by the XC8 compiler and then be passed to {RPicSim::Sim::ClassDefinitionMethods#use_symbols use_symbols}.  This was necessary because the COF files produced by XC8 are difficult to interpret and do not always allow us to tell what memory space a given symbol is for.
 
 0.3.0
 ----

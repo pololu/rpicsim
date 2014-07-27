@@ -28,18 +28,18 @@ describe 'Firmware compiled with XC8' do
   end
 
   it 'has a non-static RAM variable' do
-    expect(@program_file.symbols_in_ram[:ramVarUint8]).to eq 0x500
+    expect(@program_file.symbols_in_ram[:varRamAbsU8]).to eq 0x500
   end
 
   it 'has a static RAM variable' do
-    expect(@program_file.symbols_in_ram[:staticRamVarUint8]).to eq 0x501
+    expect(@program_file.symbols_in_ram[:varRamStaticAbsU8]).to eq 0x501
   end
 
   it 'has a program memory variable' do
-    expect(@program_file.symbols_in_program_memory[:flashVarUint16]).to eq 0x1000
+    expect(@program_file.symbols_in_program_memory[:varCodeAbsU16]).to eq 0x1000
   end
 
   it 'has a static program memory variable' do
-    expect(@program_file.symbols_in_program_memory[:staticFlashVarUint16]).to eq 0x1002
+    expect(@program_file.symbols_in_program_memory[:varCodeStaticAbsU16]).to eq 0x1002
   end
 end
