@@ -1,8 +1,9 @@
 Change log
 ====
 
-UNRELEASED VERSION
+0.4.0
 ----
+NOT RELEASED YET
 
 - Adds {RPicSim::Memory#read_bytes} and {RPicSim::Memory#write_bytes}.
 - Adds {RPicSim::Sim#stack_memory}.
