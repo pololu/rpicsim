@@ -9,6 +9,7 @@ UNRELEASED VERSION
 - Fixes a bug in the RSpec 3.x suppoort that was causing the informative error messages when an example fails to not work.
 - Adds the ability to get load symbols into your simulation from a source besides the program file.
     - Adds {RPicSim::Sim::ClassDefinitionMethods#use_symbols}
+    - Adds {RPicSim::Sim::ClassDefinitionMethods#def_symbol}
     - Adds {RPicSim::Sim::ClassMethods#symbols}
     - Adds {RPicSim::Sim::ClassMethods#symbols_in_ram}
     - Adds {RPicSim::Sim::ClassMethods#symbols_in_program_memory}

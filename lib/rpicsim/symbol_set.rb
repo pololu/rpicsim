@@ -14,12 +14,21 @@ module RPicSim
       @symbols_for_memory[name] = {}
     end
 
+    def def_symbol(name, address, memory_type = nil)
+      name = name.to_sym
+      address = address.to_i
+      if memory_type
+        hash = @symbols_for_memory[memory_type.to_sym]
+        raise "Invalid memory type: #{memory_type}." if !hash
+        hash[name] = address
+      end
+
+      @symbols[name] = address
+    end
+
     def def_symbols(symbols, memory_type = nil)
       symbols.each do |name, address|
-        name = name.to_sym
-        address = address.to_i
-        @symbols[name] = address
-        @symbols_for_memory[memory_type.to_sym][name] = address if memory_type
+        def_symbol name, address, memory_type
       end
     end
 

@@ -68,6 +68,19 @@ module RPicSim
         end
       end
 
+      # Define a symbol.
+      # Normally symbols are loaded by {#use_file} or {#use_symbols}, but you can
+      # this method allows for adding additional symbols one at a time.
+      #
+      # @param name [Symbol] The name of the symbol.
+      # @param address [Integer] The address of the symbol.
+      # @param memory_type [Symbol] (optional) The type of memory the symbol
+      #   belongs to.  This should either by +:ram+, +:program_memory+, or
+      #   +:eeprom+.
+      def def_symbol(name, address, memory_type = nil)
+        @symbol_set.def_symbol name, address, memory_type
+      end
+
       # Define a pin alias.
       #
       # @param our_name [Symbol] Specifies what you would like to
