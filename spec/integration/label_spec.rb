@@ -32,7 +32,24 @@ describe 'Labels' do
           'MPASM truncates labels.  You might have meant: addition.'
       end
     end
+  end
 
+  describe '#labels' do
+    it 'has a label in it' do
+      expect(labels[:addition]).to be_a_kind_of RPicSim::Label
+    end
+  end
+
+  describe '.label' do
+    it 'can return a label' do
+      expect(sim.class.label(:addition)).to be_a_kind_of RPicSim::Label
+    end
+  end
+
+  describe '.labels' do
+    it 'has a label in it' do
+      expect(sim.class.labels[:addition]).to be_a_kind_of RPicSim::Label
+    end
   end
 
 end

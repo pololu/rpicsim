@@ -16,6 +16,7 @@ NOT RELEASED YET
     - Adds {RPicSim::Sim::ClassMethods#symbols_in_program_memory}
     - Adds {RPicSim::Sim::ClassMethods#symbols_in_eeprom}
 - Adds the {RPicSim::Xc8SymFile} class, which can load symbols from a SYM file produced by the XC8 compiler and then be passed to {RPicSim::Sim::ClassDefinitionMethods#use_symbols use_symbols}.  This was necessary because the COF files produced by XC8 are difficult to interpret and do not always allow us to tell what memory space a given symbol is for.
+- {RPicSim::Sim::ClassMethods#label #label} and {RPicSim::Sim::ClassMethods#labels #labels} methods are now available on both instances of a simulation class or on a simulation class itself.
 
 0.3.0
 ----

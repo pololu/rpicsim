@@ -142,9 +142,6 @@ module RPicSim
       # with {ClassDefinitionMethods#def_var def_var}.
       attr_reader :variable_set
 
-      # A hash that associates label names as symbols to {Label} objects.
-      attr_reader :labels
-
       # The {ProgramFile} object representing the firmware.
       attr_reader :program_file
 
@@ -176,6 +173,19 @@ module RPicSim
         @symbol_set.symbols_in_memory(:eeprom)
       end
 
+      # Returns a hash that associates label names as Ruby symbols to {Label} objects.
+      def labels
+        program_file.labels
+      end
+
+      # Returns a {Label} object if a program label by that name is found.
+      # The name is specified in the code that defined the label.  If you are using a C compiler,
+      # you will probably need to prefix the name with an underscore.
+      # @return [Label]
+      def label(name)
+        program_file.label(name)
+      end
+
       private
 
       # This gets called when a new subclass of PicSim is created.
@@ -189,7 +199,6 @@ module RPicSim
 
       def load_program_file
         @program_file = ProgramFile.new(@filename, @device)
-        @labels = program_file.labels
 
         @symbol_set = SymbolSet.new
         @symbol_set.def_memory_type :ram
@@ -223,6 +232,7 @@ module RPicSim
         :every_step,
         :goto,
         :label,
+        :labels,
         :location_address,
         :new_ram_watcher,
         :pc,
@@ -246,6 +256,7 @@ module RPicSim
         :wreg,
         :stack_pointer,
         :stkptr,
+        # TODO: shortcuts for symbols and symbols_in_* methods
       ]
 
       extend Forwardable
@@ -420,6 +431,11 @@ module RPicSim
     # @return [Label]
     def label(name)
       program_file.label(name)
+    end
+
+    # Returns a hash that associates label names as Ruby symbols to {Label} objects.
+    def labels
+      program_file.labels
     end
 
     # Returns the number of instruction cycles simulated in this simulation.

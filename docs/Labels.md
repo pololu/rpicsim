@@ -27,7 +27,7 @@ Therefore, to get the address of a C function named `foo`, you might have to acc
 If RPicSim cannot find the label you want to use, you might troubleshoot it by printing out a list of all the known labels:
 
     !!!ruby
-    p sim.program_file.labels.keys
+    p sim.labels.keys
 
 
 Using a Label object

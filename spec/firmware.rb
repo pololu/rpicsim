@@ -108,8 +108,9 @@ module Firmware
     use_file Xc8DistDir + 'TestXC8.hex'
     use_symbols RPicSim::Xc8SymFile.new(Xc8DistDir + 'TestXC8.sym')
 
-    def_symbol :postDefinedUnknown, 45
-    def_symbol :postDefinedRam, 46, :ram
+    def_symbol :lateDefinedUnknown, 45
+    def_symbol :lateDefinedRam, 46, :ram
+    def_symbol :lateDefinedCode, 47, :program_memory
   end
 
   class Variables < RPicSim::Sim

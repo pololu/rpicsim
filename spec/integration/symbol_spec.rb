@@ -21,19 +21,25 @@ describe 'XC8 symbol file integration' do
 
   describe '.def_symbol' do
     it 'works for a symbol of unknown memory type' do
-      expect(sim_class.symbols[:postDefinedUnknown]).to be 45
-      expect(sim_class.symbols_in_ram[:postDefinedUnknown]).to be nil
+      expect(sim_class.symbols[:lateDefinedUnknown]).to be 45
+      expect(sim_class.symbols_in_ram[:lateDefinedUnknown]).to be nil
     end
 
     it 'works for a symbol in RAM' do
-      expect(sim_class.symbols[:postDefinedRam]).to be 46
-      expect(sim_class.symbols_in_ram[:postDefinedRam]).to be 46
+      expect(sim_class.symbols[:lateDefinedRam]).to be 46
+      expect(sim_class.symbols_in_ram[:lateDefinedRam]).to be 46
     end
 
     it 'has a good error message if you give a bad memory type' do
       msg = "Invalid memory type: foo."
       expect { sim_class.def_symbol :abc, 1, :foo }.to raise_error msg
       expect(sim_class.symbols[:abc]).to be nil
+    end
+  end
+
+  describe '#label' do
+    it 'picks up program memory symbols defined with def_symbol' do
+      expect(sim_class.labels[:lateDefinedCode]).to be
     end
   end
 
