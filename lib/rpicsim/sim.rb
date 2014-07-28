@@ -6,7 +6,6 @@ require_relative 'pin'
 require_relative 'memory'
 require_relative 'composite_memory'
 require_relative 'storage/register'
-require_relative 'symbol_set'
 require_relative 'variable_set'
 require_relative 'program_counter'
 require_relative 'label'
@@ -44,41 +43,21 @@ module RPicSim
       # symbols are not sufficient then you can call this method to incorporate
       # another source of symbols.
       #
-      # The +symbol_source+ parameter should be an object that responds to some
-      # subset of these methods: +#symbols+, +#symbols_in_ram+,
-      # +#symbols_in_program_memory+, +#symbols_in_eeprom+.  The methods should
-      # take no arguments and return a hash where the keys are symbol names
-      # (represented as Ruby symbols) and the values are addresses (as
-      # integers).
+      # See {RPicSim::ProgramFile#use_symbols} for details on what the parameter
+      # should be.
+      # TODO: rename all #use_symbols things to #import_symbols
       def use_symbols(symbol_source)
-        if symbol_source.respond_to?(:symbols)
-          @symbol_set.def_symbols symbol_source.symbols
-        end
-
-        if symbol_source.respond_to?(:symbols_in_ram)
-          @symbol_set.def_symbols symbol_source.symbols_in_ram, :ram
-        end
-
-        if symbol_source.respond_to?(:symbols_in_program_memory)
-          @symbol_set.def_symbols symbol_source.symbols_in_program_memory, :program_memory
-        end
-
-        if symbol_source.respond_to?(:symbols_in_eeprom)
-          @symbol_set.def_symbols symbol_source.symbols_in_eeprom, :eeprom
-        end
+        program_file.use_symbols(symbol_source)
       end
 
       # Define a symbol.
       # Normally symbols are loaded by {#use_file} or {#use_symbols}, but you can
       # this method allows for adding additional symbols one at a time.
       #
-      # @param name [Symbol] The name of the symbol.
-      # @param address [Integer] The address of the symbol.
-      # @param memory_type [Symbol] (optional) The type of memory the symbol
-      #   belongs to.  This should either by +:ram+, +:program_memory+, or
-      #   +:eeprom+.
+      # See {RPicSim::ProgramFile#def_symbol} for details about the parameters
+      # this method takes.
       def def_symbol(name, address, memory_type = nil)
-        @symbol_set.def_symbol name, address, memory_type
+        program_file.def_symbol name, address, memory_type
       end
 
       # Define a pin alias.
@@ -145,34 +124,6 @@ module RPicSim
       # The {ProgramFile} object representing the firmware.
       attr_reader :program_file
 
-      # Returns all the symbols known to the simulation.
-      # The returns value is a hash where the keys are the names of the symbols
-      # (represented as Ruby symbols) and the values are the addresses of the symbols.
-      def symbols
-        @symbol_set.symbols
-      end
-
-      # Returns all the symbols in RAM.
-      # The returns value is a hash where the keys are the names of the symbols
-      # (represented as Ruby symbols) and the values are the addresses of the symbols.
-      def symbols_in_ram
-        @symbol_set.symbols_in_memory(:ram)
-      end
-
-      # Returns all the symbols in program memory.
-      # The returns value is a hash where the keys are the names of the symbols
-      # (represented as Ruby symbols) and the values are the addresses of the symbols.
-      def symbols_in_program_memory
-        @symbol_set.symbols_in_memory(:program_memory)
-      end
-
-      # Returns all the symbols in EEPROM.
-      # The returns value is a hash where the keys are the names of the symbols
-      # (represented as Ruby symbols) and the values are the addresses of the symbols.
-      def symbols_in_eeprom
-        @symbol_set.symbols_in_memory(:eeprom)
-      end
-
       # Returns a hash that associates label names as Ruby symbols to {Label} objects.
       def labels
         program_file.labels
@@ -200,19 +151,11 @@ module RPicSim
       def load_program_file
         @program_file = ProgramFile.new(@filename, @device)
 
-        @symbol_set = SymbolSet.new
-        @symbol_set.def_memory_type :ram
-        @symbol_set.def_memory_type :program_memory
-        @symbol_set.def_memory_type :eeprom
-
-        use_symbols(@program_file)
-
         @variable_set = VariableSet.new
         @variable_set.address_increment = program_file.address_increment
-        @variable_set.def_memory_type :ram, @symbol_set.symbols_in_memory(:ram)
-        @variable_set.def_memory_type :program_memory,
-          @symbol_set.symbols_in_memory(:program_memory)
-        @variable_set.def_memory_type :eeprom, @symbol_set.symbols_in_memory(:eeprom)
+        @variable_set.def_memory_type :ram, program_file.symbols_in_ram
+        @variable_set.def_memory_type :program_memory, program_file.symbols_in_program_memory
+        @variable_set.def_memory_type :eeprom, program_file.symbols_in_eeprom
       end
     end
 
@@ -256,7 +199,6 @@ module RPicSim
         :wreg,
         :stack_pointer,
         :stkptr,
-        # TODO: shortcuts for symbols and symbols_in_* methods
       ]
 
       extend Forwardable

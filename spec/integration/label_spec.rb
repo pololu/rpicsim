@@ -38,6 +38,15 @@ describe 'Labels' do
     it 'has a label in it' do
       expect(labels[:addition]).to be_a_kind_of RPicSim::Label
     end
+
+    it 'updates its cache after a new program_memory symbol is defined' do
+      klass = Class.new(RPicSim::Sim)
+      klass.use_device 'PIC10F322'
+      klass.use_file Firmware::Addition.filename
+      h1 = klass.labels
+      klass.def_symbol :newCodeSymbol, 3, :program_memory
+      expect(h1[:newCodeSymbol]).to be
+    end
   end
 
   describe '.label' do

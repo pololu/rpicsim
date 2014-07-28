@@ -111,6 +111,8 @@ module Firmware
     def_symbol :lateDefinedUnknown, 45
     def_symbol :lateDefinedRam, 46, :ram
     def_symbol :lateDefinedCode, 47, :program_memory
+
+    def_var :varWithLateSymbol, :uint8, symbol: :lateDefinedRam
   end
 
   class Variables < RPicSim::Sim

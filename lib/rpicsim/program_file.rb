@@ -1,13 +1,15 @@
 require_relative 'mplab'
 require_relative 'label'
 require_relative 'instruction'
+require_relative 'symbol_set'
 
-# TODO: interface for adding labels and/or symbols from other sources because
-# sometimes the COF file is inadequate.  When symbols have the same address,
-# think about how to choose the more interesting one in a stack trace (fewer underscores?)
+# TODO: When symbols have the same address, think about how to choose the more
+# interesting one in a stack trace (fewer underscores?)
 
 module RPicSim
   # Represents a PIC program file (e.g. COF or HEX).
+  # Keeps track of all the symbols loaded from that file and also allows you
+  # to add symbols in various ways.
   class ProgramFile
     attr_reader :filename
     attr_reader :device
@@ -27,39 +29,104 @@ module RPicSim
       @address_increment = @assembly.device_info.code_address_increment
 
       @instructions = []
+
+      @labels = {}
+
+      @symbol_set = SymbolSet.new
+      @symbol_set.def_memory_type :ram
+      @symbol_set.def_memory_type :program_memory
+      @symbol_set.def_memory_type :eeprom
+
+      @symbol_set.on_symbol_definition do |name, address, memory_type|
+        if memory_type == :program_memory
+          labels[name] = Label.new(name, address)
+        end
+      end
+
+      use_symbols @mplab_program_file
     end
 
-    # Returns a hash associating RAM variable names (as symbols) to their addresses.
-    # @return (Hash)
+    # Imports symbols from an additional symbol source.
+    #
+    # The +symbol_source+ parameter should be an object that responds to some
+    # subset of these methods: +#symbols+, +#symbols_in_ram+,
+    # +#symbols_in_program_memory+, +#symbols_in_eeprom+.  The methods should
+    # take no arguments and return a hash where the keys are symbol names
+    # (represented as Ruby symbols) and the values are addresses (as
+    # integers).
+    def use_symbols(symbol_source)
+      if symbol_source.respond_to?(:symbols)
+        @symbol_set.def_symbols symbol_source.symbols
+      end
+
+      if symbol_source.respond_to?(:symbols_in_ram)
+        @symbol_set.def_symbols symbol_source.symbols_in_ram, :ram
+      end
+
+      if symbol_source.respond_to?(:symbols_in_program_memory)
+        @symbol_set.def_symbols symbol_source.symbols_in_program_memory, :program_memory
+      end
+
+      if symbol_source.respond_to?(:symbols_in_eeprom)
+        @symbol_set.def_symbols symbol_source.symbols_in_eeprom, :eeprom
+      end
+    end
+
+    # Defines a new symbol.
+    #
+    # @param name [Symbol] The name of the symbol.
+    # @param address [Integer] The address of the symbol.
+    # @param memory_type [Symbol] (optional) The type of memory the symbol
+    #   belongs to.  This should either by +:ram+, +:program_memory+, or
+    #   +:eeprom+.
+    def def_symbol(name, address, memory_type = nil)
+      @symbol_set.def_symbol name, address, memory_type
+    end
+
+    # Returns all the symbols known to the simulation.
+    #
+    # The return value is a hash where the keys are the names of the symbols
+    # (represented as Ruby symbols) and the values are the addresses of the symbols.
+    #
+    # Warning: This is a persistent hash that will automatically be updated when
+    # new symbols are defined.
+    def symbols
+      @symbol_set.symbols
+    end
+
+    # Returns all the symbols in RAM.
+    # The return value is a hash where the keys are the names of the symbols
+    # (represented as Ruby symbols) and the values are the addresses of the symbols.
+    #
+    # Warning: This is a persistent hash that will automatically be updated when
+    # new symbols are defined.
     def symbols_in_ram
-      @mplab_program_file.symbols_in_ram
+      @symbol_set.symbols_in_memory(:ram)
     end
 
-    # Returns a hash associating program memory symbol names (as Ruby symbols)
-    # to their addresses.
-    # @return (Hash)
+    # Returns all the symbols in program memory.
+    # The return value is a hash where the keys are the names of the symbols
+    # (represented as Ruby symbols) and the values are the addresses of the symbols.
+    #
+    # Warning: This is a persistent hash that will automatically be updated when
+    # new symbols are defined.
     def symbols_in_program_memory
-      @mplab_program_file.symbols_in_program_memory
+      @symbol_set.symbols_in_memory(:program_memory)
     end
 
-    # Returns a hash associating EEPROM memory symbol names (as Ruby symbols)
-    # to their addresses.
-    # @return (Hash)
+    # Returns all the symbols in EEPROM.
+    # The return value is a hash where the keys are the names of the symbols
+    # (represented as Ruby symbols) and the values are the addresses of the symbols.
+    #
+    # Warning: This is a persistent hash that will automatically be updated when
+    # new symbols are defined.
     def symbols_in_eeprom
-      @mplab_program_file.symbols_in_eeprom
+      @symbol_set.symbols_in_memory(:eeprom)
     end
 
     # Returns a hash associating program memory label names (as symbols) to their addresses.
     # @return (Hash)
-    def labels
-      @labels ||= begin
-        hash = {}
-        symbols_in_program_memory.each do |name, address|
-          hash[name] = Label.new(name, address)
-        end
-        hash
-      end
-    end
+    attr_reader :labels
 
     # Returns a {Label} object if a program label by that name is found.
     # The name is specified in the code that defined the label.  If you are using a C compiler,

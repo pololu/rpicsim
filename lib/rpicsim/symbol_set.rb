@@ -6,6 +6,7 @@ module RPicSim
       @memory_types = []
       @symbols = {}
       @symbols_for_memory = {}
+      @callbacks = []
     end
 
     def def_memory_type(name)
@@ -24,6 +25,10 @@ module RPicSim
       end
 
       @symbols[name] = address
+
+      @callbacks.each do |callback|
+        callback.call name, address, memory_type
+      end
     end
 
     def def_symbols(symbols, memory_type = nil)
@@ -38,6 +43,11 @@ module RPicSim
 
     def symbols_in_memory(memory_type)
       @symbols_for_memory[memory_type.to_sym]
+    end
+
+    def on_symbol_definition(&proc)
+      raise 'Block required' if !proc
+      @callbacks << proc
     end
   end
 end
