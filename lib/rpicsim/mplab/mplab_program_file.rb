@@ -16,6 +16,10 @@ module RPicSim::Mplab
       @program_file.Load
     end
 
+    def symbols
+      @symbols ||= Hash[raw_symbols.map { |s| [s.m_Symbol.to_sym, s.address] }]
+    end
+
     def symbols_in_ram
       @symbols_in_ram ||= Hash[
         grouped_symbols[:ram]
@@ -41,7 +45,7 @@ module RPicSim::Mplab
 
     def grouped_symbols
       @grouped_symbols ||= begin
-        hash = symbols.group_by(&method(:memory_type))
+        hash = raw_symbols.group_by(&method(:memory_type))
         hash.default = []
         hash
       end
@@ -71,7 +75,9 @@ module RPicSim::Mplab
     # 111       XC8 program memory variable (array of uint32_t) (but sometimes it is in RAM instead)
     # 366       XC8 program memory variable (array of pointers)
     #
-    # TODO: make a test for each of these cases; TestXC8.c and program_file_spec.rb only only has a few
+    # The numbers above are not very well tested and probably incomplete.  This
+    # is OK because for XC8 programs people should use the HEX and SYM file
+    # instead of the COF file.
     def memory_type(symbol)
       case symbol.m_lType
       when 0, 2, 8, 12, 40, 44, 108
@@ -89,10 +95,10 @@ module RPicSim::Mplab
     # Just put this line in your simulation class definition temporarily:
     # pp program_file.instance_variable_get(:@mplab_program_file).send(:symbol_dump).sort
     def symbol_dump
-      symbols.map { |s| [s.m_Symbol, s.m_lType, s.address, memory_type(s)] }
+      raw_symbols.map { |s| [s.m_Symbol, s.m_lType, s.address, memory_type(s)] }
     end
 
-    def symbols
+    def raw_symbols
       @program_file.getSymbolTable.getSymbols(0, 0)
     end
   end
