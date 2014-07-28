@@ -17,7 +17,7 @@ module RPicSim
 
       @filename = filename
       @sections_in_ram = %w{ABS BIGRAM COMRAM RAM SFR FARRAM
-        BANK0 BANK1 BANK2 BANK3 BANK4 BANK5 BANK6 BANK7}
+                            BANK0 BANK1 BANK2 BANK3 BANK4 BANK5 BANK6 BANK7}
       @sections_in_code = %w{CODE CONST IDLOC MEDIUMCONST SMALLCONST}
       @sections_in_eeprom = %w{EEDATA}
 
@@ -46,6 +46,7 @@ module RPicSim
     end
 
     private
+
     def read_data
       @symbol_raw_data = {}
       File.foreach(@filename) do |line|

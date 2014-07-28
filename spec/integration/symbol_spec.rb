@@ -32,7 +32,7 @@ describe 'XC8 symbol file integration' do
     end
 
     it 'has a good error message if you give a bad memory type' do
-      msg = "Invalid memory type: foo."
+      msg = 'Invalid memory type: foo.'
       expect { sim_class.def_symbol :abc, 1, :foo }.to raise_error msg
       expect(program_file.symbols[:abc]).to be nil
     end
@@ -47,7 +47,7 @@ describe 'XC8 symbol file integration' do
   describe '#address_description' do
     it 'uses program memory symbols defined with def_symbol' do
       desc = sim_class.program_file.address_description(47)
-      expect(desc).to eq "0x002f = lateDefinedCode"
+      expect(desc).to eq '0x002f = lateDefinedCode'
     end
   end
 

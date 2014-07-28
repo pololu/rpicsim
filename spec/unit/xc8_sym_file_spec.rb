@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe RPicSim::Xc8SymFile do
-  let (:filename) { 'spec/firmware/xc8/ExampleSym.sym' }
+  let(:filename) { 'spec/firmware/xc8/ExampleSym.sym' }
 
   subject(:sym_file) do
     described_class.new(filename,
-      custom_ram_sections: %w{MYRAM},
-      custom_code_sections: %w{MYCODE},
-      custom_eeprom_sections: %w{MYEEPROM},
+                        custom_ram_sections: %w{MYRAM},
+                        custom_code_sections: %w{MYCODE},
+                        custom_eeprom_sections: %w{MYEEPROM},
     )
   end
 

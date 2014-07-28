@@ -22,8 +22,9 @@ describe RPicSim::Mplab::MplabProgramFile do
 
   describe '#symbols' do
     it 'returns all the symbols' do
-      expect(mplab_program_file.symbols).to eq(var1: 64, var2: 65, isr: 4,
-        start: 32, start2: 36, foo: 64, goo: 65, hoo: 96, ioo: 128, joo: 256,)
+      h = { var1: 64, var2: 65, isr: 4, start: 32, start2: 36,
+            foo: 64, goo: 65, hoo: 96, ioo: 128, joo: 256 }
+      expect(mplab_program_file.symbols).to eq h
     end
   end
 

@@ -37,9 +37,7 @@ module RPicSim
       end
     end
 
-    def symbols
-      @symbols
-    end
+    attr_reader :symbols
 
     def symbols_in_memory(memory_type)
       @symbols_for_memory[memory_type.to_sym]
