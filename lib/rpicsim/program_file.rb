@@ -43,7 +43,7 @@ module RPicSim
         end
       end
 
-      use_symbols @mplab_program_file
+      import_symbols @mplab_program_file
     end
 
     # Imports symbols from an additional symbol source.
@@ -54,7 +54,7 @@ module RPicSim
     # take no arguments and return a hash where the keys are symbol names
     # (represented as Ruby symbols) and the values are addresses (as
     # integers).
-    def use_symbols(symbol_source)
+    def import_symbols(symbol_source)
       if symbol_source.respond_to?(:symbols)
         @symbol_set.def_symbols symbol_source.symbols
       end

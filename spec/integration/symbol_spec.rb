@@ -4,9 +4,9 @@ describe 'XC8 symbol file integration' do
   let(:sim_class) { Firmware::TestXC8 }
   let(:program_file) { sim_class.program_file }
 
-  describe '#use_symbols' do
+  describe '#import_symbols' do
     it 'is a method in Sim::ClassDefinitionMethods' do
-      expect(sim_class).to respond_to :use_symbols
+      expect(sim_class).to respond_to :import_symbols
     end
 
     it 'picks up the RAM variables' do

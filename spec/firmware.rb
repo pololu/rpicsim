@@ -106,7 +106,7 @@ module Firmware
   class TestXC8 < RPicSim::Sim
     use_device 'PIC18F25K50'
     use_file Xc8DistDir + 'TestXC8.hex'
-    use_symbols RPicSim::Xc8SymFile.new(Xc8DistDir + 'TestXC8.sym')
+    import_symbols RPicSim::Xc8SymFile.new(Xc8DistDir + 'TestXC8.sym')
 
     def_symbol :lateDefinedUnknown, 45
     def_symbol :lateDefinedRam, 46, :ram

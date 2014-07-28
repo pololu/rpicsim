@@ -9,10 +9,10 @@ NOT RELEASED YET
 - Adds {RPicSim::Sim#stack_memory}.
 - Fixes a bug in the RSpec 3.x suppoort that was causing the informative error messages when an example fails to not work.
 - Adds the ability to define symbols used in your simulation from sources other than a the COF file.
-    - Adds {RPicSim::Sim::ClassDefinitionMethods#use_symbols}, which calls {RPicSim::ProgramFile#use_symbols}
+    - Adds {RPicSim::Sim::ClassDefinitionMethods#import_symbols}, which calls {RPicSim::ProgramFile#import_symbols}
     - Adds {RPicSim::Sim::ClassDefinitionMethods#def_symbol}, which calls {RPicSim::ProgramFile#def_symbol}
     - Adds {RPicSim::ProgramFile#symbols} so you can more easily debug symbol-related problems and get access to symbols even if RPicSim does not recognize what type they are.
-- Adds the {RPicSim::Xc8SymFile} class, which can load symbols from a SYM file produced by the XC8 compiler and then be passed to {RPicSim::Sim::ClassDefinitionMethods#use_symbols use_symbols}.  This was necessary because the COF files produced by XC8 are difficult to interpret and do not always allow us to tell what memory space a given symbol is for.
+- Adds the {RPicSim::Xc8SymFile} class, which can load symbols from a SYM file produced by the XC8 compiler and then be passed to {RPicSim::Sim::ClassDefinitionMethods#import_symbols import_symbols}.  This was necessary because the COF files produced by XC8 are difficult to interpret and do not always allow us to tell what memory space a given symbol is for.
 - {RPicSim::Sim::ClassMethods#label #label} and {RPicSim::Sim::ClassMethods#labels #labels} methods are now available on both instances of a simulation class or on a simulation class itself.
 
 0.3.0

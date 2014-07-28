@@ -43,15 +43,14 @@ module RPicSim
       # symbols are not sufficient then you can call this method to incorporate
       # another source of symbols.
       #
-      # See {RPicSim::ProgramFile#use_symbols} for details on what the parameter
+      # See {RPicSim::ProgramFile#import_symbols} for details on what the parameter
       # should be.
-      # TODO: rename all #use_symbols things to #import_symbols
-      def use_symbols(symbol_source)
-        program_file.use_symbols(symbol_source)
+      def import_symbols(symbol_source)
+        program_file.import_symbols(symbol_source)
       end
 
       # Define a symbol.
-      # Normally symbols are loaded by {#use_file} or {#use_symbols}, but you can
+      # Normally symbols are loaded by {#use_file} or {#import_symbols}, but you can
       # this method allows for adding additional symbols one at a time.
       #
       # See {RPicSim::ProgramFile#def_symbol} for details about the parameters
