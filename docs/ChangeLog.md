@@ -3,11 +3,11 @@ Change log
 
 0.4.0
 ----
-NOT RELEASED YET
+Released on 2014-07-30.
 
 - Adds {RPicSim::Memory#read_bytes} and {RPicSim::Memory#write_bytes}.
 - Adds {RPicSim::Sim#stack_memory}.
-- Fixes a bug in the RSpec 3.x support that was causing the informative error messages when an example fails to not work.
+- Fixes a bug in the RSpec 3.x support that was breaking the informative error messages when an example fails.
 - Adds the ability to define symbols used in your simulation from sources other than a the COF file.
     - Adds {RPicSim::Sim::ClassDefinitionMethods#import_symbols}, which calls {RPicSim::ProgramFile#import_symbols}
     - Adds {RPicSim::Sim::ClassDefinitionMethods#def_symbol}, which calls {RPicSim::ProgramFile#def_symbol}
