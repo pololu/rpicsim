@@ -8,6 +8,7 @@ RPicSim uses code in MPLAB X to actually perform the PIC simulation.  Therefore,
 - 2.00
 - 2.05
 - 2.10
+- 2.15
 
 The different versions of MPLAB X have different problems that affect the simulation.  For more information, see the {file:KnownIssues.md Known issues page}.
 
