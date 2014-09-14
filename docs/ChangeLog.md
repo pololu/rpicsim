@@ -15,7 +15,7 @@ Released on 2014-07-30.
 - Adds the {RPicSim::Xc8SymFile} class, which can load symbols from a SYM file produced by the XC8 compiler and then be passed to {RPicSim::Sim::ClassDefinitionMethods#import_symbols import_symbols}.  This was necessary because the COF files produced by XC8 are difficult to interpret and do not always allow us to tell what memory space a given symbol is for.
 - {RPicSim::Sim::ClassMethods#label #label} and {RPicSim::Sim::ClassMethods#labels #labels} methods are now available on both instances of a simulation class or on a simulation class itself.
 
-MPLAB X v2.15 and v2.20 were released after RPicSim 0.4.0, but the changes in those versions of MPLAB X were minor enough that RPicSim 0.4.0 is should work with them.
+MPLAB X v2.15 and v2.20 were released after RPicSim 0.4.0, but the changes in those versions of MPLAB X were minor enough that RPicSim 0.4.0 should work with them.
 
 0.3.0
 ----
