@@ -47,8 +47,7 @@ describe 'Pic#pin' do
     pin(:RA0).should be_driving_low  # flaw
   end
 
-  it 'reports the wrong output state if TRISx is cleared again', flaw: true do
-    # Flaw confirmed for MPLAB X 1.85.
+  it 'could reports the wrong output state if TRISx is cleared again' do
     start_sim Firmware::DrivePinHigh
     goto :ClearAClearTSetLClearT
     step  # clear ANSELA
@@ -58,7 +57,12 @@ describe 'Pic#pin' do
     reg(:LATA).value.should == 1      # good
     step  # clear TRISA again
     reg(:LATA).value.should == 1      # good
-    pin(:RA0).should be_driving_low   # bad
+
+    if RPicSim::Flaws[:writing_tris_affects_output]
+      pin(:RA0).should be_driving_low   # bad
+    else
+      pin(:RA0).should be_driving_high  # good
+    end
   end
 
   it 'knows its names' do

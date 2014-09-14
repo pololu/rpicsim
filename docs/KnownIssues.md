@@ -112,11 +112,11 @@ Pins report the wrong output state if TRISx is cleared again
 ----
 _Type: MPLAB X bug_
 
-_MPLAB X versions affected: all tested versions_
+_MPLAB X versions affected: 1.85 through 2.10_
 
 Even if you set up the pin properly (working around all the issues above) and get {RPicSim::Pin#driving_high?} to return true, a `bcf` instruction on the pin's TRISx bit (or probably any write to the TRISx register) will cause the pin to start reporting the wrong output state.
 
-This issue is tested in `spec/integration/pin_spec.rb`.
+This issue is tested in `spec/integration/pin_spec.rb`, and was fixed in MPLAB X v2.15.
 
 
 RAM watcher is useless because all of RAM seems to change on every step

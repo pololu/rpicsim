@@ -48,6 +48,16 @@ module RPicSim
       yield flaw
     end
 
+    add(:writing_tris_affects_output) do |flaw|
+      flaw.affects_version '1.85', true
+      flaw.affects_version '1.90', true
+      flaw.affects_version '1.95', true
+      flaw.affects_version '2.00', true
+      flaw.affects_version '2.05', true
+      flaw.affects_version '2.10', true
+      flaw.probably_affects_other_versions false
+    end
+
     add(:fr_memory_attach_useless) do |flaw|
       flaw.affects_version '1.85', false
       flaw.affects_version '1.90', false
