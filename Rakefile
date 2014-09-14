@@ -34,6 +34,11 @@ $rspec_task = RSpec::Core::RakeTaskBetter.new("spec") do |t, opts|
   # t.ruby_opts = '-rspec/spec_helper'
 end
 
+# After running specs, clean up the log files that MPLAB X makes.
+Rake::Task['spec'].enhance do
+  FileUtils.rm Dir.glob 'MPLABXLog.xml*'
+end
+
 def run_specs(mplabx_path, rspec_version)
   puts "Running specs with RSpec #{rspec_version} and #{mplabx_path}"
   $rspec_task.rspec_command = "jruby ./spec/rspec_runner.rb \"~> #{rspec_version}\""
