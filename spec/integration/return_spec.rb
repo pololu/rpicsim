@@ -7,12 +7,12 @@ describe '#return' do
 
   it 'pops the top value off the stack and sets the PC equal to it' do
     run_to :ioo, cycle_limit: 100
-    sim.stack_contents.should == [0x23, 0x42, 0x61]
-    pc.value.should == 0x80
+    expect(sim.stack_contents).to eq [0x23, 0x42, 0x61]
+    expect(pc.value).to eq 0x80
 
     sim.return
-    sim.stack_contents.should == [0x23, 0x42]
-    pc.value.should == 0x61
+    expect(sim.stack_contents).to eq [0x23, 0x42]
+    expect(pc.value).to eq 0x61
   end
 
   it 'raises an error if the stack is empty' do

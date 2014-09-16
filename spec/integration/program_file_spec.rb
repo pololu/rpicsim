@@ -6,10 +6,10 @@ describe RPicSim::ProgramFile do
   end
 
   describe '#address_description' do
-    specify { subject.address_description(0x0000).should == '0x0000 = setupNormalFlash' }
-    specify { subject.address_description(0x0001).should == '0x0001 = setupNormalFlash+0x1' }
-    specify { subject.address_description(0x0006).should == '0x0006 = setupUserId0+0x1' }
-    specify { subject.address_description(-1).should == '-1' }
+    specify { expect(subject.address_description(0x0000)).to eq '0x0000 = setupNormalFlash' }
+    specify { expect(subject.address_description(0x0001)).to eq '0x0001 = setupNormalFlash+0x1' }
+    specify { expect(subject.address_description(0x0006)).to eq '0x0006 = setupUserId0+0x1' }
+    specify { expect(subject.address_description(-1)).to eq '-1' }
   end
 end
 

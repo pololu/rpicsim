@@ -1,9 +1,5 @@
 require_relative '../spec_helper'
 
-# NOTE: These specs are kind of annoying because the system under test here
-# includes RSpec.  It might be better to do this Cucumber, but then these
-# tests probably would not give us any credit in the coverage report.
-
 class SimStub
   module Shortcuts
     def stub_shortcut
@@ -18,18 +14,20 @@ class SimStub
   end
 end
 
-describe 'rspec helpers' do
-  describe 'monkey patch for BePredicate matchers' do
+describe 'rspec' do
+  describe 'BePredicate matchers' do
+    # These tests pass in RSpec 2.x thanks to our monkey patch,
+    # and work in RSpec 3.x without needing a monkey patch.
 
     it "provides a nicer error message when something like 'not be_empty' fails" do
-      expect { [1].should be_empty }.to raise_error(
+      expect { expect([1]).to be_empty }.to raise_error(
         RSpec::Expectations::ExpectationNotMetError,
         'expected `[1].empty?` to return true, got false'
       )
     end
 
     it "provides a nicer error message when something like 'be_empty' fails" do
-      expect { [].should_not be_empty }.to raise_error(
+      expect { expect([]).to_not be_empty }.to raise_error(
         RSpec::Expectations::ExpectationNotMetError,
         'expected `[].empty?` to return false, got true'
       )
@@ -40,7 +38,7 @@ describe 'rspec helpers' do
   describe 'simulation diagnostics' do
     let(:stack_trace) do
       stack_trace = double('stack_trace')
-      stack_trace.stub(:output) { |io, padding| io.puts padding + 'StackTrace' }
+      allow(stack_trace).to receive(:output) { |io, padding| io.puts padding + 'StackTrace' }
       stack_trace
     end
 
@@ -70,10 +68,10 @@ describe 'rspec helpers' do
       it 'monkeypatches BaseTextFormatter to add diagnostics in RSpec 2.x' do
         sio = StringIO.new
         btf = RSpec::Core::Formatters::BaseTextFormatter.new(sio)
-        btf.should_receive(:dump_backtrace_without_sim_diagnostics)
+        expect(btf).to receive(:dump_backtrace_without_sim_diagnostics)
         btf.dump_backtrace(example)
 
-        sio.string.should == <<-END
+        expect(sio.string).to eq <<-END
 
      Simulation cycle count: 111
 

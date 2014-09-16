@@ -10,15 +10,15 @@ describe 'Labels' do
       subject { label(:addition) }
 
       it 'is a RPicSim::Label' do
-        subject.should be_a_kind_of RPicSim::Label
+        expect(subject).to be_a_kind_of RPicSim::Label
       end
 
       it 'had the right name' do
-        subject.name.should == :addition
+        expect(subject.name).to eq :addition
       end
 
       it 'has the right address' do
-        subject.address.should == 0
+        expect(subject.address).to eq 0
       end
     end
 

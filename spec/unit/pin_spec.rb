@@ -8,22 +8,22 @@ describe RPicSim::Pin do
 
   describe '#set' do
     it 'when given false calls externalSet(PinState::LOW)' do
-      pin_physical.should_receive(:externalSet).with(pin_state_enum::LOW)
+      expect(pin_physical).to receive(:externalSet).with(pin_state_enum::LOW)
       pin.set(false)
     end
 
     it 'when given true calls externalSet(PinState::HIGH)' do
-      pin_physical.should_receive(:externalSet).with(pin_state_enum::HIGH)
+      expect(pin_physical).to receive(:externalSet).with(pin_state_enum::HIGH)
       pin.set(true)
     end
 
     it 'when given a float calls externalSetAnalogValue' do
-      pin_physical.should_receive(:externalSetAnalogValue).with(2.3)
+      expect(pin_physical).to receive(:externalSetAnalogValue).with(2.3)
       pin.set(2.3)
     end
 
     it 'when given an integer calls externalSetAnalogValue' do
-      pin_physical.should_receive(:externalSetAnalogValue).with(2)
+      expect(pin_physical).to receive(:externalSetAnalogValue).with(2)
       pin.set(2)
     end
 

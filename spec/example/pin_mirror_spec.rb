@@ -14,7 +14,7 @@ describe 'PinMirror' do
 
     it 'drives RA1 high' do
       run_cycles 10
-      pin(:RA1).should be_driving_high
+      expect(pin(:RA1)).to be_driving_high
     end
   end
 
@@ -25,7 +25,7 @@ describe 'PinMirror' do
 
     it 'drives RA1 high' do
       run_cycles 10
-      pin(:RA1).should be_driving_low
+      expect(pin(:RA1)).to be_driving_low
     end
   end
 

@@ -9,14 +9,14 @@ describe 'Stack methods' do
     describe 'stkptr' do
       it 'lets us access the stack pointer' do
         run_to :ioo, cycle_limit: 100
-        stkptr.value.should == 3
+        expect(stkptr.value).to eq 3
       end
     end
 
     describe '#stack_pointer' do
       it 'lets us access the stack pointer in a more consistent way across architectures' do
         run_to :ioo, cycle_limit: 100
-        stack_pointer.value.should == 3
+        expect(stack_pointer.value).to eq 3
       end
     end
 
@@ -40,7 +40,7 @@ describe 'Stack methods' do
         st = sim.stack_trace
         sio = StringIO.new
         st.output(sio)
-        sio.string.should == <<END
+        expect(sio.string).to eq <<END
 0x0080 = ioo
 0x0060 = hoo
 0x0041 = goo
@@ -54,7 +54,7 @@ END
       it 'pushes addresses onto the stack' do
         sim.stack_push 0x123
         sim.stack_push 0x22
-        sim.stack_contents.should == [0x123, 0x22]
+        expect(sim.stack_contents).to eq [0x123, 0x22]
       end
 
       it 'raises an error when the stack his been filled' do

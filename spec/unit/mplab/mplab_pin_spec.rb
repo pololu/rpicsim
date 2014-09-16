@@ -14,14 +14,14 @@ describe RPicSim::Mplab::MplabPin do
 
   describe '#set_low' do
     it 'calls externalSet(PinState::LOW)' do
-      pin_physical.should_receive(:externalSet).with(pin_state_enum::LOW)
+      expect(pin_physical).to receive(:externalSet).with(pin_state_enum::LOW)
       mplab_pin.set_low
     end
   end
 
   describe '#set_high' do
     it 'calls externalSet(PinState::HIGH)' do
-      pin_physical.should_receive(:externalSet).with(pin_state_enum::HIGH)
+      expect(pin_physical).to receive(:externalSet).with(pin_state_enum::HIGH)
       mplab_pin.set_high
     end
   end
@@ -30,7 +30,7 @@ describe RPicSim::Mplab::MplabPin do
     [2.3, 2].each do |value|
       context "given #{value}" do
         it 'calls externalSetAnalogValue with that value' do
-          pin_physical.should_receive(:externalSetAnalogValue).with(value)
+          expect(pin_physical).to receive(:externalSetAnalogValue).with(value)
           mplab_pin.set_analog(value)
         end
       end
@@ -108,10 +108,10 @@ describe 'assumptions about MPLAB X used to build MplabPin' do
   let(:pin) { com.microchip.mplab.mdbcore.simulator.Pin }
 
   specify 'the two PinStates are HIGH and LOW' do
-    pin::PinState.constants.sort.should == [:HIGH, :LOW]
+    expect(pin::PinState.constants.sort).to eq [:HIGH, :LOW]
   end
 
   specify 'the two IOStates are INPUT and OUTPUT' do
-    pin::IOState.constants.sort.should == [:INPUT, :OUTPUT]
+    expect(pin::IOState.constants.sort).to eq [:INPUT, :OUTPUT]
   end
 end

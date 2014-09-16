@@ -7,9 +7,9 @@ require_relative '../spec_helper'
 describe RPicSim::Instruction do
   subject(:instruction) { Firmware::FlashVariables.program_file.instruction(0) }
 
-  specify { instruction.to_s.should == 'Instruction(0x0000 = setupNormalFlash, CLRF 0x20)' }
+  specify { expect(instruction.to_s).to eq 'Instruction(0x0000 = setupNormalFlash, CLRF 0x20)' }
 
-  specify { instruction.inspect.should == '#<RPicSim::Instruction:0x0000 = setupNormalFlash, CLRF 0x20>' }
+  specify { expect(instruction.inspect).to eq '#<RPicSim::Instruction:0x0000 = setupNormalFlash, CLRF 0x20>' }
 end
 
 def describe_instruction(opcode, metadata = {}, &proc)

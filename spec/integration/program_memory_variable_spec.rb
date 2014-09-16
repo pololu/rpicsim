@@ -15,29 +15,29 @@ describe 'Program memory variables (midrange)' do
     end
 
     it 'can be read by Ruby' do
-      normalFlashVar.value.should == 0x801
+      expect(normalFlashVar.value).to eq 0x801
     end
 
     it 'can be read by the firmware' do
       run_subroutine :readX, cycle_limit: 100
-      x.value.should == 0x801
+      expect(x.value).to eq 0x801
     end
 
     it 'can be written by Ruby' do
       normalFlashVar.value = 700
-      normalFlashVar.value.should == 700
+      expect(normalFlashVar.value).to eq 700
     end
 
     it 'can be read by the firmware after being written by Ruby' do
       normalFlashVar.value = 0xA0E
       run_subroutine :readX, cycle_limit: 100
-      x.value.should == 0xA0E
+      expect(x.value).to eq 0xA0E
     end
 
     it 'can be written by firmware' do
       x.value = 0xE23
       run_subroutine :saveX, cycle_limit: 20_000
-      normalFlashVar.value.should == 0xE23
+      expect(normalFlashVar.value).to eq 0xE23
     end
   end
 
@@ -62,13 +62,13 @@ describe 'Program memory variables (midrange)' do
 
     it 'can be written by Ruby' do
       userId0.value = 700
-      userId0.value.should == 700
+      expect(userId0.value).to eq 700
     end
 
     it 'can be read by the firmware after being written by Ruby' do
       userId0.value = 0xA0E
       run_subroutine :readX, cycle_limit: 100
-      x.value.should == 0xA0E
+      expect(x.value).to eq 0xA0E
     end
   end
 

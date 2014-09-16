@@ -10,7 +10,7 @@ describe RPicSim::RSpec::PersistentExpectations do
 
   describe '#expecting' do
     it 'returns the current hash of expectations' do
-      subject.expectations.should == {}
+      expect(subject.expectations).to eq({})
     end
   end
 
@@ -21,7 +21,7 @@ describe RPicSim::RSpec::PersistentExpectations do
       empty_matcher = be_empty
       abc_matcher = eq('abc')
       subject.expecting @a => empty_matcher, @b => abc_matcher
-      subject.expectations.should == { @a => empty_matcher, @b => abc_matcher }
+      expect(subject.expectations).to eq({ @a => empty_matcher, @b => abc_matcher })
     end
   end
 

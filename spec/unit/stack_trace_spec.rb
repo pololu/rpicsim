@@ -9,7 +9,7 @@ describe RPicSim::StackTrace do
     stack_trace = RPicSim::StackTrace.new(entries)
     sio = StringIO.new
     stack_trace.output(sio, '  ')
-    sio.string.should == <<END
+    expect(sio.string).to eq <<END
   five
   four
   three
@@ -23,14 +23,14 @@ describe RPicSim::StackTraceEntry do
   end
 
   it 'stores the address' do
-    entry.address.should == 6
+    expect(entry.address).to eq 6
   end
 
   it 'stores the description' do
-    entry.description.should == 'six'
+    expect(entry.description).to eq 'six'
   end
 
   it 'returns the description in response to to_s' do
-    entry.to_s.should == 'six'
+    expect(entry.to_s).to eq 'six'
   end
 end

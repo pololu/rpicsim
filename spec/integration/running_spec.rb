@@ -8,7 +8,7 @@ describe RPicSim::Sim do
   describe '#run_steps' do
     it 'runs the specified number of instructions' do
       run_steps 3
-      pc.value.should == 0x41
+      expect(pc.value).to eq 0x41
     end
 
     it 'returns nil' do
@@ -17,45 +17,45 @@ describe RPicSim::Sim do
 
     it 'is different than running a specified number of cycles (some steps take multiple cycles)' do
       run_steps 3
-      cycle_count.should == 6
+      expect(cycle_count).to eq 6
     end
   end
 
   describe '#run_to' do
     it 'can run to an address' do
       run_to 0x80
-      pc.value.should == 0x80
-      cycle_count.should == 10
+      expect(pc.value).to eq 0x80
+      expect(cycle_count).to eq 10
     end
 
     it 'can run to a label' do
       run_to :ioo
-      pc.value.should == 0x80
-      cycle_count.should == 10
+      expect(pc.value).to eq 0x80
+      expect(cycle_count).to eq 10
     end
 
     it 'can run until a return happens' do
       stkptr.value = 1
       goto :isr
       run_to :return, cycle_limit: 100
-      cycle_count.should == 8
+      expect(cycle_count).to eq 8
     end
 
     it 'can run until an arbitrary proc is fulfilled' do
       run_to proc { pc.value >= 0x40 }
-      pc.value.should == 0x41
+      expect(pc.value).to eq 0x41
     end
 
     it 'can take multiple conditions and returns which one was reached' do
       result = run_to [:start2, :goo]
-      result.should == :goo
-      pc.value.should == label(:goo).address
+      expect(result).to eq :goo
+      expect(pc.value).to eq label(:goo).address
     end
 
     describe 'cycle_limit option' do
       it "does not raise an exception if the cycle_limit isn't violated" do
         run_to :goo, cycle_limit: 100
-        pc.value.should == label(:goo).address
+        expect(pc.value).to eq label(:goo).address
       end
 
       it 'raises an exception if the cycle_limit is violated' do
@@ -64,7 +64,7 @@ describe RPicSim::Sim do
 
       it 'does not run at all if the cycle_limit is 0' do
         expect { run_to [:goo], cycle_limit: 0 }.to raise_error 'Failed to reach [:goo] after 0 cycles.'
-        cycle_count.should == 0
+        expect(cycle_count).to eq 0
       end
     end
 
@@ -106,16 +106,16 @@ describe RPicSim::Sim do
   describe 'run_cycles' do
     it 'runs the specified number of cycles (or a little more if there is a multi-cycle instruction)' do
       run_cycles 5
-      cycle_count.should == 6  # because of a multi-cycle instruction
+      expect(cycle_count).to eq 6  # because of a multi-cycle instruction
     end
   end
 
   describe 'run_to_cycle_count' do
     it 'runs until the specified cycle_count (or a little more if there is a multi-cycle instruction)' do
       run_to_cycle_count 5
-      cycle_count.should == 6
+      expect(cycle_count).to eq 6
       run_to_cycle_count 10
-      cycle_count.should == 10
+      expect(cycle_count).to eq 10
     end
   end
 

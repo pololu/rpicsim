@@ -10,30 +10,30 @@ describe 'SFRs as variables' do
   end
 
   it 'can be written and read from Ruby' do
-    reg(:PMADRL).value.should == 0
+    expect(reg(:PMADRL).value).to eq 0
     reg(:PMADRL).value = 3
-    reg(:PMADRL).value.should == 3
+    expect(reg(:PMADRL).value).to eq 3
     run_subroutine :ReadPMADRL, cycle_limit: 100
-    x.value.should == 3
+    expect(x.value).to eq 3
   end
 
   it 'has the right name' do
-    reg(:PMADRL).name.should == :PMADRL
+    expect(reg(:PMADRL).name).to eq :PMADRL
   end
 
   it 'returns the name with #to_s' do
-    reg(:PMADRL).to_s.should == 'PMADRL'
+    expect(reg(:PMADRL).to_s).to eq 'PMADRL'
   end
 
   it 'cannot always write to all the bits with #value=' do
     reg(:STATUS).value = 0
-    reg(:STATUS).value.should == 0b00011000
+    expect(reg(:STATUS).value).to eq 0b00011000
   end
 
   it "has #memory_value= in case there are some bits we need to change but can't change with value=" do
     reg(:STATUS).memory_value = 0
-    reg(:STATUS).memory_value.should == 0
-    reg(:STATUS).value.should == 0
+    expect(reg(:STATUS).memory_value).to eq 0
+    expect(reg(:STATUS).value).to eq 0
   end
 end
 

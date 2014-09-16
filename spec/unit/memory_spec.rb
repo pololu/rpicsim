@@ -55,7 +55,7 @@ describe RPicSim::Memory do
     end
 
     it 'returns nil' do
-      mplab_memory.stub(:write_byte) { 33 }
+      allow(mplab_memory).to receive(:write_byte) { 33 }
       expect(memory.write_bytes(48, [11, 12])).to eq nil
     end
 
