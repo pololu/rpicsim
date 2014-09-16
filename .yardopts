@@ -18,7 +18,6 @@ docs/Manual.md
   docs/Variables.md
   docs/Memories.md
   docs/RamWatcher.md
-  docs/PreventingCallStackOverflow.md
 
   docs/IntroductionToRSpec.md
   docs/UnitTesting.md
