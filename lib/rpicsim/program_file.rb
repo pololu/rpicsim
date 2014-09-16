@@ -1,6 +1,5 @@
 require_relative 'mplab'
 require_relative 'label'
-require_relative 'instruction'
 require_relative 'symbol_set'
 
 # TODO: When symbols have the same address, think about how to choose the more
@@ -27,8 +26,6 @@ module RPicSim
       @assembly = Mplab::MplabAssembly.new(device)
       @assembly.load_file(filename)
       @address_increment = @assembly.device_info.code_address_increment
-
-      @instructions = []
 
       @labels = {}
 
@@ -159,14 +156,6 @@ module RPicSim
       desc
     end
 
-    # Gets an {Instruction} object representing the PIC instruction at the given
-    # address in program memory.
-    # @param address [Integer]
-    # @return [Instruction]
-    def instruction(address)
-      @instructions[address] ||= make_instruction(address)
-    end
-
     private
 
     def message_for_label_not_found(name)
@@ -180,11 +169,6 @@ module RPicSim
                    maybe_intended_labels.join(', ') + '.'
       end
       message
-    end
-
-    def make_instruction(address)
-      mplab_instruction = @assembly.disassembler.disassemble(address)
-      Instruction.new(mplab_instruction, address, @address_increment, self)
     end
   end
 end

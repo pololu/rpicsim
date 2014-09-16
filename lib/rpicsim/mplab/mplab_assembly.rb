@@ -1,6 +1,5 @@
 require_relative 'mplab_device_info'
 require_relative 'mplab_simulator'
-require_relative 'mplab_disassembler'
 
 module RPicSim::Mplab
   # This class wraps objects belonging to the abstract Java class
