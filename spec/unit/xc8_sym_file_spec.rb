@@ -5,9 +5,9 @@ describe RPicSim::Xc8SymFile do
 
   subject(:sym_file) do
     described_class.new(filename,
-                        custom_ram_sections: %w{MYRAM},
-                        custom_code_sections: %w{MYCODE},
-                        custom_eeprom_sections: %w{MYEEPROM},
+                        user_ram_sections: %w{MYRAM},
+                        user_program_memory_sections: %w{MYCODE},
+                        user_eeprom_sections: %w{MYEEPROM},
     )
   end
 
