@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # Instances of this class represent the call stack pointer in a running
   # simulation.

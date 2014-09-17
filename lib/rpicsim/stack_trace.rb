@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # Represents a stack trace from the simulated firmware.
   #

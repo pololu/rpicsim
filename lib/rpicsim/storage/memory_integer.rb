@@ -1,3 +1,4 @@
+# @api private
 module RPicSim::Storage
   # This class and its subclasses represent integers stored in RAM.
   class MemoryInteger

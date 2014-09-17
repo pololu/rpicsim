@@ -1,5 +1,6 @@
 require 'set'
 
+# @api public
 module RPicSim
   # This class can attach to an MPLAB X memory class and watch for changes in it, and
   # report those changes as a hash associating variable names to new values.  This is

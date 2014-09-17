@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # Instances of this class represents a variable in the memory of the simulated
   # microcontroller.  This class provides methods for reading, writing, and getting

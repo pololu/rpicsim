@@ -5,6 +5,7 @@ require_relative 'symbol_set'
 # TODO: When symbols have the same address, think about how to choose the more
 # interesting one in a stack trace (fewer underscores?)
 
+# @api public
 module RPicSim
   # Represents a PIC program file (e.g. COF or HEX).
   # Keeps track of all the symbols loaded from that file and also allows you

@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # This class is used internally by {Sim} to manage the symbols from the
   # simulated firmware's symbol table.

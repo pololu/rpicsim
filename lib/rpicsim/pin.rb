@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # This class represents an external pin of the simulated device.
   # It provides methods for reading the pin's output value and setting

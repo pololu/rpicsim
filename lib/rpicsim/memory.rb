@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # This object allows read and write access to the data currently
   # stored in a memory space of the simulated device.

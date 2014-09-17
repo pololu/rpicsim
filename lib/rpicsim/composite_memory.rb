@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # This class wraps two or more memory objects and
   # provides an interface that is also like {RPicSim::Memory}.

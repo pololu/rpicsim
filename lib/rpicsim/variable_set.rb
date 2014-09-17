@@ -1,6 +1,7 @@
 require_relative 'storage/memory_integer'
 require_relative 'variable'
 
+# @api public
 module RPicSim
   # This class is used internally by {Sim} to manage user-defined variables.
   # @api private

@@ -1,5 +1,6 @@
 require 'scanf'
 
+# @api public
 module RPicSim
   # This class can be used to load an XC8 sym file and get the information about
   # the symbols in it.  This is useful because the COF file produced by XC8 does

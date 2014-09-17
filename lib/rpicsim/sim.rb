@@ -14,6 +14,7 @@ require_relative 'program_file'
 require_relative 'stack_pointer'
 require_relative 'stack_trace'
 
+# @api public
 module RPicSim
   # This class represents a PIC microcontroller simulation.
   # This class keeps track of the state of the simulation and provides methods for

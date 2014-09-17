@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # This module stores knowledge about flaw in RPicSim, usually due to bugs or
   # limitation of the MPLAB X classes we are using.  See {file:KnownIssues.md}

@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # A very simple class that represents a label in firmware.
   # @api public
