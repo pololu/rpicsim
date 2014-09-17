@@ -1,3 +1,4 @@
+# @api public
 module RPicSim
   # The version number of this gem, as a string.
   # @return [String]
