@@ -26,7 +26,7 @@ Alternatively, if you just want a subset of the features described here, you can
 <!-- separate -->
 
     # Helper methods, including persistent expectations
-    require 'helpers'
+    require 'rpicsim/rspec/helpers'
 
 <!-- separate -->
 
