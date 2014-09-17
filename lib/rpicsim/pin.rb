@@ -2,6 +2,8 @@ module RPicSim
   # This class represents an external pin of the simulated device.
   # It provides methods for reading the pin's output value and setting
   # its input value.
+  #
+  # @api public
   class Pin
     # Initializes a new Pin object to wrap the given MplabPin.
     # @param mplab_pin [Mplab::MplabPin]

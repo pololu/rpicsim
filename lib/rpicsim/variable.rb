@@ -1,4 +1,5 @@
 module RPicSim
+  # @api public
   class Variable
     # Creates a new Variable object.
     # @param storage The internal storage for the variable.

@@ -1,5 +1,6 @@
 module RPicSim
   # A very simple class that represents a label in firmware.
+  # @api public
   class Label
     # The name of the label from the firmware.
     # @return (Symbol)

@@ -1,4 +1,5 @@
 module RPicSim
+  # @api public
   module Flaws
     # Represents a flaw in RPicSim, usually due to bugs or limitation of the
     # MPLAB X classes we are using.  Stores the name of the flaw and knowledge

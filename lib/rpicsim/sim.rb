@@ -18,6 +18,8 @@ module RPicSim
   # This class represents a PIC microcontroller simulation.
   # This class keeps track of the state of the simulation and provides methods for
   # running the simulation, reading the state, and changing the state.
+  #
+  # @api public
   class Sim
     # These methods should be called while defining a subclass of {Sim}.
     module ClassDefinitionMethods

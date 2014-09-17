@@ -3,6 +3,7 @@ module RPicSim
   # simulation.
   # A value of 0 means that the stack is empty, regardless of what device
   # architecture you are simulating.
+  #
   # @api public
   class StackPointer
     # Initializes the StackPointer object.

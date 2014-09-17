@@ -1,5 +1,7 @@
 module RPicSim
   # Represents a stack trace from the simulated firmware.
+  #
+  # @api public
   class StackTrace
     # Array of {StackTraceEntry} objects.  The last one represents where the
     # program counter (PC) is.  The entries before the last one approximately
@@ -36,6 +38,7 @@ module RPicSim
     end
   end
 
+  # @api public
   class StackTraceEntry
     # @return [Integer]
     attr_reader :address

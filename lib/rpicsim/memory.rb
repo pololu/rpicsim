@@ -20,6 +20,8 @@ module RPicSim
   # +read_word+ and +write_word+.
   #
   # For more information, see {file:Memories.md}.
+  #
+  # @api public
   class Memory
     # @param mplab_memory [Mplab::Memory]
     # @api private
