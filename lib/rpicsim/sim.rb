@@ -214,12 +214,12 @@ module RPicSim
 
     # Returns a {Variable} object corresponding to WREG.  You can use this
     # to read and write the value of the W register.
-    # @return [Register]
+    # @return [Variable]
     attr_reader :wreg
 
     # Returns a {Variable} object corresponding to the stack pointer register.
     # You can use this to read and write the value of the stack pointer.
-    # @return [Register]
+    # @return [Variable]
     attr_reader :stkptr
 
     # Returns a {StackPointer} object that is like {#stkptr} but it works
