@@ -1,4 +1,8 @@
 module RPicSim
+  # Instances of this class represents a variable in the memory of the simulated
+  # microcontroller.  This class provides methods for reading, writing, and getting
+  # address of the variable.
+  #
   # @api public
   class Variable
     # Creates a new Variable object.
@@ -33,6 +37,7 @@ module RPicSim
       @storage.memory_value
     end
 
+    # @return [String]
     def to_s
       @storage.to_s
     end

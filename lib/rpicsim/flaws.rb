@@ -1,9 +1,13 @@
 module RPicSim
+  # This module stores knowledge about flaw in RPicSim, usually due to bugs or
+  # limitation of the MPLAB X classes we are using.  See {file:KnownIssues.md}
+  # for more details.
+  #
   # @api public
   module Flaws
-    # Represents a flaw in RPicSim, usually due to bugs or limitation of the
-    # MPLAB X classes we are using.  Stores the name of the flaw and knowledge
-    # about what versions of MPLAB X it affects and how.
+    # Represents a flaw in RPicSim, usually dues to bugs in the MPLAB X classes
+    # we are using.  Stores the name of the flaw and knowledge about what
+    # versions of MPLAB X it affects and how.
     class Flaw
       # Creates a new flaw with the specified name.
       # @param name [Symbol] The name of this flaw.

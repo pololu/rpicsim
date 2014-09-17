@@ -18,11 +18,15 @@ module RPicSim
     end
 
     # Returns the address of the label.
+    #
+    # @return [Integer]
     def to_i
       address
     end
 
     # Returns a nice string representation of the label.
+    #
+    # @return [String]
     def to_s
       '<Label %s address=0x%x>' % [name, address]
     end

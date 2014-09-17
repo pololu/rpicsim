@@ -8,7 +8,7 @@ module RPicSim
       @processor = processor
     end
 
-    # @return [integer]
+    # @return [Integer]
     def value
       @processor.get_pc
     end

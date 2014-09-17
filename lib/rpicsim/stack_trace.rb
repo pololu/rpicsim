@@ -38,6 +38,8 @@ module RPicSim
     end
   end
 
+  # Represents an entry in a {StackTrace}.
+  #
   # @api public
   class StackTraceEntry
     # @return [Integer]
