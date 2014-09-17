@@ -59,7 +59,7 @@ describe 'Simulated ADC for midrange PICs' do
 
     if RPicSim::Flaws[:adc_midrange] == :no_middle_values
       it 'reads 255', flaw: true do
-        expcet(reg(:ADRES).value).to eq 255
+        expect(reg(:ADRES).value).to eq 255
       end
     else
       it 'reads 5' do
