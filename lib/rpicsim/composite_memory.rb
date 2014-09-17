@@ -3,6 +3,8 @@ module RPicSim
   # provides an interface that is also like {RPicSim::Memory}.
   # Any reads or writes from the composite memory will go to the first
   # component memory for which the address is valid.
+  #
+  # @api private
   class CompositeMemory
     # Creates a new instance.
     # The memory objects given must support the following methods:
