@@ -6,6 +6,8 @@ module RPicSim
   # not have enough information to identify what memory space every symbol is
   # in.
   #
+  # Example usage:
+  #
   #     class MySim < RPicSim::Sim
   #       use_device 'PIC18F25K50'
   #       use_file DistDir + 'TestXC8.hex'
