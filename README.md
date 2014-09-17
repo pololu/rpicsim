@@ -46,8 +46,6 @@ RPicSim has features that allow you to:
 * Monitor all writes to RAM.
 * Run assertions at every step of a simulation.
 
-For some applications, RPicSim can also analyze the firmware and verify that the call stack will never overflow.
-
 RPicSim is distributed as a Ruby gem named `rpicsim`.  To install RPicSim, run:
 
     jgem install rpicsim
