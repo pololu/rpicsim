@@ -53,7 +53,7 @@ module RPicSim
       end
 
       # Define a symbol.
-      # Normally symbols are loaded by {#use_file} or {#import_symbols}, but you can
+      # Normally symbols are loaded by {#use_file} or {#import_symbols}, but
       # this method allows for adding additional symbols one at a time.
       #
       # See {RPicSim::ProgramFile#def_symbol} for details about the parameters
