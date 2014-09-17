@@ -13,6 +13,10 @@ module RPicSim
     #       b << 0
     #       check_expectations  # => raises an error once b has 10 elements
     #     end
+    #
+    # For more information, see {file:PersistentExpectations.md}.
+    #
+    # @api public
     module PersistentExpectations
       # Returns the current set of persistent expectations.
       # The keys are the objects under test and the values are matchers that

@@ -1,6 +1,7 @@
 # If an example fails, store some diagnostic information about the state of the
 # simulation so we can print it later.
 
+# @api private
 module RPicSim::RSpec::SimDiagnostics
   def self.store_diagnostics(example, sim)
     if sim.respond_to? :cycle_count

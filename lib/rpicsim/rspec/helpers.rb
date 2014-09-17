@@ -11,6 +11,8 @@ module RPicSim
     # {PersistentExpectations}.
     # See {file:RSpecIntegration.md} for more information about RPicSim's
     # integration with RSpec.
+    #
+    # @api public
     module Helpers
       include RPicSim::RSpec::PersistentExpectations
 
@@ -20,8 +22,8 @@ module RPicSim
       attr_reader :sim
 
       # Starts a new simulation with the specified class, makes it
-      # accessible via the attribute {#sim}, and adds convenience
-      # methods using {#add_shortcuts}.
+      # accessible via the attribute {#sim}, and adds convenient
+      # shortcut methods that can be used in the RSpec example.
       # @param klass [Class] This should be a subclass of {RPicSim::Sim} or at least act like it.
       # @param args A list of arguments to pass on to the the +new+ method of the class.
       #  This should usually be empty unless you have modified your class to take arguments in its
@@ -32,6 +34,7 @@ module RPicSim
         sim.every_step { check_expectations }
       end
 
+      # @api private
       def add_shortcuts
         configuration_value = ::RSpec.configuration.sim_shortcuts
         case configuration_value
@@ -44,4 +47,9 @@ module RPicSim
       end
     end
   end
+end
+
+RSpec.configure do |config|
+  config.add_setting :sim_shortcuts, default: :all
+  config.include RPicSim::RSpec::Helpers
 end
