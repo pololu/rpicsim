@@ -9,9 +9,15 @@ module RPicSim
   # This class does not analyze the current instruction being executed; it uses the
   # Attach method of the MPLAB X memory classes.  This means that it doesn't work properly
   # in some versions of MPLAB X.  See {file:docs/Flaws.textile}.
+  #
+  # @api public
   class MemoryWatcher
+    # Allows you to read or write the list of variable names whose changes will
+    # be ignored.  By default, this includes registers like WREG and STATUS that
+    # change a lot.
+    #
+    # @return [Array(Symbol)]
     attr_accessor :var_names_ignored
-    attr_accessor :var_names_ignored_on_first_step
 
     # Creates a new instance.
     # @param sim [Sim]
@@ -61,6 +67,8 @@ module RPicSim
       @vars_written.clear
     end
 
+    private
+
     def handle_change(address_ranges)
       addresses = address_ranges.flat_map(&:to_a)
       vars = addresses.map { |a| @vars_by_address[a] || a }
@@ -70,8 +78,6 @@ module RPicSim
       # The line below works because @vars_written is a Set, not a Hash.
       @vars_written.merge vars
     end
-
-    private
 
     def remove_vars(vars, var_names_to_remove)
       vars.reject! do |key, val|
@@ -84,7 +90,7 @@ module RPicSim
       # The datasheet says the PCLATH is not affected by pushing or popping the stack, but
       # we still get spurious events for it when a return instruction is executed.
 
-      [:PCL, :PCLATH, :STATUS]
+      [:PCL, :PCLATH, :WREG, :STATUS, :BSR]
     end
   end
 end
