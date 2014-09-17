@@ -13,7 +13,30 @@ To enable the RSpec integration, simply put this line in your `spec_helper.rb`:
     !!!ruby
     require 'rpicsim/rspec'
 
-The features that this gives you are documented below.
+That gives you all the features that are documented below.
+
+### Fine-grained configuration
+
+Alternatively, if you just want a subset of the features described here, you can use any combination of the snippets below:
+
+    # Persistent expectations that can be stored and checked later
+    require 'rpicsim/rspec/persistent_expectations'
+    RSpec.configure { |c| c.include RPicSim::RSpec::PersistentExpectations }
+
+<!-- separate -->
+
+    # Helper methods, including persistent expectations
+    require 'helpers'
+
+<!-- separate -->
+
+    # Show debug info from sim if a spec fails
+    require 'rpicsim/rspec/sim_diagnostics'
+
+<!-- separate -->
+
+    # Better error messages for RSpec 2.x
+    require 'rpicsim/rspec/be_predicate'
 
 
 Helper methods

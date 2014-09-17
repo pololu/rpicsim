@@ -9,12 +9,12 @@ module RPicSim
     #
     # It provides the {#start_sim} method and includes all the methods from
     # {PersistentExpectations}.
-    # See {file:RSpecIntegration.md} for more information about RPicSim's
-    # integration with RSpec.
+    #
+    # For more information, see {file:RSpecIntegration.md}.
     #
     # @api public
     module Helpers
-      include RPicSim::RSpec::PersistentExpectations
+      include PersistentExpectations
 
       # This attribute allows you to type +sim+ in your specs instead of +@sim+ to
       # get access to the {RPicSim::Sim} instance which represents the simulation.

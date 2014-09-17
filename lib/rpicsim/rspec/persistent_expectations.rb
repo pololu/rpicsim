@@ -30,9 +30,7 @@ module RPicSim
       # it raises an error.
       def check_expectations
         expectations.each do |subject, matcher|
-          if matcher
-            expect(subject).to matcher
-          end
+          expect(subject).to matcher if matcher
         end
         nil
       end
