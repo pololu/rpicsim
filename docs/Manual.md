@@ -20,7 +20,6 @@ This is the table of contents for the RPicSim manual.
     * {file:Variables.md}
     * {file:Memories.md}
     * {file:RamWatcher.md RAM watcher}
-    * {file:PreventingCallStackOverflow.md Preventing call stack overflow}
 * Testing firmware with RPicSim and RSpec
     * {file:IntroductionToRSpec.md Introduction to RSpec}
     * {file:UnitTesting.md Unit testing}
