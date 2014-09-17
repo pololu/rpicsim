@@ -8,9 +8,9 @@ NOT RELEASED YET
 - Major improvements to the documentation.  Mainly, the public API of RPicSim has been defined, and everything not in the public API is now hidden from the documentation.  Doing this allows us to follow [Semantic Versioning](http://semver.org/v2.0.0) from now on.
 - MemoryWatcher: Adds WREG and BSR to the default list of register to ignore.
 - Removed all disassembly and static analysis features, since they could be better implemented in a different gem that doesn't depend on any Microchip code:
-  - Removed RPicSim::ProgramFile#instruction
-  - Removed RPicSim::CallStackInfo
-  - Removed RPicSim::Instruction
+    - Removed RPicSim::ProgramFile#instruction
+    - Removed RPicSim::CallStackInfo
+    - Removed RPicSim::Instruction
 
 0.4.0
 ----
