@@ -2,6 +2,7 @@ module RPicSim
   class Variable
     # Creates a new Variable object.
     # @param storage The internal storage for the variable.
+    # @api private
     def initialize(storage)
       @storage = storage
     end
@@ -35,14 +36,20 @@ module RPicSim
       @storage.to_s
     end
 
+    # The addresses in memory occupied by this variable.
+    # @return [Array(Integer)]
     def addresses
       @storage.addresses
     end
 
+    # The main (lowest) address of this variable.
+    # @return [Integer]
     def address
       @storage.address
     end
 
+    # The name of the variable.
+    # @return [Symbol]
     def name
       @storage.name
     end

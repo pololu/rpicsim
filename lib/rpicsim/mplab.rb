@@ -1,5 +1,6 @@
 require_relative 'mplab/mplab_loader'
 
+# @api private
 module RPicSim::Mplab
   MplabLoader.instance.load
 

@@ -1,6 +1,9 @@
+lib/rpicsim.rb
+lib/rpicsim/mplab.rb
 lib/rpicsim/**/*.rb
 --readme Introduction.md
 --load docs/plugin/plugin.rb
+--api public
 -
 docs/Manual.md
   docs/ChangeLog.md

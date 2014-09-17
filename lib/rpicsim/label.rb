@@ -10,6 +10,7 @@ module RPicSim
     attr_reader :address
 
     # Makes a new label with the specified name and address.
+    # @api private
     def initialize(name, address)
       @name = name
       @address = address

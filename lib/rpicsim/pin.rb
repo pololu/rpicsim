@@ -5,6 +5,7 @@ module RPicSim
   class Pin
     # Initializes a new Pin object to wrap the given MplabPin.
     # @param mplab_pin [Mplab::MplabPin]
+    # @api private
     def initialize(mplab_pin)
       raise ArgumentError, 'mplab_pin is nil' if mplab_pin.nil?
       @mplab_pin = mplab_pin
@@ -46,14 +47,17 @@ module RPicSim
 
     # Returns an array of all the pin's names from the datasheet, like
     # "RA4" or "TX".
+    # @return [String]
     def names
       @mplab_pin.names
     end
 
+    # @return [String]
     def to_s
       @mplab_pin.name
     end
 
+    # @return [String]
     def inspect
       '#<%s %s>' % [self.class, to_s]
     end

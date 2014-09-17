@@ -118,6 +118,7 @@ module RPicSim
 
       # A {VariableSet} that holds information about all the variables that were defined
       # with {ClassDefinitionMethods#def_var def_var}.
+      # @api private
       attr_reader :variable_set
 
       # The {ProgramFile} object representing the firmware.
@@ -619,6 +620,7 @@ module RPicSim
 
     public
 
+    # @return [String]
     def inspect
       "#<#{self.class}:0x%x, #{pc_description}, stack_pointer = #{stack_pointer.value}>" % object_id
     end

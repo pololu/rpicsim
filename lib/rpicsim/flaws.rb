@@ -6,6 +6,7 @@ module RPicSim
     class Flaw
       # Creates a new flaw with the specified name.
       # @param name [Symbol] The name of this flaw.
+      # @api private
       def initialize(name)
         @versions = {}
       end
@@ -15,7 +16,7 @@ module RPicSim
       # might be a more complicated thing if there is more than one effect the
       # the flaw can have.
       #
-      # @param version [String] A version of MPLAB X, e.g. "1.95".
+      # @param version [String] A version of MPLAB X, e.g. +'1.95'+.
       # @return effect
       def effect(version)
         if @versions.key? version
@@ -26,6 +27,7 @@ module RPicSim
       end
 
       # Records the effect this flaw has on a given version of MPLAB X.
+      # @api private
       def affects_version(version, effect)
         @versions[version] = effect
       end
@@ -33,16 +35,22 @@ module RPicSim
       # Records the effect that this flaw probably has in other versions of
       # MPLAB X that have not been tested.  This allows us to record our guesses
       # about how the next version of MPLAB X will behave.
+      # @api private
       def probably_affects_other_versions(effect)
         @probable_affect_for_other_versions = effect
       end
     end
 
     @flaw_hash = {}
+
+    # Returns the {Flaw} with the specified name.
+    # @param name [Symbol] The name of the flaw.  The names are listed in +flaws.rb+.
+    # @return [Flaw]
     def self.[](name)
       @flaw_hash[name].effect Mplab.version
     end
 
+    # @api private
     def self.add(name)
       @flaw_hash[name] = flaw = Flaw.new(name)
       yield flaw

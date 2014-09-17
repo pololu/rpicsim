@@ -1,6 +1,7 @@
 module RPicSim
   # This class is used internally by {Sim} to manage the symbols from the
-  # simulated firmware's symbol table..
+  # simulated firmware's symbol table.
+  # @api private
   class SymbolSet
     def initialize
       @memory_types = []

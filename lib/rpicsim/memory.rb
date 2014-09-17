@@ -22,6 +22,7 @@ module RPicSim
   # For more information, see {file:Memories.md}.
   class Memory
     # @param mplab_memory [Mplab::Memory]
+    # @api private
     def initialize(mplab_memory)
       @mplab_memory = mplab_memory
     end

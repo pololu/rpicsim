@@ -3,6 +3,7 @@ require_relative 'variable'
 
 module RPicSim
   # This class is used internally by {Sim} to manage user-defined variables.
+  # @api private
   class VariableSet
     attr_writer :address_increment
 
