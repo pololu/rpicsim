@@ -3,7 +3,7 @@ Change log
 
 1.0.0
 ----
-NOT RELEASED YET
+Released on 2014-09-17.
 
 - Major improvements to the documentation.  Mainly, the public API of RPicSim has been defined, and everything not in the public API is now hidden from the documentation.  Doing this allows us to follow [Semantic Versioning](http://semver.org/spec/v2.0.0.html) from now on.
 - MemoryWatcher: Adds WREG and BSR to the default list of registers to ignore.
