@@ -9,10 +9,18 @@ module RPicSim
   # Represents a PIC program file (e.g. COF or HEX).
   # Keeps track of all the symbols loaded from that file and also allows you
   # to add symbols in various ways.
+  #
+  # @api public
   class ProgramFile
+    # @return [String]
     attr_reader :filename
+
+    # The name of the device the file is for (e.g. "PIC10F322").
+    #
+    # @return [String]
     attr_reader :device
 
+    # @api private
     attr_reader :address_increment
 
     # @param filename [String] The path to the program file.
@@ -87,6 +95,8 @@ module RPicSim
     #
     # Warning: This is a persistent hash that will automatically be updated when
     # new symbols are defined.
+    #
+    # @return [Hash]
     def symbols
       @symbol_set.symbols
     end
@@ -97,6 +107,8 @@ module RPicSim
     #
     # Warning: This is a persistent hash that will automatically be updated when
     # new symbols are defined.
+    #
+    # @return [Hash]
     def symbols_in_ram
       @symbol_set.symbols_in_memory(:ram)
     end
@@ -107,6 +119,8 @@ module RPicSim
     #
     # Warning: This is a persistent hash that will automatically be updated when
     # new symbols are defined.
+    #
+    # @return [Hash]
     def symbols_in_program_memory
       @symbol_set.symbols_in_memory(:program_memory)
     end
@@ -117,17 +131,21 @@ module RPicSim
     #
     # Warning: This is a persistent hash that will automatically be updated when
     # new symbols are defined.
+    #
+    # @return [Hash]
     def symbols_in_eeprom
       @symbol_set.symbols_in_memory(:eeprom)
     end
 
     # Returns a hash associating program memory label names (as symbols) to their addresses.
-    # @return (Hash)
+    #
+    # @return [Hash]
     attr_reader :labels
 
     # Returns a {Label} object if a program label by that name is found.
     # The name is specified in the code that defined the label.  If you are using a C compiler,
     # you will probably need to prefix the name with an underscore.
+    #
     # @return [Label]
     def label(name)
       name = name.to_sym
