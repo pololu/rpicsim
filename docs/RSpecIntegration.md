@@ -8,7 +8,7 @@ Most of the example code in this manual assumes that you have the RSpec integrat
 Turning on RSpec integration
 ----
 
-To enable the RSpec integration, simply put this line in your `spec_helper.rb`:
+To load RPicSim and enable its RSpec integration, simply put this line in your `spec_helper.rb`:
 
     !!!ruby
     require 'rpicsim/rspec'
@@ -38,6 +38,9 @@ Alternatively, if you just want a subset of the features described here, you can
     # Better error messages for RSpec 2.x
     require 'rpicsim/rspec/be_predicate'
 
+You will also need to load RPicSim itself by writing:
+
+    require 'rpicsim'
 
 Helper methods
 ----
