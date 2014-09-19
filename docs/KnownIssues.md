@@ -57,6 +57,29 @@ _MPLAB X versions affected: all tested versions_
 This issue is tested in `spec/mplab/program_file_spec.rb`.
 
 
+MPLAB X writes log files to the current directory
+----
+_Type: MPLAB X issue_
+
+_MPLAB X versions affected: 2.20 and later_
+
+Starting with MPLAB X v2.20, the MPLAB X code writes log files to the current working directory.
+These files have names that start with "MPLABXLog.xml".
+Unfortunately, these files cannot be deleted from the same Ruby process that runs RPicSim, because MPLAB X keeps handles open to the files and we have not found a way to close those handles.
+
+If you are using Rake to run your specs, you can enhance the spec task so that it removes the files after running the specs:
+
+    # After running specs, clean up the log files that MPLAB X makes.
+    Rake::Task['spec'].enhance do
+      FileUtils.rm Dir.glob 'MPLABXLog.xml*'
+    end
+
+These files are created as soon as the com.microchip.mplab.logger.Logger class is loaded by the JVM.
+It might be possible to replace the implementation of that class in order to avoid creating the files.
+
+This issue is tested in `spec/mplab/log_file_spec.rb`.
+
+
 Cannot detect PIC model from COF file
 ----
 _Type: RPicSim missing feature_

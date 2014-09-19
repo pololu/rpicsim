@@ -3,11 +3,8 @@ if ENV['COVERAGE'] == 'Y'
   SimpleCov.start
 end
 
-$LOAD_PATH << 'lib'
-require 'rpicsim/rspec'
-require_relative 'firmware'
-
 require 'stringio'
+require 'fileutils'
 
 def rspec_example
   if RSpec.respond_to?(:current_example)
@@ -16,3 +13,16 @@ def rspec_example
     example  # RSpec 2.x
   end
 end
+
+def mplab_log_files
+  Dir.glob('MPLABXLog.xml*')
+end
+
+# Remove any MPLAB X log files so we can test to make sure we didn't acidentally
+# create any when loading RPicSim or the test firmware.
+FileUtils.rm mplab_log_files
+
+$LOAD_PATH << 'lib'
+require 'rpicsim/rspec'
+
+require_relative 'firmware'

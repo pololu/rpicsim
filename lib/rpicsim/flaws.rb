@@ -49,9 +49,14 @@ module RPicSim
 
     @flaw_hash = {}
 
-    # Returns the {Flaw} with the specified name.
-    # @param name [Symbol] The name of the flaw.  The names are listed in +flaws.rb+.
-    # @return [Flaw]
+    # Returns the effect of the flaw with the specified name for the currently
+    # loaded version of MPLAB X.
+    #
+    # The names and effects are listed in +flaws.rb+.
+    #
+    # The returned value will usually be a boolean, but sometimes a Symbol.
+    #
+    # @param name [Symbol] The name of the flaw.
     def self.[](name)
       @flaw_hash[name].effect Mplab.version
     end
@@ -60,6 +65,18 @@ module RPicSim
     def self.add(name)
       @flaw_hash[name] = flaw = Flaw.new(name)
       yield flaw
+    end
+
+    add(:creates_log_files) do |flaw|
+      flaw.affects_version '1.85', false
+      flaw.affects_version '1.90', false
+      flaw.affects_version '1.95', false
+      flaw.affects_version '2.00', false
+      flaw.affects_version '2.05', false
+      flaw.affects_version '2.10', false
+      flaw.affects_version '2.15', false
+      flaw.affects_version '2.20', true
+      flaw.probably_affects_other_versions true
     end
 
     add(:writing_tris_affects_output) do |flaw|
