@@ -33,6 +33,7 @@ module RPicSim::Mplab
       begin
         org.openide.util.Lookup
         com.microchip.mplab.mdbcore.simulator.Simulator
+        com.microchip.mplab.mdbcore.platformtool.PlatformToolMetaManager
       rescue NameError
         $stderr.puts "Failed to load MPLAB X classes.\n" +
           "MPLAB X dir: #{dir}\nMPLAB X jar dir: #{jar_dir}\nClass path:\n" + $CLASSPATH.to_a.join("\n") + "\n\n"
