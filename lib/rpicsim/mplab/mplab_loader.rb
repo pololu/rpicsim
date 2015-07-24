@@ -79,6 +79,8 @@ module RPicSim::Mplab
     def auto_detect_mplab_dir
       # Default installation directories for MPLAB X:
       candidates = [
+        'C:/Program Files (x86)/Microchip\MPLABX/v3.05', # TODO: something less hacky
+        'C:/Program Files/Microchip\MPLABX/v3.05',       # TODO: something less hacky
         'C:/Program Files (x86)/Microchip/MPLABX/',  # 64-bit Windows
         'C:/Program Files/Microchip/MPLABX/',        # 32-bit Windows
         '/opt/microchip/mplabx/',                    # Linux
