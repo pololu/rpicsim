@@ -6,7 +6,7 @@ module RPicSim::Mplab
     def initialize(filename, device)
       raise "File does not exist: #{filename}" if !File.exist?(filename)  # Avoid a Java exception.
 
-      if !File.realdirpath(filename).split('/').include?('dist')
+      if !File.realdirpath(filename).split(%r{/|\\}).include?('dist')
         raise 'The file must be inside a directory named dist or else the MCLoader ' \
               'class will throw an exception saying that it cannot find the COF file.'
       end
