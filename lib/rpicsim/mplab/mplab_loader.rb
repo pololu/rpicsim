@@ -19,7 +19,6 @@ module RPicSim::Mplab
           mplablibs/modules/*.jar
           mplablibs/modules/ext/*.jar
           platform/lib/org-openide-util*.jar
-          platform/lib/org-openide-util.jar
           mdbcore/modules/ext/org-openide-filesystems.jar
       }.each do |pattern|
         Dir.glob(jar_dir + pattern).each do |jar_file|
@@ -31,6 +30,7 @@ module RPicSim::Mplab
       # In case MPLAB X was uninstalled and its directory remains, this can provide
       # a useful error message to the user.
       begin
+        org.openide.filesystems.FileObject
         org.openide.util.Lookup
         com.microchip.mplab.mdbcore.simulator.Simulator
         com.microchip.mplab.mdbcore.platformtool.PlatformToolMetaManager
@@ -80,8 +80,8 @@ module RPicSim::Mplab
     def auto_detect_mplab_dir
       # Default installation directories for MPLAB X:
       candidates = [
-        'C:/Program Files (x86)/Microchip\MPLABX/v3.05', # TODO: something less hacky
-        'C:/Program Files/Microchip\MPLABX/v3.05',       # TODO: something less hacky
+        'C:/Program Files (x86)/Microchip/MPLABX/v3.05/', # TODO: something less hacky
+        'C:/Program Files/Microchip/MPLABX/v3.05/',       # TODO: something less hacky
         'C:/Program Files (x86)/Microchip/MPLABX/',  # 64-bit Windows
         'C:/Program Files/Microchip/MPLABX/',        # 32-bit Windows
         '/opt/microchip/mplabx/',                    # Linux
