@@ -78,10 +78,7 @@ module RPicSim::Mplab
     end
 
     def auto_detect_mplab_dir
-      # Default installation directories for MPLAB X:
       candidates = [
-        'C:/Program Files (x86)/Microchip/MPLABX/v3.05/', # TODO: something less hacky
-        'C:/Program Files/Microchip/MPLABX/v3.05/',       # TODO: something less hacky
         'C:/Program Files (x86)/Microchip/MPLABX/',  # 64-bit Windows
         'C:/Program Files/Microchip/MPLABX/',        # 32-bit Windows
         '/opt/microchip/mplabx/',                    # Linux
@@ -89,7 +86,13 @@ module RPicSim::Mplab
       ]
       dir = candidates.find { |d| File.directory?(d) }
       raise cannot_find_mplab_error if !dir
-      dir
+
+      # Some time between 2.20 and 3.05, MPLABX started installing itself into
+      # a subdirectory named after the version, for example "v3.05".  Here we
+      # check for the existence of such subdirectories and use the highest
+      # version of MPLAB X that is available.  If it is not available, we'll
+      # use dir anyway because it might contain an older version of MPLAB X.
+      Dir.glob(dir + 'v?.??').sort.last or dir
     end
 
     def cannot_find_mplab_error
