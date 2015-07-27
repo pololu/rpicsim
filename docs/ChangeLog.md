@@ -1,6 +1,12 @@
 Change log
 ====
 
+1.1.0
+----
+Released on 2015-07-27.
+
+- Added support for MPLAB X v3.05.
+
 1.0.0
 ----
 Released on 2014-09-17.
