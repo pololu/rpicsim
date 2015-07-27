@@ -53,8 +53,17 @@ describe 'rspec' do
     if defined?(RSpec::Core::Notifications)
       # Rspec 3.x
       it 'monkeypatches FailedExampleNotification in RSpec 3.x' do
-        exception_presenter = nil
-        n = RSpec::Core::Notifications::FailedExampleNotification.new(example, exception_presenter)
+        fen = RSpec::Core::Notifications::FailedExampleNotification
+        begin
+          # RSpec 3.3.0 and later
+          exception_presenter = nil
+          n = fen.new(example, exception_presenter)
+        rescue ArgumentError => ex
+          raise unless ex.message =~ /struct size differs/
+
+          # Before RSpec 3.3.0
+          n = fen.new(example)
+        end
         expect(n).to receive(:fully_formatted_without_sim_diagnostics).and_return('')
         expect(n.fully_formatted).to eq <<-END
 

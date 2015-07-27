@@ -56,15 +56,17 @@ end
 
 desc "Run the specs against multiple versions of MPLAB X and RSpec."
 task "multispec" do
+  mplabx_paths = Dir.glob((mplab_x_bottles_path + "*").to_s).sort.reverse
+  rspec_versions = %w{ 3.3.0 3.2.0 3.1.0 3.0.0 2.99.0 2.14.1 }
+
   # First, test against each bottled version of MPLAB X.
   # Presumably this will be using a 3.x version of RSpec.
-  mplabx_paths = Dir.glob((mplab_x_bottles_path + "*").to_s).sort.reverse
-  rspec_versions = %w{ 3.1.0 3.0.0 2.99.0 2.14.1 }
+  #mplabx_paths.each do |path|
+  #  run_specs path, rspec_versions.first
+  #end
 
-  mplabx_paths.each do |path|
-    run_specs path, rspec_versions.first
-  end
-
+  # Next, test against each version of RSpec, using the latest bottled version
+  # of MPLAB X.
   rspec_versions.each do |version|
     run_specs mplabx_paths.first, version
   end
