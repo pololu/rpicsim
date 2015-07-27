@@ -124,7 +124,8 @@ describe RPicSim::Sim do
       sim.stack_push 1
       sim.stack_push 9
       goto 13
-      expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error
+      expect { run_subroutine :foo, cycle_limit: 0 }.to raise_error \
+        "Failed to reach [:return] after 0 cycles."
       expect(sim.stack_contents).to eq [1, 9, 13]
     end
 
