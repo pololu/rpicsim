@@ -233,3 +233,20 @@ Attempting to read from the top (last) byte of program memory will cause an exce
 For example, you cannot use `program_memory.read_byte(0x7FFF)` on a PIC18F25K50 simulation.
 One workaround is to use `read_word` instead.
 This seems to only affect PIC18 devices.
+
+Older versions of MPLAB X do not work with later Java SE Runtime Environments
+----
+
+MPLAB X is based on NetBeans, so older versions of it suffer from [Netbeans bug 229191](https://netbeans.org/bugzilla/show_bug.cgi?id=229191) and will not run properly on the Java SE Runtime Environment 8 or later.  If you try to use an older version of MPLAB X with a newer version of Java, you might get this error:
+
+    java.lang.IllegalStateException: java.lang.IllegalAccessException:
+    Class org.openide.util.WeakListenerImpl$ProxyListener can not access
+    a member of class org.openide.filesystems.$Proxy20 with modifiers "public"
+            at org.openide.util.WeakListenerImpl$ProxyListener.<init>(WeakListenerImpl.java:423)
+    ...
+
+A solution is to download and install the "Java SE Runtime Environment 7u80" from [Oracle](http://www.oracle.com/).
+JRuby uses the JAVA_HOME environment variable to figure out which version of Java to use, so you would set the JAVA_HOME environment variable to point to version 7 for the purposes of running your tests.
+If you are using a shell like Bash, a command like the one below can be used to temporarily set the environment variable for the duration of one command instead of changing it globally for your whole system:
+
+    JAVA_HOME="C:\Program Files\Java\jre7" rspec

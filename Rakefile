@@ -61,9 +61,9 @@ task "multispec" do
 
   # First, test against each bottled version of MPLAB X.
   # Presumably this will be using a 3.x version of RSpec.
-  #mplabx_paths.each do |path|
-  #  run_specs path, rspec_versions.first
-  #end
+  mplabx_paths.each do |path|
+    run_specs path, rspec_versions.first
+  end
 
   # Next, test against each version of RSpec, using the latest bottled version
   # of MPLAB X.
