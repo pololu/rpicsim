@@ -108,10 +108,10 @@ describe 'assumptions about MPLAB X used to build MplabPin' do
   let(:pin) { com.microchip.mplab.mdbcore.simulator.Pin }
 
   specify 'the two PinStates are HIGH and LOW' do
-    expect(pin::PinState.constants.sort).to eq [:HIGH, :LOW]
+    expect(pin::PinState.values.collect(&:to_s).sort).to eq ['HIGH', 'LOW']
   end
 
   specify 'the two IOStates are INPUT and OUTPUT' do
-    expect(pin::IOState.constants.sort).to eq [:INPUT, :OUTPUT]
+    expect(pin::IOState.values.collect(&:to_s).sort).to eq ['INPUT', 'OUTPUT']
   end
 end
