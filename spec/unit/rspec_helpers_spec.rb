@@ -53,7 +53,8 @@ describe 'rspec' do
     if defined?(RSpec::Core::Notifications)
       # Rspec 3.x
       it 'monkeypatches FailedExampleNotification in RSpec 3.x' do
-        n = RSpec::Core::Notifications::FailedExampleNotification.new(example)
+        exception_presenter = nil
+        n = RSpec::Core::Notifications::FailedExampleNotification.new(example, exception_presenter)
         expect(n).to receive(:fully_formatted_without_sim_diagnostics).and_return('')
         expect(n.fully_formatted).to eq <<-END
 
