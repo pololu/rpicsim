@@ -103,7 +103,15 @@ module RPicSim
 
     add(:adc_midrange) do |flaw|
       flaw.affects_version '1.85', :no_middle_values
-      flaw.probably_affects_other_versions :bad_modulus
+      flaw.affects_version '1.90', :bad_modulus
+      flaw.affects_version '1.95', :bad_modulus
+      flaw.affects_version '2.00', :bad_modulus
+      flaw.affects_version '2.05', :bad_modulus
+      flaw.affects_version '2.10', :bad_modulus
+      flaw.affects_version '2.15', :bad_modulus
+      flaw.affects_version '2.20', :bad_modulus
+      flaw.affects_version '3.05', false
+      flaw.probably_affects_other_versions false
     end
 
     add(:instruction_inc_is_in_byte_units) do |flaw|

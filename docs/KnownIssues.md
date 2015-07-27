@@ -202,17 +202,18 @@ Midrange ADC gives incorrect readings
 ----
 _Type: MPLAB X bug_
 
-_MPLAB X versions affected: all tested versions_
+_MPLAB X versions affected: 1.85, 1.90, 1.95, 2.00, 2.05, 2.10, 2.15, 2.20_
 
 The simulated ADC for midrange PIC microcontrollers has various issues in different versions of MPLAB X that make it give incorrect readings.
 These issues might affect other PIC architectures as well.
 
-* **Bad modulus:** In MPLAB X 1.90 and later, simply setting a pin to high with `pin.set(true)` will result in an ADC reading of 0.
+* **Bad modulus:** In MPLAB X 1.90 through 2.20, simply setting a pin to high with `pin.set(true)` will result in an ADC reading of 0.
   The workaround is to use `pin.set(4.9)`.
   The ADC acts like it is using a modulus operator incorrectly as a way of limiting the ADC result to be between 0 and 255.
 * **No intermediate values:** In MPLAB X 1.85, setting a pin to any voltage other than 0 V will result in an ADC reading of 255.
 
 These issues are tested in `spec/integration/adc_midrange_spec.rb`.  The bad modulus issue was {http://www.microchip.com/forums/m760886.aspx reported to Microchip} in November 2013.
+The midrange ADC seems to work correctly in MPLAB X 3.05.
 
 
 Variables from XC8 are not correctly identified
