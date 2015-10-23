@@ -5,7 +5,7 @@ Change log
 ----
 Released on 2015-07-27.
 
-- Added support for MPLAB X v3.05.
+- Added support for MPLAB X v3.05.  This version also works with MPLAB X v3.10, which was released later.
 
 1.0.0
 ----

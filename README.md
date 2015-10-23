@@ -51,7 +51,7 @@ RPicSim is distributed as a Ruby gem named `rpicsim`.  To install RPicSim, run:
     jgem install rpicsim
 
 
-RPicSim has been tested with MPLAB X v1.85, v1.90, v1.95, v2.00, v2.05, v2.10, v2.15, v2.20 and v3.05.
+RPicSim has been tested with MPLAB X v1.85, v1.90, v1.95, v2.00, v2.05, v2.10, v2.15, v2.20, v3.05, and v3.10.
 However, it uses a lot of undocumented and internal features of the Microchip Java libraries, so it will probably need to be updated as new versions of MPLAB X are released.
 
 RPicSim is not intended to replace formal specifications, code reviews, and rigorous testing of your firmware on actual hardware.

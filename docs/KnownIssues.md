@@ -213,7 +213,7 @@ These issues might affect other PIC architectures as well.
 * **No intermediate values:** In MPLAB X 1.85, setting a pin to any voltage other than 0 V will result in an ADC reading of 255.
 
 These issues are tested in `spec/integration/adc_midrange_spec.rb`.  The bad modulus issue was {http://www.microchip.com/forums/m760886.aspx reported to Microchip} in November 2013.
-The midrange ADC seems to work correctly in MPLAB X 3.05.
+The midrange ADC seems to work correctly in MPLAB X v3.05 and later.
 
 
 Variables from XC8 are not correctly identified
