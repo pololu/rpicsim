@@ -135,23 +135,13 @@ def mpasm_path
   @mpasm_path ||= begin
     mpasm = ENV['RPICSIM_MPASM']
 
-    mpasm ||= [
-      ('mpasmx' if which('mpasmx')),
-      ('mpasm' if which('mpasm')),
-      'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mpasmx.exe',
-      'C:\Program Files\Microchip\MPLABX\mpasmx\mpasmx.exe',
-      '/opt/microchip/mplabx/mpasmx/mpasmx',
-      '/Applications/microchip/mplabx/mpasmx/mpasmx',
-    ].find do |mpasm|
-      mpasm && File.exist?(mpasm)
-    end
+    mpasm ||= ('mpasmx' if which('mpasmx'))
+    mpasm ||= ('mpasm' if which('mpasm'))
 
     if !mpasm
-      raise "Cannot find MPASM or MPASMX executable.  Please put it on your path or set the RPICSIM_MPASM environment variable to its full path."
-    end
-
-    if !File.exist?(mpasm)
-      raise "MPASM executable does not exist: #{mpasm}"
+      raise "Cannot find MPASM or MPASMX executable.  " \
+            "Please put it on your PATH or set the RPICSIM_MPASM " \
+            "environment variable to its full path."
     end
 
     mpasm
@@ -160,25 +150,14 @@ end
 
 def mplink_path
   @mplink_path ||= begin
-    mplink = ENV['RPICSIM_MPASM']
+    mplink = ENV['RPICSIM_MPLINK']
 
-    mplink ||= [
-      ('mplink' if which('mplink')),
-      'C:\Program Files (x86)\Microchip\MPLABX\mpasmx\mplink.exe',
-      'C:\Program Files\Microchip\MPLABX\mpasmx\mplink.exe',
-      '/opt/microchip/mplabx/mpasmx/mplink',
-      '/Applications/microchip/mplabx/mpasmx/mplink',
-    ].find do |mplink|
-      mplink && File.exist?(mplink)
-    end
+    mplink ||= ('mplink' if which('mplink'))
 
     if !mplink
       raise "Cannot find MPLINK executable.  Please put it on your path or set the RPICSIM_MPLINK environment variable to its full path."
     end
 
-    if !File.exist?(mplink)
-      raise "MPLINK executable does not exist: #{mplink}"
-    end
 
     mplink
   end
@@ -232,7 +211,7 @@ def mpasm(options, o_file)
 
   original_mtime = o_file.exist? ? o_file.mtime : nil
 
-  command = "#{mpasm_path} #{options}"
+  command = "\"#{mpasm_path}\" #{options}"
   begin
     sh command
   rescue RuntimeError
@@ -260,7 +239,7 @@ asm_files.each do |asm_file|
     lst_file = o_file.sub_ext('.lst')
     o_file.parent.mkpath
     mpasm %Q{-p#{device} -q -l"#{lst_file}" -e"#{err_file}" -o"#{o_file}" "#{asm_file}"}, o_file
-    sh %Q{#{mplink_path} -p#{device} -q -w -o"#{cof_file}" "#{o_file}"}
+    sh %Q{\"#{mplink_path}\" -p#{device} -q -w -o"#{cof_file}" "#{o_file}"}
   end
   task 'firmware:mpasm' => cof_file
 end
