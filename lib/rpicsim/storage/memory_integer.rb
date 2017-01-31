@@ -202,10 +202,11 @@ module RPicSim::Storage
     end
 
     def value
-      val = @memory.read_byte(@address) + 0x100 * @memory.read_byte(@address + 1) +
+      val =
+        @memory.read_byte(@address) +
+        0x100 * @memory.read_byte(@address + 1) +
         0x10000 * @memory.read_byte(@address + 2) +
-        0x1000000 * @memory.read_byte(@address + 3) +
-        0x100000000 * @memory.read_byte(@address + 4)
+        0x1000000 * @memory.read_byte(@address + 3)
       val -= 0x100000000 if val >= 0x80000000
       val
     end
