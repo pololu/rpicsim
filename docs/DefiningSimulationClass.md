@@ -69,7 +69,7 @@ To start a new simulation, you can simply make a new instance of the simulation 
 
 However, if you are using RSpec and RPicSim's {file:RSpecIntegration.md RSpec Integration}, then you should not create a new instance yourself.
 Instead, make a before hook that calls {RPicSim::RSpec::Helpers#start_sim start_sim}.
-This will start the simulation for you and use it to make some other methods and features available in your examples.
+This will set up the simulation for you and use it to make some other methods and features available in your RSpec examples.
 After running {RPicSim::RSpec::Helpers#start_sim start_sim}, you will be able to access your simulation object using the method `sim`.
 
 For example:
